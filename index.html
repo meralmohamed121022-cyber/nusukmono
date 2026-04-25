@@ -2728,6 +2728,73 @@ window.closeImageModal = function() {
     updateImageTransform();
   }, 300);
 };
+// وظيفة لإضافة العدادات للعناوين الثابتة في الصفحة
+function autoUpdateCounters() {
+    const grids = document.querySelectorAll('.hajj-grid');
+    
+    grids.forEach(grid => {
+        const items = grid.querySelectorAll('.interactive-card');
+        const count = items.length;
+        if (count <= 0) return;
+
+        // تحديد العنوان المرتبط (بيدور على أقرب h2 أو h3)
+        const sectionHeader = grid.closest('.container-wide')?.querySelector('.section-title') 
+                             || grid.parentElement.parentElement.querySelector('h3');
+        
+        if (sectionHeader && !sectionHeader.querySelector('.section-counter')) {
+            const counter = document.createElement('span');
+            counter.className = 'section-counter';
+            counter.textContent = count;
+
+            // 🎨 مصفوفة الألوان من الثيم بتاعك
+            const colors = ['#1a6b3c', '#c9930a', '#3da068', '#e0a820', '#145530'];
+            let gradientParts = [];
+            let percentPerItem = 100 / count;
+
+            for (let i = 0; i < count; i++) {
+                let color = colors[i % colors.length];
+                gradientParts.push(`${color} ${i * percentPerItem}% ${(i + 1) * percentPerItem}%`);
+            }
+
+            // 🛠️ إضافة الـ CSS مباشرة داخل الـ JavaScript
+            Object.assign(counter.style, {
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                marginRight: '12px',
+                verticalAlign: 'middle',
+                fontWeight: '800',
+                fontSize: '0.85rem',
+                position: 'relative',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                color: 'var(--color-text)',
+                // رسم الدايرة الملونة وتفريغ المنتصف (Donut)
+                background: `
+                    radial-gradient(circle, var(--color-surface-2) 60%, transparent 64%),
+                    conic-gradient(${gradientParts.join(', ')})
+                `
+            });
+
+            // تعديل بسيط عشان الـ Dark Mode يظبط خلفية النص
+            if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                counter.style.background = `
+                    radial-gradient(circle, var(--color-surface) 60%, transparent 64%),
+                    conic-gradient(${gradientParts.join(', ')})
+                `;
+            }
+            
+            sectionHeader.appendChild(counter);
+        }
+    });
+}
+
+// تشغيل الدالة بعد وقت كافي من رندر الكروت
+setTimeout(autoUpdateCounters, 400);
+// شغلها بعد ما الـ Render يخلص
+setTimeout(autoUpdateCounters, 100);
 </script>
 </body>
 </html>
