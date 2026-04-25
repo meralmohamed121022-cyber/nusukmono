@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>خريطة مناسك الحج الشاملة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 24px;
+      width: 4px;
+      background: #334155;
+      border-radius: 2px;
+    }
+    @media (min-width: 768px) {
+      .timeline::before {
+        right: 50%;
+        transform: translateX(50%);
+      }
+      .timeline-item:nth-child(even) .timeline-content {
+        margin-right: 50%;
+        padding-right: 40px;
+        padding-left: 0;
+      }
+      .timeline-item:nth-child(odd) .timeline-content {
+        margin-left: 50%;
+        padding-left: 40px;
+        padding-right: 0;
+      }
+      .timeline-item:nth-child(even) .timeline-dot {
+        right: 50%;
+        transform: translate(50%, 0);
+      }
+      .timeline-item:nth-child(odd) .timeline-dot {
+        right: 50%;
+        transform: translate(50%, 0);
+      }
+    }
+    .rukn { border-right: 4px solid #ef4444; }
+    .wajib { border-right: 4px solid #3b82f6; }
+    .sunnah { border-right: 4px solid #10b981; }
+    
+    .badge-tmt { background: #f59e0b; color: #000; }
+    .badge-if { background: #8b5cf6; color: #fff; }
+    .badge-qr { background: #ec4899; color: #fff; }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-10">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-amber-400 mb-4">🗺️ الخريطة الشاملة لمناسك الحج</h1>
+      <p class="text-slate-300 mb-6">دليل مرئي يجمع الأركان، الواجبات، والسنن، ويوضح الفرق بين الإفراد والقران والتمتع.</p>
+      
+      <div class="flex flex-wrap justify-center gap-4 text-sm font-bold">
+        <div class="px-4 py-2 bg-red-900/40 border border-red-500 text-red-200 rounded-lg shadow-sm">🟥 ركن (لا يصح الحج بدونه)</div>
+        <div class="px-4 py-2 bg-blue-900/40 border border-blue-500 text-blue-200 rounded-lg shadow-sm">🟦 واجب (يُجبر بدم/ذبح إن تُرِك)</div>
+        <div class="px-4 py-2 bg-emerald-900/40 border border-emerald-500 text-emerald-200 rounded-lg shadow-sm">🟩 سنة (يُثاب فاعلها ولا يأثم تاركها)</div>
+      </div>
+      
+      <div class="flex flex-wrap justify-center gap-3 mt-4 text-xs font-bold">
+        <span class="px-3 py-1 badge-tmt rounded-full">المتمتع</span>
+        <span class="px-3 py-1 badge-if rounded-full">المفرد</span>
+        <span class="px-3 py-1 badge-qr rounded-full">القارن</span>
+      </div>
+    </div>
+
+    <div class="relative timeline max-w-4xl mx-auto">
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">١. الإحرام من الميقات</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-red-900/20 rukn rounded">
+                <strong>النية (ركن):</strong> الدخول في النسك.
+              </div>
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>المكان (واجب):</strong> الإحرام من الميقات المحدد.
+              </div>
+              <div class="p-2 bg-emerald-900/20 sunnah rounded">
+                <strong>السنن:</strong> الاغتسال، التطيب (للرجل في بدنه)، صلاة ركعتين، التلبية.
+              </div>
+              <div class="mt-3 pt-3 border-t border-slate-700">
+                <div class="mb-1"><span class="badge-tmt px-2 py-0.5 rounded text-xs">المتمتع</span> ينوي: لبيك عمرة.</div>
+                <div class="mb-1"><span class="badge-if px-2 py-0.5 rounded text-xs">المفرد</span> ينوي: لبيك حجاً.</div>
+                <div><span class="badge-qr px-2 py-0.5 rounded text-xs">القارن</span> ينوي: لبيك عمرة وحجاً.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٢. الوصول لمكة (أول الأعمال)</h3>
+            <div class="space-y-3 text-sm">
+              <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600">
+                <span class="badge-tmt px-2 py-0.5 rounded text-xs mb-2 inline-block">المتمتع</span><br>
+                يؤدي عمرة كاملة: <span class="text-red-400 font-bold">طواف العمرة (ركن)</span> + <span class="text-red-400 font-bold">سعي العمرة (ركن)</span> + <span class="text-blue-400 font-bold">الحلق/التقصير (واجب)</span>.<br>
+                <strong class="text-emerald-400">النتيجة:</strong> يتحلل تماماً ويلبس ثيابه العادية حتى يوم ٨ ذي الحجة.
+              </div>
+              <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600">
+                <span class="badge-if px-2 py-0.5 rounded text-xs mb-2 inline-block">المفرد</span>
+                <span class="badge-qr px-2 py-0.5 rounded text-xs mb-2 inline-block">القارن</span><br>
+                يؤديان <span class="text-emerald-400 font-bold">طواف القدوم (سنة)</span>، ثم يجوز لهما تقديم <span class="text-red-400 font-bold">سعي الحج (ركن)</span> الآن.<br>
+                <strong class="text-red-400">النتيجة:</strong> يبقيان بملابس الإحرام ولا يتحللان أبداً حتى يوم العيد.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٣. يوم التروية (٨ ذي الحجة)</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-red-900/20 rukn rounded mb-2">
+                <span class="badge-tmt px-2 py-0.5 rounded text-xs">المتمتع</span> <strong class="text-red-400">الإحرام بالحج (ركن):</strong> يحرم من مكانه بمكة.
+              </div>
+              <div class="p-2 bg-emerald-900/20 sunnah rounded">
+                <strong>الذهاب لمنى (سنة):</strong> للجميع. المبيت بمنى ليلة عرفة، وصلاة الظهر والعصر والمغرب والعشاء والفجر بها قصراً بلا جمع.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-red-500 border-4 border-slate-900 z-10 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-red-900/50 shadow-[0_0_15px_rgba(239,68,68,0.15)] hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٤. يوم عرفة (٩ ذي الحجة)</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-red-900/40 rukn rounded border border-red-500/50 text-red-100">
+                <strong>الوقوف بعرفة (الركن الأعظم):</strong> للجميع. يبدأ من الزوال (الظهر) ويستمر حتى غروب الشمس. من فاته عرفة فاته الحج.
+              </div>
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>البقاء للغروب (واجب):</strong> لمن وقف نهاراً يجب أن يمد وقوفه حتى تغرب الشمس.
+              </div>
+              <div class="p-2 bg-emerald-900/20 sunnah rounded">
+                <strong>السنن:</strong> جمع الظهر والعصر تقديماً، الإكثار من الدعاء والذكر مستقبل القبلة.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٥. ليلة العيد (مزدلفة)</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>المبيت بمزدلفة (واجب):</strong> للجميع. الإفاضة من عرفة بهدوء، وصلاة المغرب والعشاء جمع تأخير. المبيت حتى الفجر (ويجوز للضعفاء الدفع بعد منتصف الليل).
+              </div>
+              <div class="p-2 bg-emerald-900/20 sunnah rounded">
+                <strong>السنن:</strong> لقط ٧ حصيات لرمي جمرة العقبة، الوقوف عند المشعر الحرام للدعاء بعد الفجر.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٦. يوم النحر (١٠ ذي الحجة) - أعمال العيد</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>١. الرمي (واجب):</strong> رمي جمرة العقبة الكبرى بـ ٧ حصيات. (للجميع).
+              </div>
+              <div class="p-2 bg-blue-900/20 wajib rounded border border-blue-500/30">
+                <strong>٢. الهدي (واجب):</strong> 
+                <span class="badge-tmt px-1 rounded text-[10px]">متمتع</span> 
+                <span class="badge-qr px-1 rounded text-[10px]">قارن</span> فقط.<br>
+                <span class="text-slate-400 text-xs">المفرد ليس عليه هدي.</span>
+              </div>
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>٣. الحلق/التقصير (واجب):</strong> للجميع. 
+                <span class="text-amber-300 font-bold block mt-1">🎉 التحلل الأصغر: (يحل كل شيء إلا النساء).</span>
+              </div>
+              <div class="p-2 bg-red-900/20 rukn rounded">
+                <strong>٤. طواف الإفاضة (ركن):</strong> طواف الحج الرئيسي (بالملابس العادية).
+              </div>
+              <div class="p-2 bg-red-900/20 rukn rounded border border-red-500/30">
+                <strong>٥. سعي الحج (ركن):</strong><br>
+                <span class="badge-tmt px-1 rounded text-[10px]">متمتع</span> يجب عليه السعي.<br>
+                <span class="badge-if px-1 rounded text-[10px]">مفرد</span>
+                <span class="badge-qr px-1 rounded text-[10px]">قارن</span> إن لم يسعيا مع طواف القدوم، وجب عليهما السعي الآن.
+                <span class="text-emerald-300 font-bold block mt-1">🎉 التحلل الأكبر: (يحل كل شيء).</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٧. أيام التشريق (١١، ١٢، ١٣)</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>المبيت بمنى (واجب):</strong> للجميع.
+              </div>
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>رمي الجمرات الثلاث (واجب):</strong> الصغرى، الوسطى، الكبرى (بعد الزوال). ٧ حصيات لكل جمرة.
+              </div>
+              <div class="p-2 bg-emerald-900/20 sunnah rounded">
+                <strong>الدعاء (سنة):</strong> الإطالة في الدعاء بعد الجمرة الصغرى والوسطى.
+              </div>
+              <div class="mt-2 text-xs text-slate-300 p-2 bg-slate-700/50 rounded">
+                * يجوز التعجل بالنزول من منى يوم ١٢ قبل الغروب، ويسقط مبيت ورمي يوم ١٣.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item relative mb-8 w-full clear-both group">
+        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
+        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
+          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
+            <h3 class="text-xl font-bold text-white mb-3">٨. الختام والرحيل</h3>
+            <div class="space-y-2 text-sm">
+              <div class="p-2 bg-blue-900/20 wajib rounded">
+                <strong>طواف الوداع (واجب):</strong> آخر عهد الحاج بمكة. ٧ أشواط حول الكعبة.
+              </div>
+              <div class="p-2 bg-slate-700/50 rounded text-red-300">
+                * يسقط طواف الوداع تماماً عن الحائض والنفساء تخفيفاً، ولا شيء عليهن.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
