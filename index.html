@@ -1,259 +1,2301 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>خريطة مناسك الحج الشاملة</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Tajawal', sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 24px;
-      width: 4px;
-      background: #334155;
-      border-radius: 2px;
-    }
-    @media (min-width: 768px) {
-      .timeline::before {
-        right: 50%;
-        transform: translateX(50%);
-      }
-      .timeline-item:nth-child(even) .timeline-content {
-        margin-right: 50%;
-        padding-right: 40px;
-        padding-left: 0;
-      }
-      .timeline-item:nth-child(odd) .timeline-content {
-        margin-left: 50%;
-        padding-left: 40px;
-        padding-right: 0;
-      }
-      .timeline-item:nth-child(even) .timeline-dot {
-        right: 50%;
-        transform: translate(50%, 0);
-      }
-      .timeline-item:nth-child(odd) .timeline-dot {
-        right: 50%;
-        transform: translate(50%, 0);
-      }
-    }
-    .rukn { border-right: 4px solid #ef4444; }
-    .wajib { border-right: 4px solid #3b82f6; }
-    .sunnah { border-right: 4px solid #10b981; }
-    
-    .badge-tmt { background: #f59e0b; color: #000; }
-    .badge-if { background: #8b5cf6; color: #fff; }
-    .badge-qr { background: #ec4899; color: #fff; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدليل التفاعلي الشامل لمناسك الحج والعمرة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300..900&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-10">
-      <h1 class="text-3xl md:text-4xl font-extrabold text-amber-400 mb-4">🗺️ الخريطة الشاملة لمناسك الحج</h1>
-      <p class="text-slate-300 mb-6">دليل مرئي يجمع الأركان، الواجبات، والسنن، ويوضح الفرق بين الإفراد والقران والتمتع.</p>
-      
-      <div class="flex flex-wrap justify-center gap-4 text-sm font-bold">
-        <div class="px-4 py-2 bg-red-900/40 border border-red-500 text-red-200 rounded-lg shadow-sm">🟥 ركن (لا يصح الحج بدونه)</div>
-        <div class="px-4 py-2 bg-blue-900/40 border border-blue-500 text-blue-200 rounded-lg shadow-sm">🟦 واجب (يُجبر بدم/ذبح إن تُرِك)</div>
-        <div class="px-4 py-2 bg-emerald-900/40 border border-emerald-500 text-emerald-200 rounded-lg shadow-sm">🟩 سنة (يُثاب فاعلها ولا يأثم تاركها)</div>
+<div id="progress-bar"></div>
+
+<header class="site-header">
+  <div class="nav-inner container-wide">
+    <a href="#" class="logo">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+        <rect width="40" height="40" rx="10" fill="var(--color-primary)"/>
+        <path d="M20 7 C14 7 9 12 9 18 C9 22 11 25.5 14 27.5 L14 31 C14 31.6 14.4 32 15 32 L25 32 C25.6 32 26 31.6 26 31 L26 27.5 C29 25.5 31 22 31 18 C31 12 26 7 20 7Z" fill="white" opacity=".9"/>
+        <path d="M17 32 L23 32" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
+        <path d="M16 34 L24 34" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+        <circle cx="20" cy="18" r="4" fill="var(--color-primary)"/>
+        <path d="M20 6 L20 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M31 14 L33 13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9 14 L7 13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-text">
+        دليل الحج والعمرة
+        <span>الدليل التفاعلي الشامل</span>
       </div>
-      
-      <div class="flex flex-wrap justify-center gap-3 mt-4 text-xs font-bold">
-        <span class="px-3 py-1 badge-tmt rounded-full">المتمتع</span>
-        <span class="px-3 py-1 badge-if rounded-full">المفرد</span>
-        <span class="px-3 py-1 badge-qr rounded-full">القارن</span>
-      </div>
-    </div>
-
-    <div class="relative timeline max-w-4xl mx-auto">
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">١. الإحرام من الميقات</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-red-900/20 rukn rounded">
-                <strong>النية (ركن):</strong> الدخول في النسك.
-              </div>
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>المكان (واجب):</strong> الإحرام من الميقات المحدد.
-              </div>
-              <div class="p-2 bg-emerald-900/20 sunnah rounded">
-                <strong>السنن:</strong> الاغتسال، التطيب (للرجل في بدنه)، صلاة ركعتين، التلبية.
-              </div>
-              <div class="mt-3 pt-3 border-t border-slate-700">
-                <div class="mb-1"><span class="badge-tmt px-2 py-0.5 rounded text-xs">المتمتع</span> ينوي: لبيك عمرة.</div>
-                <div class="mb-1"><span class="badge-if px-2 py-0.5 rounded text-xs">المفرد</span> ينوي: لبيك حجاً.</div>
-                <div><span class="badge-qr px-2 py-0.5 rounded text-xs">القارن</span> ينوي: لبيك عمرة وحجاً.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٢. الوصول لمكة (أول الأعمال)</h3>
-            <div class="space-y-3 text-sm">
-              <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600">
-                <span class="badge-tmt px-2 py-0.5 rounded text-xs mb-2 inline-block">المتمتع</span><br>
-                يؤدي عمرة كاملة: <span class="text-red-400 font-bold">طواف العمرة (ركن)</span> + <span class="text-red-400 font-bold">سعي العمرة (ركن)</span> + <span class="text-blue-400 font-bold">الحلق/التقصير (واجب)</span>.<br>
-                <strong class="text-emerald-400">النتيجة:</strong> يتحلل تماماً ويلبس ثيابه العادية حتى يوم ٨ ذي الحجة.
-              </div>
-              <div class="p-3 bg-slate-700/50 rounded-lg border border-slate-600">
-                <span class="badge-if px-2 py-0.5 rounded text-xs mb-2 inline-block">المفرد</span>
-                <span class="badge-qr px-2 py-0.5 rounded text-xs mb-2 inline-block">القارن</span><br>
-                يؤديان <span class="text-emerald-400 font-bold">طواف القدوم (سنة)</span>، ثم يجوز لهما تقديم <span class="text-red-400 font-bold">سعي الحج (ركن)</span> الآن.<br>
-                <strong class="text-red-400">النتيجة:</strong> يبقيان بملابس الإحرام ولا يتحللان أبداً حتى يوم العيد.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٣. يوم التروية (٨ ذي الحجة)</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-red-900/20 rukn rounded mb-2">
-                <span class="badge-tmt px-2 py-0.5 rounded text-xs">المتمتع</span> <strong class="text-red-400">الإحرام بالحج (ركن):</strong> يحرم من مكانه بمكة.
-              </div>
-              <div class="p-2 bg-emerald-900/20 sunnah rounded">
-                <strong>الذهاب لمنى (سنة):</strong> للجميع. المبيت بمنى ليلة عرفة، وصلاة الظهر والعصر والمغرب والعشاء والفجر بها قصراً بلا جمع.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-red-500 border-4 border-slate-900 z-10 shadow-[0_0_15px_rgba(239,68,68,0.8)]"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-red-900/50 shadow-[0_0_15px_rgba(239,68,68,0.15)] hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٤. يوم عرفة (٩ ذي الحجة)</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-red-900/40 rukn rounded border border-red-500/50 text-red-100">
-                <strong>الوقوف بعرفة (الركن الأعظم):</strong> للجميع. يبدأ من الزوال (الظهر) ويستمر حتى غروب الشمس. من فاته عرفة فاته الحج.
-              </div>
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>البقاء للغروب (واجب):</strong> لمن وقف نهاراً يجب أن يمد وقوفه حتى تغرب الشمس.
-              </div>
-              <div class="p-2 bg-emerald-900/20 sunnah rounded">
-                <strong>السنن:</strong> جمع الظهر والعصر تقديماً، الإكثار من الدعاء والذكر مستقبل القبلة.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٥. ليلة العيد (مزدلفة)</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>المبيت بمزدلفة (واجب):</strong> للجميع. الإفاضة من عرفة بهدوء، وصلاة المغرب والعشاء جمع تأخير. المبيت حتى الفجر (ويجوز للضعفاء الدفع بعد منتصف الليل).
-              </div>
-              <div class="p-2 bg-emerald-900/20 sunnah rounded">
-                <strong>السنن:</strong> لقط ٧ حصيات لرمي جمرة العقبة، الوقوف عند المشعر الحرام للدعاء بعد الفجر.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٦. يوم النحر (١٠ ذي الحجة) - أعمال العيد</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>١. الرمي (واجب):</strong> رمي جمرة العقبة الكبرى بـ ٧ حصيات. (للجميع).
-              </div>
-              <div class="p-2 bg-blue-900/20 wajib rounded border border-blue-500/30">
-                <strong>٢. الهدي (واجب):</strong> 
-                <span class="badge-tmt px-1 rounded text-[10px]">متمتع</span> 
-                <span class="badge-qr px-1 rounded text-[10px]">قارن</span> فقط.<br>
-                <span class="text-slate-400 text-xs">المفرد ليس عليه هدي.</span>
-              </div>
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>٣. الحلق/التقصير (واجب):</strong> للجميع. 
-                <span class="text-amber-300 font-bold block mt-1">🎉 التحلل الأصغر: (يحل كل شيء إلا النساء).</span>
-              </div>
-              <div class="p-2 bg-red-900/20 rukn rounded">
-                <strong>٤. طواف الإفاضة (ركن):</strong> طواف الحج الرئيسي (بالملابس العادية).
-              </div>
-              <div class="p-2 bg-red-900/20 rukn rounded border border-red-500/30">
-                <strong>٥. سعي الحج (ركن):</strong><br>
-                <span class="badge-tmt px-1 rounded text-[10px]">متمتع</span> يجب عليه السعي.<br>
-                <span class="badge-if px-1 rounded text-[10px]">مفرد</span>
-                <span class="badge-qr px-1 rounded text-[10px]">قارن</span> إن لم يسعيا مع طواف القدوم، وجب عليهما السعي الآن.
-                <span class="text-emerald-300 font-bold block mt-1">🎉 التحلل الأكبر: (يحل كل شيء).</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٧. أيام التشريق (١١، ١٢، ١٣)</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>المبيت بمنى (واجب):</strong> للجميع.
-              </div>
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>رمي الجمرات الثلاث (واجب):</strong> الصغرى، الوسطى، الكبرى (بعد الزوال). ٧ حصيات لكل جمرة.
-              </div>
-              <div class="p-2 bg-emerald-900/20 sunnah rounded">
-                <strong>الدعاء (سنة):</strong> الإطالة في الدعاء بعد الجمرة الصغرى والوسطى.
-              </div>
-              <div class="mt-2 text-xs text-slate-300 p-2 bg-slate-700/50 rounded">
-                * يجوز التعجل بالنزول من منى يوم ١٢ قبل الغروب، ويسقط مبيت ورمي يوم ١٣.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item relative mb-8 w-full clear-both group">
-        <div class="timeline-dot absolute right-4 md:right-auto top-2 w-5 h-5 rounded-full bg-amber-400 border-4 border-slate-900 z-10"></div>
-        <div class="timeline-content relative pl-0 pr-12 md:px-0 w-full md:w-1/2 float-right md:float-none">
-          <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg hover:-translate-y-1 transition-transform">
-            <h3 class="text-xl font-bold text-white mb-3">٨. الختام والرحيل</h3>
-            <div class="space-y-2 text-sm">
-              <div class="p-2 bg-blue-900/20 wajib rounded">
-                <strong>طواف الوداع (واجب):</strong> آخر عهد الحاج بمكة. ٧ أشواط حول الكعبة.
-              </div>
-              <div class="p-2 bg-slate-700/50 rounded text-red-300">
-                * يسقط طواف الوداع تماماً عن الحائض والنفساء تخفيفاً، ولا شيء عليهن.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    </a>
+    <nav class="nav-links">
+      <a href="#tips" class="nav-link">النصائح والأركان</a>
+      <a href="#umrah-section" class="nav-link">العمرة والمحظورات</a>
+      <a href="#types" class="nav-link">أنواع النسك (الحج)</a>
+      <a href="#extra-info" class="nav-link">إضافات وفتاوى</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-btn" data-theme-toggle aria-label="تبديل المظهر">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </div>
+</header>
 
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      دليل متكامل للحاج والمعتمر
+    </div>
+    <h1>الدليل التفاعلي الشامل<br>لمناسك الحج والعمرة</h1>
+    <p>خريطة زمنية تفصيلية، إرشادات العمرة، محظورات الإحرام، وفتاوى شرعية</p>
+  <div class="hero-ctas">
+  <a href="#types" class="btn btn-primary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,12 19,12"/><polyline points="12,5 19,12 12,19"/></svg>
+    ابدأ خريطة الحج
+  </a>
+  <button onclick="openExternalGuide('https://umrasteps.vercel.app/')" class="btn btn-ghost">🕋 دليل العمرة</button>
+  <button onclick="openExternalGuide('https://hajjsteps.vercel.app/')" class="btn btn-ghost">🚶 دليل الحج</button>
+  <button onclick="openExternalGuide('https://tawafall.vercel.app/')" class="btn btn-ghost">🔄 دليل الطواف</button>
+  <button onclick="openExternalGuide('https://sa3eall.vercel.app/')" class="btn btn-ghost">🚶‍♂️ دليل السعي</button>
+  <button onclick="openExternalGuide('https://hajjtypes.vercel.app/')" class="btn btn-ghost">📑 أنواع الحج تفاعلي</button>
+</div>
+  
+</section>
+<div style="text-align: center; margin-bottom: 2rem;">
+    <div class="inner-slide" style="display: inline-block; width: auto; max-width: 100%;">
+        <img src="https://i.postimg.cc/Hn6B5P6X/Gemini-Generated-Image-b7n0tzb7n0tzb7n0.png" alt="بُشرى النَّبي ﷺ" style="max-width: 100%; height: auto; display: block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px;">
+    </div>
+</div>
+
+<section class="section" id="virtues" style="background:var(--color-surface-offset-2)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">بُشرى النَّبي ﷺ</div>
+      <h2 class="section-title">فضائل الحج والعمرة</h2>
+      <p class="section-desc">أحاديث نبوية شريفة في فضل قصد بيت الله الحرام</p>
+    </div>
+    
+    <div class="tips-grid fade-in">
+      <div class="tip-card">
+        <div class="tip-icon">✨</div>
+        <div class="tip-title">أجر الحج والعمرة معًا</div>
+        <p class="tip-desc">«الْعُمْرَةُ إِلَى الْعُمْرَةِ كَفَّارَةٌ لِمَا بَيْنَهُمَا، وَالْحَجُّ الْمَبْرُورُ لَيْسَ لَهُ جَزَاءٌ إِلَّا الْجَنَّةُ».</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">⚪</div>
+        <div class="tip-title">غفران الذنوب</div>
+        <p class="tip-desc">«مَنْ حَجَّ لِلَّهِ فَلَمْ يَرْفُثْ وَلَمْ يَفْسُقْ، رَجَعَ كَيَوْمِ وَلَدَتْهُ أُمُّهُ».</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🤲</div>
+        <div class="tip-title">استجابة الدعاء</div>
+        <p class="tip-desc">«الْحُجَّاجُ وَالْعُمَّارُ وَفْدُ اللَّهِ، إِنْ دَعَوْهُ أَجَابَهُمْ، وَإِنِ اسْتَغْفَرُوهُ غَفَرَ لَهُمْ».</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💰</div>
+        <div class="tip-title">فضل النفقة عليهما</div>
+        <p class="tip-desc">«النَّفَقَةُ فِي الْحَجِّ كَالنَّفَقَةِ فِي سَبِيلِ اللَّهِ، الدِّرْهَمُ بِسَبْعِمِائَةِ ضِعْفٍ».</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" id="umrah-section" style="background: var(--color-bg)">
+    <div class="container">
+        <div class="section-header fade-in">
+            <div class="section-eyebrow">قبل البدء</div>
+            <h2 class="section-title">نصائح وتوجيهات هامة والأركان</h2>
+            <p class="section-desc">استعداد روحي وجسدي وعلمي قبل الشروع في أداء المناسك</p>
+        </div>
+        
+        <div id="umrah-container"></div>
+    </div>
+</section>
+
+<section class="section" id="prohibitions-section" style="background: #fffafa;">
+    <div class="container-wide">
+        <div class="section-header fade-in container" style="margin-bottom: var(--space-6);">
+            <div class="section-eyebrow" style="color: #dc2626;">احذر الوقوع فيها</div>
+            <h2 class="section-title" style="color: #b91c1c;">محظورات الإحرام</h2>
+            <p class="section-desc">دليل كامل لما يجب تجنبه تماماً أثناء فترة الإحرام.</p>
+        </div>
+        <div id="prohibitions-slider" class="hajj-grid" style="display: flex; gap: 20px; overflow-x: auto; padding: 20px; scroll-snap-type: x mandatory;">
+            </div>
+    </div>
+</section>
+
+
+<section class="section" id="permitted-section" style="background: #f5fff6;">
+    <div class="container-wide">
+        <div class="section-header fade-in container" style="margin-bottom: var(--space-6);">
+            <div class="section-eyebrow" style="color: #16a34a;">تيسير الشريعة</div>
+            <h2 class="section-title" style="color: #15803d;">مباحات الإحرام</h2>
+            <p class="section-desc">أمور رخص بها الشرع ولا تؤثر على صحة الإحرام.</p>
+        </div>
+        <div id="permitted-slider" class="hajj-grid" style="display: flex; gap: 20px; overflow-x: auto; padding: 20px; scroll-snap-type: x mandatory;">
+            </div>
+    </div>
+</section>
+<section class="section" id="types" style="background:var(--color-surface-offset)">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">خريطة الحج</div>
+      <h2 class="section-title">أنواع النسك والخريطة الزمنية</h2>
+      <p class="section-desc">حدد نوع النسك ليتم عرض كافة تفاصيله والخريطة الزمنية بالساعات والصلوات المخصصة له.</p>
+    </div>
+    
+    <div class="tabs-wrapper fade-in">
+      <div class="tabs-header" id="tabs-header">
+        <button class="tab-btn active" onclick="renderNusk('umrah_full', this)">مناسك العمرة</button>
+        <button class="tab-btn" onclick="renderNusk('tamattu', this)">حج التمتع</button>
+        <button class="tab-btn" onclick="renderNusk('qiran', this)">حج القران</button>
+        <button class="tab-btn" onclick="renderNusk('ifrad', this)">حج الإفراد</button>
+      </div>
+      
+      <div id="nusk-container">
+        <div style="text-align: center; padding: 40px; color: var(--color-text-muted);">جاري تحميل المناسك...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="extra-info">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-eyebrow">إضافات هامة</div>
+      <h2 class="section-title">موسوعة الأحكام، الأدعية وزيارة المدينة</h2>
+    </div>
+    <div class="extra-content-grid fade-in" id="extra-container">
+      </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>الدليل التفاعلي الشامل لمناسك الحج والعمرة &nbsp;•&nbsp; <a href="#tips">الأعلى</a></p>
+    <p style="margin-top:var(--space-2)">يُنصح بمراجعة العلماء وأهل الفتوى لكل مسألة تخص مناسككم</p>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="mediaModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3 id="modalTitle">إضافة وسائط توضيحية للمنسك</h3>
+    <label>رابط الصورة (لعرضها داخل المنسك):</label>
+    <input type="url" id="modalImg" placeholder="https://example.com/image.jpg" dir="ltr">
+    <label style="margin-top: 15px;">رابط خارجي (فيديو/مقال للتفاصيل):</label>
+    <input type="url" id="modalLink" placeholder="https://example.com/guide" dir="ltr">
+    <div class="modal-actions" style="margin-top: 20px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('mediaModal')">إلغاء</button>
+      <button class="btn btn-primary btn-sm" onclick="saveMedia()">حفظ وعرض</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="tawafModal" role="dialog" aria-modal="true">
+  <div class="modal modal-wide">
+    <h3>الدليل التفاعلي للطواف بالكعبة</h3>
+    <ul class="modal-content-list">
+      <li><strong>الشروط:</strong> الطهارة والوضوء، وستر العورة وضبط ملابس الإحرام حتى لا تنكشف.</li>
+      <li><strong>نقطة البدء:</strong> الحجر الأسود.</li>
+      <li><strong>الاستعداد (للرجال فقط):</strong> الاضطباع: جعل وسط الرداء تحت الإبط الأيمن وطرفيه على الكتف الأيسر.</li>
+      <li><strong>النية:</strong> استقبال الحجر الأسود بالوجه والصدر، رفع اليدين كالتكبير للصلاة، ونية الطواف.</li>
+      <li><strong>دعاء البدء:</strong> التهليل والتكبير وقول: 'اللهم إيمانًا بك، وتصديقًا بكتابك، ووفاءً بعهدك'.</li>
+      <li><strong>الأشواط من ١ إلى ٣:</strong> طواف حول الكعبة (على يسارك). يسن 'الرمل' للرجال (إسراع المشي). استلام الحجر مع التكبير.<br><strong style="color:var(--color-primary);">بين الركن اليماني والحجر:</strong> 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ'.</li>
+      <li><strong>الأشواط من ٤ إلى ٧:</strong> المشي العادي مع بقاء الاضطباع للرجال. الإكثار من الدعاء الخاشع.</li>
+      <li><strong>بعد الطواف:</strong> صلاة ركعتين خلف مقام إبراهيم، الدعاء عند الملتزم، الشرب من ماء زمزم والتضلع منه والدعاء بما تحب.</li>
+    </ul>
+    <div class="modal-actions"><button class="btn btn-primary btn-sm" onclick="closeModal('tawafModal')">إغلاق الدليل</button></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="saiModal" role="dialog" aria-modal="true">
+  <div class="modal modal-wide">
+    <h3>الدليل التفاعلي للسعي بين الصفا والمروة</h3>
+    <ul class="modal-content-list">
+      <li><strong>الشرط:</strong> أن يكون بعد طواف صحيح (سبعة أشواط). لا تشترط الطهارة للسعي.</li>
+      <li><strong>البدء من الصفا:</strong> الصعود، استقبال الكعبة، التكبير والتهليل. القول: "إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ. نبدأ بما بدأ الله به". <br><strong style="color:var(--color-primary);">الدعاء:</strong> "لا إله إلا الله وحده لا شريك له... (٣ مرات)".</li>
+      <li><strong>أثناء المشي:</strong> النزول والمشي باتجاه المروة. بين الميلين الأخضرين: يسن للرجال فقط 'الهرولة'.<br><strong style="color:var(--color-primary);">الدعاء:</strong> "اللهم اغفر وارحم واعف عما تعلم، وأنت الأعز الأكرم...".</li>
+      <li><strong>عند المروة:</strong> الوقوف واستقبال الكعبة، التكبير والدعاء تماماً كما فُعل على الصفا.</li>
+      <li><strong>طريقة الحساب:</strong> الذهاب من الصفا للمروة يُحسب شوطاً، والعودة للمروة للصفا شوطاً ثانياً، حتى إتمام ٧ أشواط تنتهي بالمروة.</li>
+    </ul>
+    <div class="modal-actions"><button class="btn btn-primary btn-sm" onclick="closeModal('saiModal')">إغلاق الدليل</button></div>
+  </div>
+</div>
+<div id="guideFrameContainer" style="display:none; position:fixed; inset:0; z-index:9999; background:var(--color-bg);">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 20px; background:var(--color-surface); border-bottom:1px solid var(--color-divider);">
+        <span id="frameTitle" style="font-weight:bold; font-family:var(--font-display);">جاري تحميل الدليل...</span>
+        <button onclick="closeExternalGuide()" class="btn btn-primary btn-sm" style="padding:5px 15px;">إغلاق العرض ✕</button>
+    </div>
+    <iframe id="externalIframe" src="" style="width:100%; height:calc(100% - 50px); border:none;"></iframe>
+</div>
+<div class="zoom-backdrop" id="imageZoomModal" onclick="closeImageModal()">
+    <button class="zoom-close-btn" onclick="closeImageModal()">✕</button>
+    <img id="zoomedImage" src="" onclick="event.stopPropagation()" alt="تكبير الصورة">
+</div>
+</div>
+<script>
+// 1. الداتا الشاملة والمحدثة (محظورات كاملة + صور حقيقية)
+const hajjMasterData = {
+  "categories": [
+    {
+      "id": "ihram_basics",
+      "name": "📖 باب الإحرام والمواقيت",
+      "description": "تعريف الإحرام وأنواع النسك والمواقيت التي حددها الشرع.",
+      "items": [
+        { 
+          "title": "تعريف الإحرام", 
+          "details": "لغةً: المنع والتحريم. اصطلاحاً: نية الدخول في النسك.", 
+          "conditions": "يُسمى إحراماً لأن المسلم يُحرم على نفسه بنيته ما كان مباحاً له كالنكاح والطيب.", 
+          "images": ["https://modo3.com/thumbs/fit630x300/83004/1556019522/%D8%AA%D8%B9%D8%B1%D9%8A%D9%81_%D8%A7%D9%84%D8%A5%D8%AD%D8%B1%D8%A7%D9%85.jpg"], 
+          "type": "أساسيات" 
+        },
+        { 
+          "title": "المواقيت الزمانية", 
+          "details": "الأشهر التي يصح فيها الإحرام بالحج.", 
+          "conditions": "وهي: شوال، ذو القعدة، وعشر من ذي الحجة.", 
+          "images": ["https://i.postimg.cc/hjFwPw5C/Gemini-Generated-Image-ir3408ir3408ir34.png"], 
+          "type": "مواقيت" 
+        },
+        { 
+          "title": "المواقيت المكانية", 
+          "details": "ذو الحليفة (المدينة)، الجحفة (الشام ومصر)، يلملم (اليمن)، قرن المنازل (نجد)، ذات عرق (العراق).", 
+          "conditions": "أهل مكة يحرمون للحج من مكة، وللعمرة من أدنى الحل (كالتنعيم والجعرانة).", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "مواقيت" 
+        },
+        { 
+          "title": "أنواع النسك (طرق الإحرام)", 
+          "details": "التمتع (عمرة ثم حج)، القران (عمرة وحج معاً)، الإفراد (حج فقط).", 
+          "conditions": "التمتع والقران يوجبان الهدي، أما الإفراد فليس عليه هدي.", 
+          "images": ["https://i.postimg.cc/C1sgySx4/Gemini-Generated-Image-tyagxutyagxutyag.png"], 
+          "type": "الحج" 
+        }
+      ]
+    },
+    {
+      "id": "pillars",
+      "name": "🕋 أركان الحج",
+      "description": "لا يصح الحج إلا بها، ومن فاته ركن بطل حجه.",
+      "items": [
+        { "title": "الإحرام", "details": "نِيَّةُ الدُّخُولِ فِي النُّسُكِ", "conditions": "الإسلام، العقل، والنية الصادقة من القلب.", "images": ["https://i.postimg.cc/bJVjYL1d/Gemini-Generated-Image-f9vgi0f9vgi0f9vg.png"], "type": "ركن" },
+        { "title": "الوقوف بعرفة", "details": "أهم أركان الحج (الْحَجُّ عَرَفَةُ)", "conditions": "التواجد في حدود عرفة من زوال شمس يوم 9 لطلوع فجر يوم 10.", "images": ["https://media.gemini.media/img/large/2018/8/19/2018_8_19_22_51_42_68.jpg"], "type": "ركن" },
+        { "title": "طواف الإفاضة", "details": "طواف الزيارة بعد التحلل الأصغر", "conditions": "ستر العورة، الطهارة من الحدث، وأن يكون بعد منتصف ليلة النحر.", "images": ["https://cdn.al-ain.com/images/2021/7/01/173-230547-tawaf-alifada-how-do-pilgrims-perform-it_700x400.jpg"], "type": "ركن" },
+        { "title": "السعي بين الصفا والمروة", "details": "سعي الحج بعد طواف الإفاضة", "conditions": "أن يكون سبعة أشواط، والبدء بالصفا والختم بالمروة بعد طواف صحيح.", "images": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP-CWreB8zOGOPkWQbZrG1pw0iCYAP_MA5IA&s"], "type": "ركن" }
+      ]
+    },
+{
+      "id": "obligations",
+      "name": "📌 واجبات الحج",
+      "description": "من تركها صح حجه ولزمه دم (ذبح شاة لتجبير النقص)، أما الأركان فلا يجبرها الدم.",
+      "items": [
+        { 
+          "title": "الإحرام من الميقات المكاني", 
+          "details": "عقد النية والدخول في النسك قبل تجاوز الميقات الذي حدده الشرع.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> قول النبي ﷺ حين حدد المواقيت: <em>«هُنَّ لَهُنَّ، وَلِمَنْ أَتَى عَلَيْهِنَّ مِنْ غَيْرِهِنَّ مِمَّنْ أَرَادَ الْحَجَّ وَالْعُمْرَةَ»</em> (متفق عليه).<br>✈️ <strong>جواً وبحراً:</strong> يُحرم عند محاذاة الميقات (الكابتن يُنبه).<br>📍 <strong>تنبيه:</strong> من تجاوز الميقات (مثل النزول بجدة) بدون نية إحرام، يلزمه العودة إليه أو ذبح فدية (دم).", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "البقاء بعرفة إلى غروب الشمس", 
+          "details": "من وقف بعرفة نهاراً، يجب عليه ألا ينصرف منها حتى يغيب قرص الشمس.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> فعل النبي ﷺ، حيث وقف نهاراً ولم يدفع من عرفة إلا بعد أن غابت الشمس وسقط القرص، وقال: <em>«لتأخذوا عني مناسككم»</em>.<br>📍 <strong>تنبيه:</strong> من انصرف قبل الغروب ولم يرجع ليلاً، صح حجه ولكن لزمه دم (فدية) لتركه هذا الواجب.", 
+          "images": ["https://media.gemini.media/img/large/2018/8/19/2018_8_19_22_51_42_68.jpg"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "المبيت بمزدلفة ليلة النحر", 
+          "details": "البقاء في مزدلفة بعد الإفاضة من عرفات حتى ما بعد منتصف الليل.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> قوله تعالى: <em>{فَإِذَا أَفَضْتُم مِّنْ عَرَفَاتٍ فَاذْكُرُوا اللَّهَ عِندَ الْمَشْعَرِ الْحَرَامِ}</em>. وأمر النبي ﷺ بالبقاء فيها، ورخص للضعفاء والنساء بالانصراف بعد منتصف الليل.<br>📍 <strong>تنبيه:</strong> يسقط هذا الواجب في حال الزحام الشديد الذي يمنع دخولها أصلاً.", 
+          "images": ["https://www.dar-alifta.org/images/Fatwa/7aj1-06-202301.jpg"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "المبيت بمنى ليالي التشريق", 
+          "details": "قضاء معظم الليل في مشعر منى ليلة ١١ و ١٢ (وليلة ١٣ لغير المتعجل).", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> أن النبي ﷺ رخص للرعاة والسقاة في ترك المبيت بمنى، والرخصة لا تكون إلا لترك شيء (واجب).<br>📍 <strong>تنبيه:</strong> من لم يجد مكاناً في منى، أو كان خيمته خارج حدودها (بمزدلفة مثلاً) لاتصال الخيام، سقط عنه الواجب ولا فدية عليه للضرورة.", 
+          "images": ["https://www.dar-alifta.org/images/Fatwa/7aj1-06-202301.jpg"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "رمي الجمرات", 
+          "details": "رمي جمرة العقبة الكبرى يوم العيد، ورمي الجمرات الثلاث في أيام التشريق.", 
+          "target": "الجميع (ويجوز التوكيل للعاجز)",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> قوله ﷺ: <em>«إِنَّمَا جُعِلَ الطَّوَافُ بِالْبَيْتِ، وَبَيْنَ الصَّفَا وَالْمَرْوَةِ، وَرَمْيُ الْجِمَارِ لإِقَامَةِ ذِكْرِ اللَّهِ»</em> (رواه أبو داود).<br>📍 <strong>الضابط:</strong> الترتيب إلزامي (صغرى، وسطى، كبرى) بـ ٧ حصيات لكل جمرة، تقع داخل الحوض.", 
+          "images": ["https://i.postimg.cc/7ZV5q8tn/Gemini-Generated-Image-6okq436okq436okq.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "الحلق أو التقصير", 
+          "details": "إزالة شعر الرأس كعلامة على إتمام النسك والتحلل من الإحرام.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> قوله تعالى: <em>{مُحَلِّقِينَ رُءُوسَكُمْ وَمُقَصِّرِينَ لَا تَخَافُونَ}</em>، ودعا النبي ﷺ للمحلقين بالمغفرة ثلاثاً وللمقصرين مرة.<br>📍 <strong>الضابط:</strong> الحلق أو التقصير للرجل يعم الرأس كله، والمرأة تقص قدر 'أنملة' (عقلة إصبع) من أطراف شعرها.", 
+          "images": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ_V3ts_3L3lvld3ENIyr4JnY3xvQn7rtzFQ&s"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "طواف الوداع", 
+          "details": "طواف ٧ أشواط حول الكعبة، وهو آخر فعل قبل مغادرة مكة للعودة للوطن.", 
+          "target": "الجميع (يسقط عن الحائض والنفساء)",
+          "conditions": "<strong>📖 الدليل الشرعي:</strong> أمر النبي ﷺ الحجاج قائلاً: <em>«لاَ يَنْفِرَنَّ أَحَدٌ حَتَّى يَكُونَ آخِرُ عَهْدِهِ بِالْبَيْتِ»</em> (رواه مسلم).<br>📍 <strong>تنبيه:</strong> رخص الشرع وخفف عن المرأة الحائض والنفساء، فيسقط عنها هذا الطواف، وتسافر مباشرة دون فدية.", 
+          "images": ["https://s3-eu-west-1.amazonaws.com/content.argaamnews.com/00413193-5f2b-4482-94d4-26db00d92ee6.jpg"], 
+          "type": "واجب" 
+        }
+      ]
+    },
+    {
+      "id": "ihram_sunnahs",
+      "name": "✨ سنن الإحرام ومستحباته التفصيلية",
+      "description": "أفعال يُستحب فعلها لزيادة الأجر اقتداءً بالنبي ﷺ.",
+      "items": [
+        { 
+          "title": "الاغتسال ونظافة الفطرة", 
+          "details": "تقليم الأظافر، قص الشارب، نتف الإبط،<br>حلق العانة، والاغتسال الكامل بنية السنّة.", 
+          "target": "للرجال والنساء",
+          "conditions": "يُسن التطيب في البدن واللحية قبل النية.<br><strong>للمرأة:</strong> تتنظف وتغتسل ولو كانت حائضاً،<br>بشرط تجنب الأطياب ذات الرائحة النفاذة.", 
+          "images": ["https://i.postimg.cc/d1SN7Vn4/Gemini-Generated-Image-fgsd6cfgsd6cfgsd.png"], 
+          "type": "سنة" 
+        },
+        { 
+          "title": "رداء وإزار الرجل (المخيط)", 
+          "details": "لبس قطعتين بيضاويتين (رداء وإزار)<br>غير مفصلتين على قدر أعضاء الجسم.", 
+          "target": "للرجال فقط",
+          "conditions": "مباح استخدام 'الكباسين' أو 'السوستة'<br>لتثبيت الإزار، ولا يعتبر مخيطاً ممنوعاً.<br>الممنوع: ما فُصل على العضو كالقميص والسروال.", 
+          "images": ["https://i.postimg.cc/0NLR3Z1w/Gemini-Generated-Image-tc3kutc3kutc3kut-(1).png"], 
+          "type": "سنة" 
+        },
+        { 
+          "title": "لباس المرأة وضوابطه", 
+          "details": "تحرم المرأة في ملابسها العادية الساترة<br>التي لا زينة فيها ولا تشبه الرجال.", 
+          "target": "للنساء فقط",
+          "conditions": "يجب أن تكون الملابس فضفاضة لا تصف البدن.<br>يُمنع لبس 'النقاب' أو 'القفازين' تماماً.<br>تستر وجهها بـ 'سدل' الخمار عند وجود أجانب.", 
+          "images": ["https://i.postimg.cc/Pxtc07Fv/Gemini-Generated-Image-47sufh47sufh47su-(1).png"], 
+
+          "type": "واجب" 
+
+        },
+        { 
+          "title": "نعل الإحرام (حذاء القدم)", 
+          "details": "لبس نعل (صندل أو كروكس مفتوح العقب)<br>يظهر منه 'الكعبان' وأصابع القدمين.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الكعبان:</strong> العظمتان البارزتان بالجانبين.<br><strong>للنساء:</strong> يباح لبس الجوارب (الشراب)<br>والحذاء المغلق المعتاد دون أي كراهة.", 
+          "images": ["https://i.postimg.cc/6qRGxMP4/Gemini-Generated-Image-vrnpbtvrnpbtvrnp.png"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "الصلاة والاشتراط الشرعي", 
+          "details": "صلاة ركعتين (سنة الوضوء أو الإحرام)<br>ثم النطق بالنية والاشتراط باللسان.", 
+          "target": "للرجال والنساء",
+          "conditions": "تقول: (فإن حبسني حابس فمحلي حيث حبستني).<br>الفائدة: التحلل بلا فدية عند المرض أو الزحام<br>الذي يمنع الحاج من إتمام مناسكه.", 
+          "images": ["https://i.postimg.cc/GpWLnbnQ/Gemini-Generated-Image-e0dyye0dyye0dyye.png"], 
+          "type": "سنة" 
+        },
+        { 
+          "title": "التلبية والجهر (شعار الحج)", 
+          "details": "قول: (لبيك اللهم لبيك، لبيك لا شريك لك...)<br>وهي إعلان الاستجابة لنداء الله عز وجل.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الرجل:</strong> يسن له رفع الصوت بالتلبية جهاراً.<br><strong>المرأة:</strong> تلبي سراً بحيث تسمع نفسها فقط.<br>تستمر التلبية حتى رؤية الكعبة أو رمي الجمرة.", 
+
+          "images": ["https://i.postimg.cc/yYpzz7Fs/Gemini-Generated-Image-7rrjyh7rrjyh7rrj.png"], 
+
+          "type": "سنة" 
+
+        },
+        { 
+          "title": "الاضطباع والهرولة (للطواف)", 
+          "details": "كشف الكتف الأيمن (الاضطباع) والهرولة<br>(الرمل) في الأشواط الثلاثة الأولى فقط.", 
+          "target": "للرجال فقط",
+          "conditions": "الاضطباع يكون في طواف القدوم أو العمرة.<br>يجب تغطية الكتفين فور الانتهاء أو عند الصلاة.<br>النساء: يمشين مشياً عادياً وبستر كامل للبدن.", 
+          "images": ["https://img.youm7.com/ArticleImgs/2023/6/25/37658-%D8%A7%D9%84%D8%A7%D8%B6%D8%B7%D8%A8%D8%A7%D8%B9-2.jpg"], 
+          "type": "سنة" 
+        }
+      ]
+    },
+ {
+      "id": "travel_and_miqat",
+      "name": "✈️ مسار الرحلة وتحديد المواقيت",
+      "description": "دليل شامل للمواقيت المكانية لجميع الحجاج والمعتمرين (الداخل والخارج)<br>وكيفية الإحرام بالطائرة أو عند المرور بجدة.",
+      "items": [
+        { 
+          "title": "أهل المدينة المنورة (ومن مر بها)", 
+          "details": "الميقات: 'ذو الحليفة' (آبار علي).<br>• هو أبعد المواقيت عن مكة.<br>• يُحرم منه أهل المدينة وكل من مر بها في طريقه لمكة.", 
+          "target": "للرجال والنساء",
+          "conditions": "يُسن لبس ملابس الإحرام في الفندق بالمدينة (للراحة).<br>وتؤجل نية الإحرام والتلبية حتى تصل إلى الميقات (آبار علي) وتتحرك الحافلة باتجاه مكة.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "أهل الشام ومصر والمغرب (وأوروبا)", 
+          "details": "الميقات: 'الجحفة' (ويُحرم الناس الآن من 'رابغ' المحاذية لها).<br>• يخص القادمين من مصر، الشام، المغرب، أوروبا، وأمريكا.", 
+          "target": "للرجال والنساء",
+          "conditions": "📍 تنبيه لمسافري الجو: الطائرة تحاذي الميقات قبل الهبوط في مطار جدة.<br>يجب عقد النية والتلبية في الطائرة فور إعلان الكابتن، ولا يجوز تأخيرها حتى الهبوط بجدة.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "أهل نجد والشرقية (الدمام والرياض)", 
+          "details": "الميقات: 'قرن المنازل' (السيل الكبير أو وادي محرم).<br>• يخص أهل الرياض، الدمام، القصيم، الطائف، ومن مر بطريقهم.", 
+          "target": "للرجال والنساء",
+          "conditions": "ينبه كابتن الطائرة قبل محاذاة الميقات بـ 15 دقيقة تقريباً.<br>يجب عقد النية فور التنبيه بمحاذاة الميقات في الجو.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "أهل اليمن وجنوب المملكة", 
+          "details": "الميقات: 'يلملم' (السعدية).<br>• يخص القادمين من اليمن وجنوب السعودية (مثل جازان وعسير).", 
+          "target": "للرجال والنساء",
+          "conditions": "من كان طريقه يمر بهذا الميقات (براً أو جواً) وجب عليه الإحرام عند محاذاته ولا يتجاوزه بغير نية.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "أهل العراق ومن في جهتهم", 
+          "details": "الميقات: 'ذات عرق' (الضريبة).<br>• يخص أهل العراق وإيران ومن يأتي من جهتهم شرقاً.", 
+          "target": "للرجال والنساء",
+          "conditions": "يُحرمون عند الوصول إليه براً أو عند محاذاته جواً.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "أهل مكة وجدة (دون المواقيت)", 
+          "details": "من كان سكنه داخل مكة أو بين الميقات ومكة (مثل أهل جدة):<br>• <strong>للحج:</strong> يُحرمون من مكانهم (منازلهم أو فنادقهم).<br>• <strong>للعمرة (لأهل مكة فقط):</strong> يجب الخروج إلى 'أدنى الحل' (كالتنعيم/مسجد عائشة) للإحرام.", 
+          "target": "للرجال والنساء",
+          "conditions": "أهل جدة يُحرمون للعمرة والحج من بيوتهم في جدة مباشرة، ولا يذهبون إلى الميقات ولا إلى التنعيم، لأنهم (أهل داخل الميقات).", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "واجب" 
+        },
+        { 
+          "title": "حالة النزول في جدة (كترانزيت أو زيارة)", 
+          "details": "إذا كنت قادماً لجدة لعمل أو زيارة أولاً:<br>• إذا نويت العمرة من بلدك: أحرم في الجو قبل جدة.<br>• إذا لم تكن تنوي العمرة، ثم نشأت النية وأنت داخل جدة: تحرم من جدة.", 
+          "target": "للرجال والنساء",
+          "conditions": "📍 تنبيه هام: من تجاوز الميقات في الجو وهو 'ينوي' العمرة من الأساس، قاصداً جدة للإحرام منها فقد أخطأ، ويلزمه العودة للميقات براً أو ذبح 'فدية' (دم) لتجاوز الميقات بدون إحرام.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "تنبيه" 
+        },
+        { 
+          "title": "توقيت النية ولبس الإحرام بالطائرة", 
+          "details": "خطوات الإحرام الجوي:<br>• تغتسل في منزلك (بالدمام أو القاهرة مثلاً).<br>• ترتدي ملابس الإحرام في المطار أو داخل الطائرة قبل الميقات.<br>• تنطق بالنية (لبيك عمرة) فور إعلان الكابتن.", 
+          "target": "للرجال والنساء",
+          "conditions": "لا يشترط أداء صلاة ركعتين للإحرام إذا كنت في الطائرة.<br>يكفي عقد النية بالقلب والتلفظ باللسان، ثم البدء بالتلبية فوراً بصوت مسموع.", 
+          "images": ["https://i.postimg.cc/kgzK0d2p/Gemini-Generated-Image-62mmno62mmno62mm.png"], 
+          "type": "سنة" 
+        }
+      ]
+    },
+{
+      "id": "ihram_prohibitions",
+      "name": "🚫 محظورات الإحرام بالتفصيل",
+      "description": "الممنوعات التي يجب تجنبها فور عقد نية الإحرام.<br><strong>قاعدة عامة:</strong> الناسي والجاهل لا إثم عليهما ولا فدية،<br>أما العامد فتجب عليه الفدية، والمريض يفعله ويفدي.",
+      "items": [
+        { 
+          "title": "الرفث والفسوق والجدال", 
+          "details": "المعاصي والمشاحنات والجدال بالباطل.<br>والتحدث في أمور الجماع والشهوة.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>العامد:</strong> يأثم وينقص أجر حجه جداً.<br><strong>الناسي/الجاهل:</strong> لا إثم عليه ويستغفر.<br><strong>المريض:</strong> لا عذر في سوء الخلق.", 
+          "penalty": "يجب الاستغفار والتوبة النصوح فوراً،<br>ولا تجب فيه فدية مالية (دم) عند الجمهور.", 
+          "images": ["https://i.postimg.cc/7Y9tFXr2/Gemini-Generated-Image-iv0xwiiv0xwiiv0x.png"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "الجماع (مفسد الحج)", 
+          "details": "الجماع الكامل قبل التحلل الأول<br>(قبل رمي جمرة العقبة يوم العيد).", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>العامد:</strong> يفسد حجه وعليه بدنة والقضاء.<br><strong>الناسي/الجاهل:</strong> عند الجمهور يفسد الحج أيضاً<br>لعظم شأن هذا المحظور وغلظته.", 
+          "penalty": "يجب إتمام الحج الفاسد، وقضاؤه العام القادم،<br>مع ذبح 'بدنة' (جمل) وتوزيعه على الفقراء.", 
+          "images": ["https://cdn.alweb.com/thumbs/roknalmoslem/article/fit710x532/1/%D8%B4%D8%B1%D8%AD-%D9%85%D9%81%D8%B3%D8%AF%D8%A7%D8%AA-%D8%A7%D9%84%D8%AD%D8%AC.jpg"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "لباس القدم (للرجال فقط)", 
+          "details": "لبس الحذاء الساتر للعقب أو الكعبين<br>مثل 'الكنادر' أو الجوارب والشرابات.", 
+          "target": "للرجال فقط",
+          "conditions": "<strong>المريض:</strong> إذا احتاج للشراب لمرض يلبسه ويفدي.<br><strong>الناسي:</strong> يخلعه فور تذكره ولا شيء عليه.<br><strong>العامد:</strong> يلزمه الفدية فوراً.", 
+          "penalty": "فدية أذى (تخيير): صيام 3 أيام،<br>أو إطعام 6 مساكين، أو ذبح شاة.", 
+          "images": ["https://i.postimg.cc/6qRGxMP4/Gemini-Generated-Image-vrnpbtvrnpbtvrnp.png"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "إزالة الشعر والأظافر", 
+          "details": "حلق أو قص أو نتف شعر الرأس أو البدن،<br>أو تقليم أظافر اليدين والقدمين.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>المريض:</strong> إذا حلق لضرورة (عملية مثلاً) يفدي.<br><strong>الناسي:</strong> إذا قص ناسياً فلا شيء عليه.<br><strong>العامد:</strong> تجب عليه الفدية.", 
+          "penalty": "فدية أذى (تخيير): صيام 3 أيام،<br>أو إطعام 6 مساكين، أو ذبح شاة.", 
+          "images": ["https://i.postimg.cc/W48xrfrs/Gemini-Generated-Image-a9jooia9jooia9jo.png"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "استعمال الطيب والعطور", 
+          "details": "تعمد وضع العطور على البدن أو الثياب،<br>أو شمها بقصد التلذذ برائحتها.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الناسي:</strong> يغسل أثر الطيب فوراً ولا فدية.<br><strong>الجاهل:</strong> يعذر بجهله ويغسله فوراً.<br><strong>العامد:</strong> تجب عليه الفدية.", 
+          "penalty": "فدية أذى (تخيير): صيام 3 أيام،<br>أو إطعام 6 مساكين، أو ذبح شاة.", 
+          "images": ["https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRd7hjnOur12phpdnkwQRhCYOF4zim0QL-EH8lFMJJ7r874G7hT"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "المخيط وتغطية الرأس (للرجال)", 
+          "details": "لبس الثياب المفصلة كالبنطلون والقميص،<br>أو تغطية الرأس بملاصق كالطاقية.", 
+          "target": "للرجال فقط",
+          "conditions": "<strong>المضطر:</strong> من لم يجد إزاراً لبس السراويل.<br><strong>الناسي:</strong> يخلع المخيط فوراً ولا شيء عليه.<br><strong>العامد:</strong> يلزمه الفدية فوراً.", 
+          "penalty": "فدية أذى (تخيير): صيام 3 أيام،<br>أو إطعام 6 مساكين، أو ذبح شاة.", 
+          "images": ["https://i.postimg.cc/L8Xxw6ZV/d80e982d-b9a8-4426-ad5a-6150cd07c264.jpg"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "النقاب والقفازين (للنساء)", 
+          "details": "لبس النقاب المفصل للوجه أو القفازين.<br>(تستر وجهها بغير النقاب عند الأجانب).", 
+          "target": "للنساء فقط",
+          "conditions": "<strong>الناسي/الجاهل:</strong> تخلعه فوراً ولا شيء عليها.<br><strong>العامد:</strong> تأثم وتجب عليها الفدية.<br><strong>المريضة:</strong> لو احتاجت لستر يدها لمرض تفدي.", 
+          "penalty": "فدية أذى (تخيير): صيام 3 أيام،<br>أو إطعام 6 مساكين، أو ذبح شاة.", 
+          "images": ["https://i.postimg.cc/HxDDT7Q5/Gemini-Generated-Image-xxtk6lxxtk6lxxtk.png"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "عقد النكاح والخطبة", 
+          "details": "إيقاع عقد الزواج لنفسه أو لغيره،<br>أو التقدم لخطبة امرأة أثناء الإحرام.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>العامد:</strong> العقد باطل شرعاً ويأثم فاعله.<br><strong>الناسي/الجاهل:</strong> العقد باطل أيضاً عند الجمهور<br>ولكن لا إثم عليه لجهله.", 
+          "penalty": "لا فدية مالية فيه، ولكن يجب فسخ العقد<br>وإعادته بعد التحلل من الإحرام.", 
+          "images": ["https://i.postimg.cc/jdGhgQK4/Gemini-Generated-Image-rivgj3rivgj3rivg.png"], 
+          "type": "محظور" 
+        },
+        { 
+          "title": "قتل صيد البر", 
+          "details": "صيد الحيوانات البرية المأكولة أو الإعانة عليه.<br>(لا يشمل صيد البحر أو الدجاج والغنم).", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الناسي:</strong> يضمن الصيد بالفدية (بالمثل).<br><strong>الجاهل:</strong> يضمن الصيد بالفدية أيضاً.<br><strong>العامد:</strong> يأثم ويضمن الصيد بالفدية.", 
+          "penalty": "الجزاء بمثل ما قَتَل من النَّعَم،<br>يُذبح ويُوزع على مساكين الحرم الشريف.", 
+          "images": ["https://i.postimg.cc/9X1mYJPF/Gemini-Generated-Image-3uvvzi3uvvzi3uvv.png"], 
+          "type": "محظور" 
+        }
+      ]
+    },
+{
+      "id": "ihram_permitted",
+      "name": "✅ ما يباح للمحرم فعله (الرخص الشرعية)",
+      "description": "أمور رخص بها الشرع تيسيراً على العباد،<br>ولا تجب فيها فدية ولا تفسد الإحرام.",
+      "items": [
+        { 
+          "title": "تمشيط الشعر ونقضه", 
+          "details": "يجوز للمحرم تمشيط شعره ونقضه عند الحاجة،<br>ولا يضره ما يسقط منه بغير قصد.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> قوله ﷺ لعائشة وهي محرمة:<br>«انقضي رأسك وامتشطي، وأهلي بالحج».<br>(رواه البخاري ومسلم). وهذا إذن صريح بالتمشط.", 
+          "images": ["https://png.pngtree.com/png-vector/20230808/ourmid/pngtree-combing-hair-vector-png-image_6975607.png"], 
+          
+          "type": "مباح" 
+        },
+        { 
+          "title": "الاغتسال وغسل الرأس", 
+          "details": "يجوز للمحرم الاستحمام للتبرد أو النظافة،<br>وتبديل ملابس الإحرام بأخرى نظيفة.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> سُئل أبو أيوب الأنصاري:<br>كيف كان ﷺ يغسل رأسه وهو محرم؟<br>فأراهم بيديه: (أقبل بهما وأدبر). (رواه مسلم).", 
+          "images": ["https://static.vecteezy.com/system/resources/thumbnails/057/106/523/small/young-man-enjoying-a-refreshing-shower-with-soap-bubbles-in-a-minimalistic-flat-design-illustration-vector.jpg"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "نحر الهدي وذبح الأنعام", 
+          "details": "يجوز للمحرم ذبح الهدي والأغنام والدجاج،<br>وكل ما ليس بـ 'صيد بري' وحشي.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> «أن النبي ﷺ نحر بدنه بيده وهو محرم».<br>فالمحرم يذبح بهيمة الأنعام ويأكل منها،<br>وإنما الممنوع هو صيد البر (مثل الغزال).", 
+          "images": ["https://i.postimg.cc/J0jdKTgY/Gemini-Generated-Image-3uvvzi3uvvzi3uvvl.png"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "حك الجسد والعمل اليدوي", 
+          "details": "يجوز للمحرم حك جسده ورأسه برفق عند الحاجة،<br>وممارسة البيع والشراء والأعمال المباحة.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الفقه:</strong> سُئلت عائشة رضي الله عنها عن حك<br>المحرم جسده، فقالت: (نعم فليحككه وليشدد).<br>وكذلك التجارة مباحة لقوله: (ليس عليكم جناح أن تبتغوا فضلاً من ربكم).", 
+          "images": ["https://i.postimg.cc/m2yTgVDw/Gemini-Generated-Image-zaz14gzaz14gzaz1-(1).png"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "الحجامة والتداوي", 
+          "details": "استخدام الأدوية، قلع الضرس، التداوي،<br>وعمل الحجامة إذا احتاج الحاج إليها.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> حديث ابن عباس رضي الله عنهما:<br>«أن رسول الله ﷺ احتجم وهو محرم».<br>(رواه البخاري). وهذا دليل قاطع على إباحتها.", 
+          "images": ["https://www.tadawi.me/wp-content/uploads/2022/09/hijama-cupping.jpg"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "التظلل بغير الملاصق", 
+          "details": "استخدام المظلة أو الخيمة أو الاستظلال<br>بسيارة أو شجرة للوقاية من الشمس.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> حديث أم الحصين رضي الله عنها:<br>«رأيت أسامة وبلالاً يستران النبي ﷺ ببرد<br>من الحر حتى رمى جمرة العقبة». (رواه مسلم).", 
+          "images": ["https://www.alyaum.com/uploads/images/2024/06/14/thumbs/350x350/2337852.jpg"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "ربط الجروح والضمادات", 
+          "details": "يجوز للمحرم شد الأربطة والضمادات على الجروح،<br>وكذلك وضع 'اللزقة' الطبية على البدن.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الفقه:</strong> يجوز التداوي وربط موضع الألم والكسر،<br>ولا يعتبر ذلك من لبس 'المخيط' الممنوع،<br>لأنه للضرورة ولعلاج عضو بعينه.", 
+          "images": ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpfmE4MrrEoPmSV99Ec5mwKW0Euj8BV-LSCQ&s"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "لبس الخاتم والساعة", 
+          "details": "ارتداء ساعة اليد، خاتم الفضة، النظارة،<br>وكل ما لا يعد ثياباً مفصلة.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> ثبت في الصحيحين:<br>«أن رسول الله ﷺ اتخذ خاتماً من فضة».<br>ولم ينهَ عن لبسه حال الإحرام، فبقي على الإباحة.", 
+          "images": ["https://i.postimg.cc/zGdsMctb/Gemini-Generated-Image-e2x7e5e2x7e5e2x7.png"], 
+          "type": "مباح" 
+        },
+        { 
+          "title": "قتل الفواسق الخمس", 
+          "details": "قتل كل ما يؤذي المحرم من الدواب والسباع<br>لدرء خطرها عن النفس والحجاج.", 
+          "target": "للرجال والنساء",
+          "conditions": "<strong>الدليل:</strong> قوله ﷺ: «خمس من الدواب كلهن فاسق<br>يُقتلن في الحل والحرم: العقرب، والحدأة،<br>والغراب، والفأرة، والكلب العقور». (متفق عليه).", 
+          "images": ["https://i.postimg.cc/MGLvWtTG/Gemini-Generated-Image-20fp7d20fp7d20fp.png"], 
+          "type": "مباح" 
+        }
+      ]
+    },   
+    {
+
+      "id": "ihram_fidyah",
+
+      "name": "⚖️ الفدية وجزاء المحظورات",
+
+      "description": "ما يترتب على الحاج في حال ارتكاب أحد المحظورات.",
+
+      "items": [
+
+        { "title": "فدية الأذى", "details": "من ارتكب محظوراً متعمداً أو لحاجة (كمرض) وجبت عليه الفدية.", "conditions": "على التخيير: صيام ثلاثة أيام، أو إطعام 6 مساكين، أو ذبح شاة.", "images": ["https://i.postimg.cc/FH95c7NZ/Gemini-Generated-Image-smfj2ismfj2ismfj.png"], "type": "فدية" },
+
+        { "title": "الناسي والجاهل", "details": "من ارتكب محظوراً ناسياً أو جاهلاً.", "conditions": "لا شيء عليه (باستثناء الجماع وصيد البر)، وعليه الإقلاع فور تذكره.", "images": ["https://i.postimg.cc/GpKpYZW4/Gemini-Generated-Image-vz4dvrvz4dvrvz4d.png"], "type": "عذر" }
+
+      ]
+    }
+  ]
+};
+// 2. دالة الريندر الذكية (سلايدر أفقي لكل قسم)
+function renderHajjMaster() {
+    const mainContainer = document.getElementById('umrah-container');
+    const prohibitionsSlider = document.getElementById('prohibitions-slider');
+    const permittedSlider = document.getElementById('permitted-slider');
+    
+    if (mainContainer) mainContainer.innerHTML = '';
+    if (prohibitionsSlider) prohibitionsSlider.innerHTML = '';
+    if (permittedSlider) permittedSlider.innerHTML = '';
+
+    const generateQuickNav = (items) => {
+        return `
+            <div class="quick-nav-wrapper" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none;">
+                ${items.map(item => `
+                    <a href="#${item.title.replace(/\s+/g, '-')}" style="white-space: nowrap; background: var(--color-surface-offset); border: 1px solid var(--color-border); padding: 5px 12px; border-radius: var(--radius-md); font-size: 11px; color: var(--color-primary); text-decoration: none; font-weight: 600; transition: 0.3s;">
+                        ${item.title}
+                    </a>
+                `).join('')}
+            </div>
+        `;
+    };
+
+    // ✨ تحسين السهم ليكون "نبّاض" واحترافي في نص الكارت على الشمال
+    const createScrollArrow = (id) => `
+        <div class="scroll-indicator" id="arrow-${id}" style="
+            position: absolute; 
+            left: 15px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            z-index: 50; 
+            background: var(--color-primary); 
+            width: 38px; 
+            height: 38px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            pointer-events: none;
+            transition: all 0.4s ease;
+            animation: bounceLeft 1.5s infinite;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </div>
+    `;
+
+    hajjMasterData.categories.forEach(cat => {
+        const navHtml = generateQuickNav(cat.items);
+        const arrowHtml = createScrollArrow(cat.id);
+
+        if (cat.id === 'ihram_prohibitions') {
+            if(prohibitionsSlider) {
+                // وضع السهم داخل حاوية الـ Slider لضمان التمركز
+                prohibitionsSlider.parentElement.style.position = 'relative';
+                prohibitionsSlider.insertAdjacentHTML('beforebegin', navHtml);
+                prohibitionsSlider.insertAdjacentHTML('afterbegin', arrowHtml); // السهم هنا
+                cat.items.forEach(item => {
+                    prohibitionsSlider.insertAdjacentHTML('beforeend', createHajjCard(item));
+                });
+                attachScrollListener(prohibitionsSlider, `arrow-${cat.id}`);
+            }
+        } 
+        else if (cat.id === 'ihram_permitted') {
+            if(permittedSlider) {
+                permittedSlider.parentElement.style.position = 'relative';
+                permittedSlider.insertAdjacentHTML('beforebegin', navHtml);
+                permittedSlider.insertAdjacentHTML('afterbegin', arrowHtml); // السهم هنا
+                cat.items.forEach(item => {
+                    permittedSlider.insertAdjacentHTML('beforeend', createHajjCard(item));
+                });
+                attachScrollListener(permittedSlider, `arrow-${cat.id}`);
+            }
+        } 
+        else {
+            let catHtml = `
+                <div class="category-group fade-in" style="margin-bottom: 40px; position: relative;">
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+                        <div style="width:5px; height:25px; background:var(--color-primary); border-radius:10px;"></div>
+                        <h3 style="color:var(--color-text); font-family:var(--font-display); font-size:1.4rem;">${cat.name}</h3>
+                    </div>
+                    
+                    <div style="position: relative;">
+                        ${arrowHtml}
+                        ${navHtml} 
+                        <div class="hajj-grid" id="grid-${cat.id}" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory;">
+                            ${cat.items.map(item => createHajjCard(item)).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            if(mainContainer) mainContainer.insertAdjacentHTML('beforeend', catHtml);
+            
+            setTimeout(() => {
+                const grid = document.getElementById(`grid-${cat.id}`);
+                attachScrollListener(grid, `arrow-${cat.id}`);
+            }, 50);
+        }
+    });
+
+    function attachScrollListener(element, arrowId) {
+        if (!element) return;
+        element.addEventListener('scroll', () => {
+            const arrow = document.getElementById(arrowId);
+            if (!arrow) return;
+            
+            // في وضع RTL، السكرول بيبدأ من 0 وبيروح للسالب مع التحرك لليسار
+            if (element.scrollLeft < -60) { 
+                arrow.style.opacity = '0';
+                arrow.style.visibility = 'hidden';
+            } else {
+                arrow.style.opacity = '0.8';
+                arrow.style.visibility = 'visible';
+            }
+        }, { passive: true });
+    }
+}
+
+
+function createHajjCard(item) {
+    const images = item.images && item.images.length > 0 ? item.images : [item.image_url || 'https://via.placeholder.com/400x200?text=Depanto'];
+    const cardAnchorId = item.title.replace(/\s+/g, '-');
+    let badgeClass = (item.type === 'محظور') ? 'badge-red' : (item.type === 'مباح' ? 'badge-green' : 'badge-default');
+
+    // أيقونة الزوم تظهر عند الهوفر
+    const zoomIconOverlay = `
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 100;">
+            <div class="zoom-icon-circle" style="background: rgba(0,0,0,0.5); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
+        </div>
+    `;
+
+    return `
+        <div class="interactive-card" id="${cardAnchorId}" style="min-width: 320px; flex-shrink: 0; scroll-snap-align: start;">
+            <div class="card-visuals" style="overflow: hidden; border-radius: var(--radius-xl) var(--radius-xl) 0 0;">
+                <div class="carousel-track" style="display: flex; height: 100%;">
+                    ${images.map(url => `
+                        <div class="inner-slide" style="min-width:100%; cursor: zoom-in;" 
+                             onclick="openImageModal('${url}')"
+                             onmouseover="this.querySelector('img').style.transform='scale(1.05)'; this.querySelector('.zoom-icon-circle').style.opacity='1';" 
+                             onmouseout="this.querySelector('img').style.transform='scale(1)'; this.querySelector('.zoom-icon-circle').style.opacity='0';">
+                            <img src="${url}" style="width:100%; height:200px; object-fit:cover; transition: transform 0.4s ease;" onerror="this.src='https://via.placeholder.com/400x200?text=Depanto'">
+                            ${zoomIconOverlay}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="card-info">
+                <div class="info-badge ${badgeClass}">${item.type}</div>
+                <h3 class="info-title">${item.title}</h3>
+                <p class="info-details">${item.details}</p>
+                <div class="info-conditions"><strong>الضابط الشرعي:</strong><p>${item.conditions}</p></div>
+                ${item.penalty ? `<div class="info-conditions" style="margin-top: 10px; border-right-color: #dc2626; background: #fff5f5;"><strong style="color: #dc2626;">حكم من فعل المحظور:</strong><p style="color: #991b1b;">${item.penalty}</p></div>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+// 1. دالة توليد روابط التنقل السريع للأقسام
+function generateCategoryNav(cat) {
+    return `
+        <div class="category-nav" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px;">
+            ${cat.items.map((item, index) => `
+                <a href="#card-${cat.id}-${index}" style="
+                    white-space: nowrap;
+                    padding: 6px 12px;
+                    background: var(--color-surface-offset);
+                    border: 1px solid var(--color-border);
+                    border-radius: var(--radius-md);
+                    font-size: var(--text-xs);
+                    color: var(--color-text-muted);
+                    text-decoration: none;
+                    transition: all 0.2s;
+                " onmouseover="this.style.borderColor='var(--color-primary)';this.style.color='var(--color-primary)'" 
+                   onmouseout="this.style.borderColor='var(--color-border)';this.style.color='var(--color-text-muted)'">
+                    ${item.title}
+                </a>
+            `).join('')}
+        </div>
+    `;
+}
+
+// 2. تشغيل كل شيء عند تحميل الصفحة بذكاء
+window.onload = () => {
+    // أ- تشغيل الوظائف الأساسية المستقلة
+    if (typeof renderUmrah === "function") renderUmrah();
+    if (typeof renderExtraInfo === "function") renderExtraInfo();
+    
+    // ب- تشغيل الماب الجديدة (المحظورات والمباحات)
+    if (typeof renderHajjMaster === "function") renderHajjMaster();
+
+    // ج- الحل النهائي لضبط التبويبات (Tabs) عند التحميل
+    if (typeof renderNusk === "function") {
+        // بنجيب الحاوية وننظفها تماماً عشان ميبقاش فيه بقايا من "التمتع"
+        const container = document.getElementById('nusk-container');
+        if (container) container.innerHTML = ''; 
+
+        // بنشوف مين الزرار اللي واخد class active في الـ HTML (اللي هو العمرة حالياً)
+        const activeTab = document.querySelector('.tabs-header .tab-btn.active');
+        
+        if (activeTab) {
+            // بنطلع الـ ID (زي 'umrah_full') من الـ onclick بتاع الزرار
+            const onClickAttr = activeTab.getAttribute('onclick');
+            const match = onClickAttr.match(/'([^']+)'/);
+            const typeId = match ? match[1] : 'umrah_full';
+            
+            // بنعمل رندر للمحتوى المطابق للزرار فقط
+            // مررنا null بدل الزرار عشان نمنع الـ scrollIntoView المزعج أول ما الصفحة تفتح
+            renderNusk(typeId, null); 
+        }
+    }
+};
+// تأكد إنك مسحت أي سطر قديم زي renderNusk('tamattu') كان موجود بره أو جوه الـ onload
+  
+// ── Theme toggle ──
+(function(){
+  const btn = document.querySelector('[data-theme-toggle]');
+  const root = document.documentElement;
+  let dark = matchMedia('(prefers-color-scheme:dark)').matches;
+  root.setAttribute('data-theme', dark ? 'dark' : 'light');
+  const moon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  const sun  = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  function setIcon(){ btn.innerHTML = dark ? sun : moon; }
+  setIcon();
+  btn.addEventListener('click', () => { dark = !dark; root.setAttribute('data-theme', dark ? 'dark' : 'light'); setIcon(); });
+})();
+
+// ── Reading progress bar ──
+window.addEventListener('scroll', () => {
+  const s = document.documentElement.scrollTop;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress-bar').style.width = (s/h*100) + '%';
+});
+
+// ── Modals Logic ──
+let _currentActionId = null;
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { 
+  document.getElementById(id).classList.remove('open'); 
+  if(id === 'mediaModal') _currentActionId = null; 
+}
+
+function openMediaModal(actionId) {
+  _currentActionId = actionId;
+  const imgEl = document.getElementById('img-' + actionId);
+  const linkEl = document.getElementById('link-' + actionId);
+  document.getElementById('modalImg').value = (imgEl && imgEl.style.display !== 'none') ? imgEl.src : '';
+  document.getElementById('modalLink').value = (linkEl && linkEl.style.display !== 'none') ? linkEl.href : '';
+  openModal('mediaModal');
+}
+
+function saveMedia() {
+  if (!_currentActionId) return;
+  const imgUrl = document.getElementById('modalImg').value.trim();
+  const linkUrl = document.getElementById('modalLink').value.trim();
+  const imgEl = document.getElementById('img-' + _currentActionId);
+  if (imgEl) {
+    if (imgUrl) { imgEl.src = imgUrl; imgEl.style.display = 'block'; }
+    else { imgEl.style.display = 'none'; imgEl.src = ''; }
+  }
+  const linkEl = document.getElementById('link-' + _currentActionId);
+  if (linkEl) {
+    if (linkUrl) { linkEl.href = linkUrl; linkEl.style.display = 'inline-flex'; }
+    else { linkEl.style.display = 'none'; linkEl.href = ''; }
+  }
+  closeModal('mediaModal');
+}
+
+document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+  backdrop.addEventListener('click', (e) => { if (e.target === e.currentTarget) backdrop.classList.remove('open'); });
+});
+document.addEventListener('keydown', (e) => { 
+  if (e.key === 'Escape') document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open')); 
+});
+
+function toggleDay(header) {
+  const card = header.closest('.day-card');
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open', !isOpen);
+}
+
+// ── The Database (Isolated JSON for ALL content) ──
+const db = {
+  umrah: {
+    title: "دليل العمرة المفردة",
+    arkan: ["الإحرام (النية)", "الطواف بالبيت", "السعي بين الصفا والمروة"],
+    wajibat: ["الإحرام من الميقات (تجاوز الميقات بنية العمرة بلا إحرام يوجب دماً)", "الحلق أو التقصير (التحلل)"],
+    steps: [
+      { title: "١. الإحرام", desc: "الاغتسال والتطيب (للرجال قبل النية)، ولبس ثياب الإحرام، ثم عقد النية من الميقات بقول: 'لبيك اللهم بعمرة'." },
+      { title: "٢. الطواف", desc: "٧ أشواط حول الكعبة تبدأ وتنتهي بالحجر الأسود. وبعدها صلاة ركعتين خلف مقام إبراهيم (أو في أي مكان بالمسجد)." },
+      { title: "٣. السعي", desc: "٧ أشواط بين الصفا والمروة؛ يبدأ بالصفا وينتهي بالمروة (الذهاب شوط والعودة شوط)." },
+      { title: "٤. التحلل", desc: "حلق شعر الرأس أو تقصيره للرجل (والحلق أفضل)، وقص قدر أنملة من أطراف الشعر للمرأة. وبهذا تتم العمرة ويحل كل شيء." }
+    ],
+    duas: [
+      "عند الإحرام: لبيك اللهم بعمرة، لبيك اللهم لبيك، لبيك لا شريك لك لبيك...",
+      "عند الطواف (بين الركن اليماني والحجر): رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ.",
+      "عند الصفا والمروة: إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ... لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير."
+    ]
+  },
+  prohibitions: [
+    { title: "لبس المخيط", target: "الرجال", desc: "يحرم على الرجل لبس كل ما فُصِّل على هيئة البدن كالقمصان، السراويل، والجوارب.", mediaPlaceholder: "📸 أضف صورة للملابس الممنوعة" },
+    { title: "تغطية الرأس", target: "الرجال", desc: "يحرم تغطية الرأس بملاصق كالطاقية والعمامة. (يجوز الاستظلال بشمسية أو سقف السيارة).", mediaPlaceholder: "📸 أضف صورة للتغطية الممنوعة" },
+    { title: "أخذ الشعر والأظافر", target: "الجميع", desc: "يحرم قص أو حلق أي شعر من البدن، أو تقليم الأظافر بعد عقد نية الإحرام.", mediaPlaceholder: "📸 أضف صورة أو أيقونة معبرة" },
+    { title: "الطيب (العطور)", target: "الجميع", desc: "يحرم استخدام العطور في البدن أو الثياب بعد الإحرام، وكذلك الصابون المعطر بشكل قوي.", mediaPlaceholder: "📸 أضف فيديو/جيف للعطور" },
+    { title: "النقاب والقفازين", target: "النساء", desc: "يحرم على المرأة لبس النقاب والبرقع والقفازين، وتغطي وجهها عند مرور الرجال الأجانب بغير النقاب المفصل.", mediaPlaceholder: "📸 أضف صورة توضيحية للمرأة" },
+    { title: "الصيد وعقد النكاح", target: "الجميع", desc: "يحرم صيد الحيوانات البرية أو تنفيرها، ويحرم عقد النكاح أو الخطبة أثناء الإحرام.", mediaPlaceholder: "📸 أضف صورة توضيحية" }
+  ],
+ hajjTypes: {
+    umrah_full: {
+      icon: '🕋', name: 'مناسك العمرة المفردة',
+      desc: 'خريطة زمنية تفصيلية لأداء العمرة من الميقات وحتى التحلل، شاملة كافة الأدعية والخطوات.',
+      features: [
+        'الإحرام من الميقات المحدد شرعاً.',
+        'الطواف بالبيت العتيق (٧ أشواط).',
+        'السعي بين الصفا والمروة (٧ أشواط).',
+        'التحلل بالحلق أو التقصير.'
+      ],
+      days: [
+        {
+          num: '١', name: 'الاستعداد والإحرام', date: 'الميقات',
+          prayer: 'صلاة ركعتي سنة الإحرام (أو صلاة الفريضة إذا وافق وقتها).',
+          hours: [
+           { 
+              time: 'البداية', title: 'الاغتسال ونظافة الفطرة', isPrayer: false, color: '', 
+              desc: `
+                <strong>١. سنن الفطرة:</strong> يُسن تقليم الأظافر، قص الشارب، نتف الإبط، وحلق العانة.<br>
+                <strong>٢. الاغتسال:</strong> يُسن الاغتسال للإحرام (للرجال والنساء، حتى الحائض والنفساء).<br>
+                <strong>٣. التطيب:</strong> يُسن للرجل وضع الطيب (العطر) في بدنه ورأسه ولحيته قبل عقد النية.<br><br>
+                <div style="background: #fff5f5; padding: 10px; border-right: 3px solid #dc2626; border-radius: var(--radius-md); margin-top: 8px;">
+                <strong style="color: #dc2626;">🚨 تنبيه هام جداً (احذر هذا الخطأ):</strong><br>
+                <span style="color: #991b1b; font-weight: bold;">يُحرم تماماً وضع أي طيب (عطر) على ملابس الإحرام نفسها</span>. الطيب يوضع على الجسد فقط قبل النية. وإذا أصاب ملابس الإحرام عطر، يجب غسلها جيداُ أو تغييرها قبل الإحرام بها.
+                </div>
+              `,
+              img: 'https://static.vecteezy.com/system/resources/thumbnails/057/106/523/small/young-man-enjoying-a-refreshing-shower-with-soap-bubbles-in-a-minimalistic-flat-design-illustration-vector.jpg', imgPos: 'side'
+            },
+            { 
+              time: 'الميقات', title: 'لبس الإحرام والنية', isPrayer: false, 
+              desc: "يلبس الإزار والرداء (للرجال) وتلبس المرأة ملابسها العادية الساترة.<br><strong>النية والاشتراط:</strong> ينوي بالقلب ويقول: <em>'لبيك اللهم عمرة'</em>. ويُسن أن يشترط قائلاً: <em>'فإن حبسني حابس فمحلي حيث حبستني'</em> تحسباً لأي طارئ يمنعه من إتمام العمرة." 
+
+            },
+            { 
+              time: 'بعد النية', title: 'التلبية الجهرية', isPrayer: false, 
+              desc: "يرفع الرجل صوته بالتلبية: <em>'لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك'</em>، وتُسر بها المرأة، وتستمر التلبية حتى رؤية الكعبة." 
+            }
+          ]
+        },
+        {
+          num: '٢', name: 'دخول الحرم والطواف', date: 'مكة المكرمة',
+          prayer: 'ركعتين خلف مقام إبراهيم بعد الطواف (يقرأ بالكافرون والإخلاص).',
+          hours: [
+            { 
+              time: 'الدخول', title: 'دعاء رؤية الكعبة وشروط الطواف', isPrayer: false, 
+              desc: "<strong>عند رؤية الكعبة:</strong> يُسن أن يقول: <em>«اللهم زِدْ هذا البيت تشريفاً وتعظيماً وتكريماً ومهابةً، وزِدْ مَن شَرّفَهُ وكَرّمَهُ مِمّن حَجّه أو اعتَمَرَه تشريفاً وتكريماً وتعظيماً وبِرّاً»</em>.<br><strong>شروط الطواف:</strong> الطهارة (الوضوء)، ستر العورة، الكعبة على يسارك، و٧ أشواط كاملة." 
+            },
+            { 
+              time: 'الأشواط ٣-١', title: 'طواف القدوم والاضطباع', guideBtn: 'الطواف', isPrayer: false, 
+              img: 'https://hotelsplatform.com/uploads/0000/6/2021/11/23/sacred-mosque.jpg', imgPos: 'side',
+              desc: "يبدأ من الحجر الأسود ويشير إليه مكبراً.<br><strong>الاضطباع (للرجال):</strong> كشف الكتف الأيمن.<br><strong>الرمل (للرجال):</strong> الإسراع في المشي في أول ٣ أشواط.<br><strong>الدعاء:</strong> يُكثر من الذكر، ويقول بين الركن اليماني والحجر: <em>«رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ»</em>." 
+            },
+            { 
+              time: 'الأشواط ٧-٤', title: 'إتمام الطواف والصلاة', isPrayer: false, 
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiwU9AXcF2Y2le76dXybQE0GmP1cli9jS9rQ&s', imgPos: 'side',
+              desc: "يمشي مشياً عادياً. بعد الشوط السابع <strong>يُغطي الرجل كتفه الأيمن</strong>، ثم يصلي ركعتين خلف مقام إبراهيم وهو يقرأ: <em>«وَاتَّخِذُوا مِن مَّقَامِ إِبْرَاهِيمَ مُصَلًّى»</em>." 
+            },
+            { 
+              time: 'الختام', title: 'شرب ماء زمزم (سنن وأدعية)', isPrayer: false, color: '', 
+              desc: `
+                يُسن بعد ركعتي الطواف التوجه لماء زمزم للشرب منه.<br><br>
+                <strong>💡 ما معنى (يتضلع)؟</strong><br>
+                التضلع هو الشرب بكثرة حتى يمتلئ البطن ويصل الماء إلى الأضلاع، وهو من سنن الشرب وعلامة من علامات الإيمان.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>📌 سنن الشرب والأدعية الناقصة:</strong><br>
+                • <strong>استقبال القبلة:</strong> أن تشرب وأنت تنظر تجاه الكعبة.<br>
+                • <strong>طريقة الشرب:</strong> التسمية (بسم الله)، والشرب على ٣ دفعات تتنفس فيها خارج الكوب، وحمد الله بعد الانتهاء.<br>
+                • <strong>الصب على الرأس:</strong> يُسن أن تأخذ القليل من الماء وتصبه على رأسك وتمسح به وجهك.<br>
+                • <strong>الدعاء المأثور:</strong> تذكر أن (ماء زمزم لما شُرب له)، وكان ابن عباس رضي الله عنهما إذا شرب قال: <em>'اللهم إني أسألك علماً نافعاً، ورزقاً واسعاً، وشفاءً من كل داء'</em>.
+                </div>
+              `,
+                     img: 'https://cdn.alweb.com/thumbs/hajjwaomra/article/fit710x532/%D8%AF%D8%B9%D8%A7%D8%A1-%D8%B4%D8%B1%D8%A8-%D9%85%D8%A7%D8%A1-%D8%B2%D9%85%D8%B2%D9%85.jpg', imgPos: 'side'            }
+          ]
+        },
+        {
+          num: '٣', name: 'السعي والتحلل', date: 'الصفا والمروة',
+          prayer: 'الإكثار من الدعاء عند الوقوف على الصفا والمروة.',
+          hours: [
+           { 
+              time: 'البداية', title: 'الصعود على الصفا', isPrayer: false, 
+              img: 'https://i.postimg.cc/BQ8PXXkD/hajj-Page-029-Image-0002.jpg', imgPos: 'side',
+              desc: "عند الاقتراب من الصفا <strong>في الشوط الأول فقط</strong>، تقرأ الآية مرة واحدة: <em>'إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ... أبدأ بما بدأ الله به'</em>. ولا تُكرر هذه الآية في باقي الأشواط أو على المروة نهائياً.<br><br>بعدها تصعد على الصفا، تستقبل القبلة، تكبر ٣ مرات وتقول: <em>'لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير. لا إله إلا الله وحده، أنجز وعده، ونصر عبده، وهزم الأحزاب وحده'</em> (تكرر هذا الذكر ٣ مرات، وتدعو بينها بما شئت من خيري الدنيا والآخرة)." 
+            },
+            { 
+              time: 'الأشواط', title: 'إتمام السعي (٧ أشواط)', guideBtn: 'السعي', isPrayer: false, 
+              desc: "الذهاب من الصفا للمروة شوط، والعودة شوط. ينتهي السعي عند المروة.<br><strong>بين العلمين:</strong> يُسن للرجال فقط الهرولة (الجري السريع) وقول: <em>'رَبِّ اغْفِرْ وَارْحَمْ، إِنَّكَ أَنْتَ الأَعَزُّ الأَكْرَمُ'</em>." 
+            },
+         { 
+              time: 'النهاية', 
+              title: 'التحلل (الحلق أو التقصير)', 
+              isPrayer: false, 
+              color: '', 
+              desc: `
+                <strong>للرجال:</strong> الحلق بالموسى أفضل (دعا النبي ﷺ للمحلقين بالمغفرة ثلاثاً وللمقصرين مرة)، أو التقصير.<br>
+                <strong>للنساء:</strong> التقصير فقط، بتجميع أطراف الشعر وقص قدر "أنملة" (عقلة إصبع) منها.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 أحكام هامة للتحلل ومذاهب العلماء:</strong><br>
+                • <strong>حكم الأصلع:</strong> من لا شعر له تماماً لا يلزمه شيء، ويستحب له فقط إمرار الموسى على رأسه (سنة وليس واجباً عند الجمهور)، ويتم تحلله.<br>
+                • <strong>مقدار التقصير (رأي المذاهب):</strong><br>
+                &nbsp;&nbsp;&nbsp; - <strong style="color:var(--color-primary);">رأي الجمهور (المالكية والحنابلة):</strong> يشترطون أن يعم التقصير جميع أنحاء الرأس للرجل، ولا يجزئ قص شعرات قليلة من مكان أو مكانين.<br>
+                &nbsp;&nbsp;&nbsp; - <strong style="color:var(--color-primary);">رأي الشافعية (رخصة وتيسير):</strong> أجازوا الاكتفاء بقص ثلاث شعرات على الأقل من أي مكان بالرأس، ويحصل بها التحلل الكامل. (وهو المذهب الذي يقلده الكثيرون تيسيراً).<br>
+                • <strong>حكم المتمتع:</strong> الأفضل لك التقصير في العمرة، لتترك الحلق الكامل ليوم الحج الأكبر (يوم النحر).
+                </div>
+                بهذا يتم التحلل الكامل للعمرة، ويحل لك كل شيء حُرم عليك بالإحرام.
+              `,
+              img: 'https://i.postimg.cc/SsyzsVb7/hajj-Page-040-Image-0001.jpg', 
+              imgPos: 'side'
+            }
+          ]
+        }
+      ]
+    },
+
+tamattu: {
+      icon: '🕌', name: 'حج التمتع',
+      desc: 'الإحرام بالعمرة أولاً في أشهر الحج، وبعد الانتهاء منها يتحلل الحاج تحللاً كاملاً ويلبس ثيابه العادية، ثم يُحرم للحج في اليوم الثامن من ذي الحجة.',
+      features: [
+        'الإحرام مرتين: مرة للعمرة من الميقات، ومرة للحج من مقر الإقامة بمكة.',
+        'أداء طوافين وسعيين: طواف وسعي للعمرة، ثم طواف وسعي للحج.',
+        'وجوب ذبح الهدي (دم التمتع) شكراً لله على تيسير النسكين.'
+      ],
+      days: [
+        {
+          num: '🕋', name: 'الوصول لمكة (العمرة)', date: 'قبل يوم ٨ ذي الحجة',
+          prayer: 'تُصلى الصلوات الخمس بشكل طبيعي في المسجد الحرام.',
+          hours: [
+            { 
+              time: 'الميقات', title: 'النية والإحرام بالعمرة', isPrayer: false, color: '', 
+              desc: "الاغتسال والتطهر، ولبس ملابس الإحرام للرجل والمرأة.<br><strong>حديث السروال والخفين:</strong> قال النبي ﷺ: «مَنْ لَمْ يَجِدِ الإِزَارَ فَلْيَلْبَسِ السِّرْوَالَيْنِ، وَمَنْ لَمْ يَجِدِ النَّعْلَيْنِ فَلْيَلْبَسِ الْخُفَّيْنِ»، فمن لم يجد إزاراً لبس البنطلون، ومن لم يجد نعلاً (شبشب) لبس حذاءً يقطعه أسفل الكعبين ولا فدية عليه.<br><strong>النية والاشتراط:</strong> عقد النية بالقلب وقول: <em>'لبيك اللهم بعمرة'</em>، ويُسن أن يشترط: <em>'فإن حبسني حابس فمحلي حيث حبستني'</em>.",
+              img: 'https://i.postimg.cc/bJVjYL1d/Gemini-Generated-Image-f9vgi0f9vgi0f9vg.png', imgPos: 'side'
+            },
+            { 
+              time: 'دخول الحرم', title: 'دعاء رؤية الكعبة وشروط الطواف', isPrayer: false, color: '', 
+              desc: "<strong>عند رؤية الكعبة المشرفة:</strong> يُسن أن يقول: <em>«اللهم زِدْ هذا البيت تشريفاً وتعظيماً وتكريماً ومهابةً، وزِدْ مَن شَرّفَهُ وكَرّمَهُ مِمّن حَجّه أو اعتَمَرَه تشريفاً وتكريماً وتعظيماً وبِرّاً»</em> (ويُدعى بما شاء فالدعاء عند رؤية الكعبة مستجاب).<br><strong>شروط الطواف:</strong> الطهارة الكاملة (الوضوء)، ستر العورة، أن تكون الكعبة على يسار الطائف، إتمام ٧ أشواط كاملة، وأن يكون الطواف داخل المسجد.<br><strong>الاستعداد (للرجال فقط):</strong> 'الاضطباع' وهو كشف الكتف الأيمن، ويستمر طوال أشواط طواف العمرة فقط.",
+              img: 'https://www.el-massa.com/dz/media/k2/items/cache/6442d12c4d55f65985620b5e2f000f6f_XL.jpg', imgPos: 'side'            },            { 
+              time: 'شوط ١-٣', title: 'بداية الطواف والرمل', guideBtn: 'الطواف', isPrayer: false, color: '', 
+              img: 'https://hotelsplatform.com/uploads/0000/6/2021/11/23/sacred-mosque.jpg', imgPos: 'side',
+              desc: "يقطع التلبية عند بدء الطواف. يبدأ الطواف بمحاذاة الحجر الأسود، يستقبله ويشير إليه قائلاً: 'بسم الله، والله أكبر'.<br><strong>الرمل (للرجال فقط):</strong> الإسراع في المشي مع تقارب الخطى في أول ٣ أشواط (سنة).<br><strong>الدعاء الثابت:</strong> يُسن بين الركن اليماني والحجر الأسود قول: <em>«رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ»</em>." 
+            },
+            { 
+              time: 'شوط ٤-٧', title: 'إتمام الطواف والصلاة', isPrayer: false, color: '', 
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiwU9AXcF2Y2le76dXybQE0GmP1cli9jS9rQ&s', imgPos: 'side',
+              desc: "يمشي مشياً عادياً في بقية الأشواط الأربعة.<br><strong>بعد الشوط السابع:</strong> يغطي الرجل كتفه الأيمن فوراً (ينتهي الاضطباع)، ويتوجه خلف مقام إبراهيم وهو يقرأ: <em>«وَاتَّخِذُوا مِن مَّقَامِ إِبْرَاهِيمَ مُصَلًّى»</em>، ويصلي ركعتين (يقرأ سورتي الكافرون والإخلاص).<br><strong>ماء زمزم:</strong> يُسن التوجه لماء زمزم، فيشرب ويتضلع ويدعو بما شاء." 
+            },
+            { 
+              time: 'شروط السعي', title: 'التوجه للصفا (بداية السعي)', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/BQ8PXXkD/hajj-Page-029-Image-0002.jpg', imgPos: 'side',
+              desc: "<strong>شروط السعي:</strong> يجب أن يسبقه طواف صحيح. (الوضوء هنا مستحب وليس شرطاً، فلو انتقض وضوؤه صح سعيه).<br>عند الاقتراب من الصفا يقرأ الآية: <em>«إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ... أبدأ بما بدأ الله به»</em>. (يقرأها مرة واحدة فقط عند بداية السعي)." 
+            },
+            { 
+              time: 'السعي', title: 'أشواط السعي والأدعية', guideBtn: 'السعي', isPrayer: false, color: '', 
+              desc: "<strong>الوقوف على الصفا والمروة:</strong> يستقبل القبلة، يرفع يديه، يكبر ٣ مرات ويقول: <em>«لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير. لا إله إلا الله وحده، أنجز وعده، ونصر عبده، وهزم الأحزاب وحده»</em> (يكررها ٣ مرات ويدعو بينها بما شاء).<br><strong>بين العلمين الأخضرين:</strong> 'الهرولة' (الجري السريع) للرجال فقط (سنة). ويُستحب أن يقول: 'رَبِّ اغْفِرْ وَارْحَمْ، إِنَّكَ أَنْتَ الأَعَزُّ الأَكْرَمُ'.<br><strong>الحساب:</strong> الذهاب من الصفا للمروة (شوط)، والعودة للصفا (شوط). ويختم الشوط السابع عند المروة.",
+              img: 'https://img.youtube.com/vi/2DHEFbECouM/0.jpg', imgPos: 'side'            },
+            { 
+              time: 'الختام', title: 'التحلل من العمرة', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/SsyzsVb7/hajj-Page-040-Image-0001.jpg', imgPos: 'side',
+              desc: "<strong>الرجال:</strong> التقصير من جميع أنحاء الرأس بالتساوي (ويُترك الحلق ليوم الحج الأكبر حتى يبقى شعر يُحلق).<br><strong>النساء:</strong> تجمع شعرها وتقص قدر 'أنملة' (عقلة الإصبع) من أطرافه.<br>بهذا يتم التحلل من العمرة، وتُخلع ملابس الإحرام وتتمتع بكل المباحات (ويجوز لبس السراويل والمخيط والطيب والجماع) حتى ضحى يوم ٨ ذي الحجة." 
+            }
+          ]
+        },
+       {
+          num: '١', name: 'يوم التروية', date: '٨ ذي الحجة',
+          prayer: 'تصلى الصلوات الخمس بمنى قصراً للرباعية بدون جمع.',
+          hours: [
+            { 
+              time: 'الضحى', title: 'الإحرام للحج وسبب التسمية', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/hPHzxKRH/hajj-Page-014-Image-0001.jpg', imgPos: 'side',
+              desc: `
+                <strong>لماذا سُمي بيوم التروية؟</strong> لأن الحجاج قديماً كانوا يرتوون من الماء في مكة ويحملونه معهم إلى منى وعرفات لعدم وجود مصادر للماء هناك في ذلك الزمان.<br><br>
+                <strong>خطوات الإحرام (خاص بالمتمتع):</strong> لأنك تحللت بعد العمرة، يجب أن تُحرم للحج الآن. تغتسل وتتطيب (في بدنك فقط)، وتلبس ملابس الإحرام <strong>من مقر إقامتك (فندقك بمكة)</strong>، ولا حاجة للذهاب إلى الحرم أو مسجد التنعيم. تنوي الحج بالقلب وتتلفظ قائلاً: <em>'لبيك اللهم حجاً'</em>. ويُسن الاشتراط: <em>'اللهم محلي حيث حبستني'</em>.
+              ` 
+            },
+            { 
+              time: 'الزوال', title: 'التوجه إلى منى (سنة)', isPrayer: false, color: '', 
+              desc: `
+                التوجه إلى مشعر منى قبل الزوال (الظهر) والمبيت بها استعداداً للوقوف بعرفة غداً.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 حكم الذهاب والمبيت بمنى (يوم التروية):</strong><br>
+                الذهاب إلى منى والمبيت بها ليلة التاسع <strong>سُنة مستحبة</strong> وليس ركناً ولا واجباً. فمن لم يذهب لمنى في هذا اليوم وتوجه إلى عرفة مباشرة لزحام أو تنظيم للحملة، فحجه صحيح تماماً، ولا إثم عليه، ولا تلزمه فدية.
+                </div>
+                يُكثر الحاج من التلبية (لبيك اللهم لبيك) جهاراً للرجال وسراً للنساء طوال الطريق.
+              `,
+              img: 'https://www.el-massa.com/dz/media/k2/items/cache/6442d12c4d55f65985620b5e2f000f6f_XL.jpg', imgPos: 'side'
+            },
+            { 
+              time: 'أوقات الصلاة', title: 'صلاة القصر بلا جمع', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "يصلي الحاج بمنى ٥ صلوات: الظهر، العصر، المغرب، العشاء، وفجر يوم عرفة (يوم ٩). يصلي الرباعية ركعتين (قصراً)، والمغرب ثلاث ركعات. <strong>القاعدة هنا:</strong> يصلي كل صلاة في وقتها المحدد (بدون جمع) تأسياً بفعل النبي ﷺ.",
+              img: 'https://modo3.com/thumbs/fit630x300/102462/1584438273/%D8%B4%D8%B1%D9%88%D8%B7_%D8%B5%D9%84%D8%A7%D8%A9_%D8%A7%D9%84%D9%82%D8%B5%D8%B1.jpg', imgPos: 'side'
+            }
+          ]
+        },
+        {
+          num: '٢', name: 'يوم عرفة - الركن الأعظم ⭐', date: '٩ ذي الحجة',
+          prayer: 'الظهر والعصر جمع تقديم وقصر في عرفة، والمغرب والعشاء جمع تأخير وقصر عند الوصول لمزدلفة.',
+          hours: [
+            { 
+              time: 'بعد الشروق', title: 'التوجه لعرفات', isPrayer: false, color: '', 
+              desc: "السير بهدوء وسكينة مع الاستمرار في التلبية وتكبيرات العيد للوصول إلى عرفات. تأكد من دخولك حدود عرفات (توجد لوحات إرشادية ضخمة تحدد البداية والنهاية)، لقوله ﷺ: «وقفت هاهنا وعرفة كلها موقف». الوقوف خارج الحدود يبطل الحج.",
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTTKlmL3ygfi04pjpk9XIHcVK4LTLZ7H67w&s', imgPos: 'side'
+            },
+            { 
+              time: 'وقت الزوال', title: 'خطبة عرفة والصلاة', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "الاستماع لخطبة عرفة. أداء صلاة الظهر والعصر (ركعتين ركعتين) جمع تقديم بأذان واحد وإقامتين، ولا يُصلى بينهما ولا قبلهما شيء من السنن، للتفرغ التام للدعاء في هذا اليوم العظيم.",
+              img: 'https://palsawa.com/uploads/images/TKjkb.jpg', imgPos: 'side'
+            },
+            { 
+              time: 'حتى الغروب', title: 'الوقوف بعرفة (الركن)', isPrayer: false, color: '#e74c3c', 
+              desc: `
+                التفرغ التام للدعاء والذكر والابتهال رافعاً يديك ومستقبلاً القبلة حتى غروب الشمس.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 أدعية مأثورة وتوجيهات هامة:</strong><br>
+                • <strong>أفضل الدعاء:</strong> قال النبي ﷺ: "خير الدعاء دعاء يوم عرفة، وخير ما قلت أنا والنبيون من قبلي: لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير".<br>
+                • <strong>أدعية جوامع:</strong> "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار"، "اللهم إنك عفو تحب العفو فاعف عني". ألح في الدعاء لنفسك وأهلك واطلب المغفرة والعتق من النار.<br>
+                • <strong>جبل الرحمة:</strong> صعود "جبل الرحمة" ليس سنة بل يسبب زحاماً وخطراً. الوقوف في خيمتك أو أي مكان داخل حدود عرفة يجزئ تماماً.<br>
+                • <strong>شرط أساسي:</strong> يُمنع الانصراف قبل تأكد غروب الشمس. من غادر قبل الغروب ولم يرجع وجب عليه دم (فدية).
+                </div>
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTTKlmL3ygfi04pjpk9XIHcVK4LTLZ7H67w&s', imgPos: 'side'
+            },
+            { 
+              time: 'بعد الغروب', title: 'الإفاضة لمزدلفة', isPrayer: false, color: '', 
+              desc: "مغادرة عرفات والتوجه إلى مزدلفة بسكينة ووقار تلبيةً لقوله ﷺ: «أيها الناس، السكينة السكينة». لا تصلِ المغرب في عرفة، بل تؤخرها لتصليها فور وصولك إلى مزدلفة.",
+              img: 'https://i.postimg.cc/HnL1ccrj/mozdalifat01.png', imgPos: 'side'            },
+            { 
+              time: 'في مزدلفة', title: 'الصلاة وجمع الحصيات', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "فور الوصول لمزدلفة، تصلي المغرب (٣ ركعات) والعشاء (ركعتين) جمع تأخير وقصر بأذان وإقامتين. المبيت بمزدلفة (واجب). يُسن جمع ٧ حصيات فقط (بحجم حبة الحمص أو البندق) لرمي جمرة العقبة الكبرى صباح العيد، ويجوز جمعها من منى لاحقاً.",
+              img: 'https://img.youm7.com/ArticleImgs/2018/8/20/93124-000-3682623601534799387025.jpg', imgPos: 'side'            }
+          
+          ]
+        },
+        {
+          num: '٣', name: 'يوم النحر (يوم العيد)', date: '١٠ ذي الحجة',
+          prayer: 'الفجر في مزدلفة، وباقي الصلوات في أوقاتها بمنى.',
+          hours: [
+            { 
+              time: 'الفجر', title: 'صلاة الفجر والدعاء', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "الصلاة في مزدلفة في أول وقتها (غلس)، ثم الوقوف عند المشعر الحرام (أو في أي مكان بمزدلفة) مستقبل القبلة والدعاء والتهليل والتكبير حتى يسفر الصباح جداً (قبل طلوع الشمس).",
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRXsVfCUHSvo-YwC-qsigJWvMhpUdl_a4yJg&s', imgPos: 'side'            },
+            { 
+              time: 'الصباح', title: 'رمي جمرة العقبة الكبرى', isPrayer: false, color: '', 
+              desc: "التوجه لمنى ورمي جمرة العقبة الكبرى (الجمرة الكبرى فقط) بـ ٧ حصيات. يرميها واحدة تلو الأخرى ويقول مع كل حصاة: 'الله أكبر'. ويقطع التلبية عند رمي أول حصاة.",
+              img: 'https://pbs.twimg.com/media/GQq4selXgAEbGUS.jpg', imgPos: 'side'
+            },
+            { 
+              time: 'بعد الرمي', 
+              title: 'الهدي والتحلل الأصغر', 
+              isPrayer: false, 
+              color: '', 
+              desc: `
+                <strong>١. ذبح الهدي:</strong> واجب على المتمتع والقارن (شاة أو سبع بدنة).<br>
+                • <strong>متى يذبح؟</strong> من بعد صلاة العيد وحتى غروب شمس آخر أيام التشريق.<br>
+                • <strong>لمن لم يجد الهدي:</strong> وجب عليه صيام ١٠ أيام (٣ في الحج و٧ إذا رجع لأهله).<br>
+                • <strong>التوكيل (الصكوك):</strong> يجوز شراء صكوك الهدي من الجهات المعتمدة، وتعتبر وكيلاً عنك.<br><br>
+                <strong>٢. الحلق أو التقصير:</strong> يحلق الرجل رأسه (والحلق أفضل) أو يقصره، وتقص المرأة قدر أنملة.<br>
+                <strong>النتيجة:</strong> التحلل الأول (الأصغر)؛ يحل لك كل محظورات الإحرام (بما فيها لبس المخيط والتطيب) ما عدا إتيان النساء (الجماع).
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgaDOk38CTzLg2kcZzLL2bR4YJE9kKv5JxVA&s', imgPos: 'side'            },
+            { 
+              time: 'خلال اليوم', title: 'طواف الإفاضة وسعي الحج (الركن)', guideBtn: 'الطواف', isPrayer: false, color: '', 
+              desc: "النزول لمكة لأداء طواف الإفاضة (ركن الحج) وسعي الحج (لأن سعي العمرة السابقة لا يجزئ عن الحج للمتمتع).<br><strong>تنبيه:</strong> طواف الإفاضة ليس فيه 'رمل' ولا 'اضطباع' (لأنه طواف بثياب عادية وليس إحرام).<br>بهذا يتم <strong>التحلل الأكبر</strong> ويحل له كل شيء تماماً.",
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQigbiHP53fhoYLsDZrnVH39X92nvfsm0J4w&s', imgPos: 'side'            }
+          ]
+        },
+        {
+          num: '٤', name: 'أيام التشريق والوداع', date: '١١، ١٢، ١٣ ذي الحجة',
+          prayer: 'تُؤدى الصلوات الخمس قصراً (للرباعية) في أوقاتها بمنى دون جمع.',
+          hours: [
+            { 
+              time: 'المبيت', title: 'المبيت بمنى (أحكام وفتاوى هامة)', isPrayer: false, color: '', 
+              desc: `
+                <strong>الحكم الأساسي:</strong> المبيت بمنى ليالي التشريق "واجب" عند جمهور الفقهاء، ومن تركه لغير عذر لزمه دم.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 فتوى الخيام خارج منى (في مزدلفة أو العزيزية):</strong><br>
+                إذا ضاقت منى بالحجاج، وكانت مخيماتهم الرسمية (التي حددتها الحملة) تمتد خارج حدود منى، <strong>فينام الحاج في خيمته ولا حرج عليه، ولا إثم، ولا فدية (لا يلزمه دم)</strong>. لأن الواجب يسقط بالعجز للزحام، لقوله تعالى: <em>(فاتقوا الله ما استطعتم)</em>.<br>
+                📜 <strong>من أفتى بذلك؟</strong> هيئة كبار العلماء بالسعودية (وعلى رأسهم الإمام ابن باز وابن عثيمين رحمهما الله)، حيث أفتوا بالاتصال المكاني للخيام.<br><br>
+                <strong>💡 فتوى سقوط المبيت للمشقة:</strong><br>
+                أفتت <strong>دار الإفتاء المصرية</strong> وغيرها، بأنه يجوز ترك المبيت بمنى للمرضى والضعفاء، بل ولعموم الحجاج إذا كان هناك زحام شديد يهدد الأرواح، أخذًا برخصة النبي ﷺ للرعاة والسقاة، وتقليداً لمن قال بسنيته، رفعاً للحرج.
+                </div>
+              `,
+              img: 'https://www.al-qaradawi.net/sites/default/files/styles/detailed/public/field/image/342743481c291a4957926443fe59f62cb2ca4db36.jpg?itok=-EHKBdnS', imgPos: 'side'            },
+          { 
+              time: 'بعد الزوال', 
+              title: 'رمي الجمرات الثلاث (التفاصيل والأحكام)', 
+              isPrayer: false, 
+              color: '', 
+              desc: `
+                يبدأ الرمي في أيام التشريق <strong>بعد أذان الظهر</strong> (الزوال) ويمتد لليل تيسيراً وتخفيفاً للزحام.<br><br>
+                <strong>📌 إجمالي الحصيات للحج:</strong><br>
+                • <strong>للمتعجل:</strong> ٤٩ حصاة (٧ يوم العيد + ٢١ يوم ١١ + ٢١ يوم ١٢).<br>
+                • <strong>للمتأخر (غير المتعجل):</strong> ٧٠ حصاة (تزيد ٢١ حصاة يوم ١٣).<br><br>
+                <strong>📌 ترتيب وطريقة الرمي (بالتتابع):</strong><br>
+                ١. <strong>الجمرة الصغرى:</strong> (أقرب جمرة لمسجد الخيف). ترميها بـ ٧ حصيات متعاقبة (واحدة تلو الأخرى).<br>
+                ٢. <strong>الجمرة الوسطى:</strong> ترميها بـ ٧ حصيات بنفس الطريقة.<br>
+                ٣. <strong>جمرة العقبة الكبرى:</strong> (أقرب جمرة لمكة). ترميها بـ ٧ حصيات، وتنصرف فوراً.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 الأدعية المأثورة وسنة الدعاء:</strong><br>
+                • تقول مع كل حصاة: <strong>"الله أكبر"</strong>. ويُستحب أن تقول: <strong>"اللهم اجعله حجاً مبروراً، وذنباً مغفوراً"</strong>.<br>
+                • <strong>سنة الإطالة:</strong> بعد الانتهاء من رمي (الصغرى) تبتعد وتقف مستقبل القبلة وتدعو طويلاً بما شئت. وتفعل نفس الشيء بعد (الوسطى). أما الكبرى فلا تقف ولا تدعو بعدها.<br><br>
+                <strong>💡 ضوابط وفتاوى هامة:</strong><br>
+                • <strong>الهدف:</strong> يشترط وقوع الحصاة داخل "الحوض"، ولا يشترط ضرب العمود (الشاخص).<br>
+                • <strong>الحجم:</strong> كحبة الحمص، ولا يصح الرمي بحجارة كبيرة أو أحذية.<br>
+                • <strong>التوكيل:</strong> يجوز للمرضى وكبار السن والنساء توكيل غيرهم في الرمي وقت الزحام الشديد. الوكيل يرمي ٧ عن نفسه عند الصغرى، ثم ٧ عن موكله في نفس المكان، وهكذا في الباقي.
+                </div>
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROTSdqSpoqeB9ilghOe2i2t8_pzd_QkyOrOw&s',               imgPos: 'side'
+            },
+            { 
+              time: 'اليوم ١٢', title: 'التعجل (اختياري)', isPrayer: false, color: '', 
+              desc: "يجوز للمتعجل المغادرة والاكتفاء برمي ٤٩ حصاة، وبذلك يسقط عنه مبيت ورمي اليوم الـ ١٣. <strong>الشرط الأساسي:</strong> الخروج من حدود منى قبل غروب شمس يوم ١٢ ذي الحجة. فإن غربت الشمس وهو لا يزال داخل حدود منى، لزمه المبيت ليلة ١٣ والرمي في اليوم التالي ليكمل ٧٠ حصاة.",
+              img: 'https://media.elbalad.news/2024/10/large/948/2/471.jpeg', imgPos: 'side'            },
+           { 
+              time: 'عند السفر', title: 'طواف الوداع (واجب)', isPrayer: false, color: 'var(--color-primary)', 
+              desc: `
+                طواف ٧ أشواط حول الكعبة بدون سعي، وهو آخر عهد الحاج بمكة المكرمة قبل سفره مباشرة إلى بلده.<br><br>
+                <strong>💡 أحكام ومستحبات خاصة بهذا الطواف:</strong><br>
+                • <strong>اللباس:</strong> يُؤدى بالملابس العادية (لأن الحاج قد تحلل تماماً من الإحرام).<br>
+                • <strong>لا رمل ولا اضطباع:</strong> طواف الوداع مفيش فيه "هرولة" (رمل) في أول ٣ أشواط، ولا فيه "اضطباع" (كشف الكتف الأيمن). بتمشي مشي عادي جداً في الـ ٧ أشواط، لأن السنن دي بتكون بس في الطواف اللي بعده سعي (زي طواف القدوم أو العمرة).<br>
+                • <strong>الطهارة:</strong> الوضوء وستر العورة شرط أساسي لصحته زي أي طواف.<br><br>
+                <strong>تنبيه هام:</strong> يسقط هذا الطواف الواجب عن الحائض والنفساء تخفيفاً من الشرع، وتسافر مباشرة دون وداع ولا فدية عليها.
+              `,
+              img: 'https://media.elbalad.news/2024/10/large/948/2/471.jpeg', imgPos: 'side'            }
+          ]
+        }
+      ]
+    },
+    qiran: {
+      icon: '⚜️', name: 'حج القران',
+      desc: 'أن ينوي الحاج الإحرام بالعمرة والحج معاً بلفظ واحد من الميقات، ويبقى على إحرامه ولا يتحلل أبداً حتى ينهي جميع أعمال الحج يوم العيد.',
+      features: [
+        'الإحرام مرة واحدة فقط، وعدم التحلل بعد الوصول لمكة.',
+        'يكفيه طواف واحد (الإفاضة) وسعي واحد عن الحج والعمرة معاً.',
+        'يجب عليه ذبح الهدي كالمتمتع تماماً.'
+      ],
+      days: [
+        {
+          num: '🕋', name: 'الوصول لمكة', date: 'قبل يوم ٨ ذي الحجة',
+          prayer: 'تُصلى الصلوات الخمس بشكل طبيعي في المسجد الحرام.',
+          hours: [
+            { 
+              time: 'الميقات', title: 'النية والإحرام للقران', isPrayer: false, color: '', 
+              desc: "الاغتسال ولبس الإحرام.<br><strong>حديث السروال والخفين:</strong> من لم يجد إزاراً لبس البنطلون ومن لم يجد نعلاً لبس خفاً أسفل الكعبين.<br><strong>النية والاشتراط:</strong> يعقد النية ويقول: <em>'لبيك اللهم بحج وعمرة'</em>. ويُسن أن يتبعها بالاشتراط: <em>'فإن حبسني حابس فمحلي حيث حبستني'</em>.<br>يبقى بهذا الإحرام ويُحرم عليه كل المحظورات حتى يوم النحر." 
+            },
+            { 
+              time: 'عند الوصول', title: 'دعاء الكعبة وطواف القدوم (سنة)', guideBtn: 'الطواف', isPrayer: false, color: '', 
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiwU9AXcF2Y2le76dXybQE0GmP1cli9jS9rQ&s', imgPos: 'side',
+              desc: "عند رؤية الكعبة يُسن الدعاء: <em>«اللهم زِدْ هذا البيت تشريفاً وتعظيماً...»</em>. ثم يؤدي طواف القدوم (٧ أشواط تحية للمسجد الحرام). يُسن فيه 'الاضطباع' للرجال طوال الطواف، و'الرمل' في أول ٣ أشواط. ثم يصلي ركعتين خلف المقام ويشرب من زمزم." 
+            },
+            { 
+              time: 'بعد الطواف', title: 'سعي الحج (تقديم اختياري)', guideBtn: 'السعي', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/BQ8PXXkD/hajj-Page-029-Image-0002.jpg', imgPos: 'side',
+              desc: "يجوز للقارن (والمفرد) تقديم سعي الحج بعد طواف القدوم لتخفيف الزحام يوم العيد. ويقرأ عند الصفا: <em>«إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ»</em>." 
+            },
+            { 
+              time: 'طوال الوقت', title: 'الاستمرار بالإحرام', isPrayer: false, color: '#c0392b', 
+              desc: "<strong>تنبيه هام:</strong> يُمنع الحاج من جميع محظورات الإحرام ولا يَحلق ولا يُقصر ولا يتحلل أبداً بعد طواف القدوم، بل يبقى على إحرامه حتى يوم العيد." 
+            }
+          ]
+        },
+        {
+          num: '١', name: 'يوم التروية', date: '٨ ذي الحجة',
+          prayer: 'تصلى الصلوات الخمس بمنى قصراً للرباعية بدون جمع.',
+          hours: [
+            { 
+              time: 'الضحى', title: 'البقاء على الإحرام وسبب التسمية', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/hPHzxKRH/hajj-Page-014-Image-0001.jpg', imgPos: 'side',
+              desc: `
+                <strong>لماذا سُمي بيوم التروية؟</strong> لأن الحجاج قديماً كانوا يرتوون من الماء في مكة ويحملونه معهم إلى منى وعرفات لعدم وجود مصادر للماء هناك في ذلك الزمان.<br><br>
+                <strong>موقفك الآن (كقارن):</strong> أنت ما زلت على إحرامك الأول الذي نويته من الميقات (لبيك حجاً وعمرة)، فلا تحتاج إلى تجديد النية أو الاغتسال أو لبس إحرام جديد. أنت جاهز للتحرك فوراً بملابس إحرامك الحالية التي لم تخلعها.
+              ` 
+            },
+            { 
+              time: 'الزوال', title: 'التوجه إلى منى (سنة)', isPrayer: false, color: '', 
+              desc: `
+                التوجه إلى مشعر منى قبل الزوال (الظهر) والمبيت بها استعداداً للوقوف بعرفة غداً.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 حكم الذهاب والمبيت بمنى (يوم التروية):</strong><br>
+                الذهاب إلى منى والمبيت بها ليلة التاسع <strong>سُنة مستحبة</strong> وليس ركناً ولا واجباً. فمن لم يذهب لمنى في هذا اليوم وتوجه إلى عرفة مباشرة لزحام أو تنظيم للحملة، فحجه صحيح تماماً، ولا إثم عليه، ولا تلزمه فدية.
+                </div>
+                تُكثر من التلبية (لبيك اللهم لبيك) جهاراً للرجال وسراً للنساء طوال الطريق.
+              `,
+              img: 'https://via.placeholder.com/600x400/1a6b3c/ffffff?text=التوجه+إلى+منى', imgPos: 'side'
+            },
+            { 
+              time: 'أوقات الصلاة', title: 'صلاة القصر بلا جمع', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "تصلي بمنى ٥ صلوات: الظهر، العصر، المغرب، العشاء، وفجر يوم عرفة (يوم ٩). تصلي الرباعية ركعتين (قصراً)، والمغرب ثلاث ركعات. <strong>القاعدة هنا:</strong> تصلي كل صلاة في وقتها المحدد (بدون جمع) تأسياً بفعل النبي ﷺ.",
+              img: 'https://via.placeholder.com/600x400/c9930a/ffffff?text=صلاة+القصر', imgPos: 'side'
+            }
+          ]
+        },
+       {
+          num: '٢', name: 'يوم عرفة - الركن الأعظم ⭐', date: '٩ ذي الحجة',
+          prayer: 'الظهر والعصر جمع تقديم وقصر في عرفة، والمغرب والعشاء جمع تأخير وقصر عند الوصول لمزدلفة.',
+          hours: [
+            { 
+              time: 'بعد الشروق', title: 'التوجه لعرفات', isPrayer: false, color: '', 
+              desc: "السير بهدوء وسكينة مع الاستمرار في التلبية وتكبيرات العيد للوصول إلى عرفات. تأكد من دخولك حدود عرفات (توجد لوحات إرشادية ضخمة تحدد البداية والنهاية)، لقوله ﷺ: «وقفت هاهنا وعرفة كلها موقف». الوقوف خارج الحدود يبطل الحج.",
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTTKlmL3ygfi04pjpk9XIHcVK4LTLZ7H67w&s', imgPos: 'side'
+            },
+            { 
+              time: 'وقت الزوال', title: 'خطبة عرفة والصلاة', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "الاستماع لخطبة عرفة. أداء صلاة الظهر والعصر (ركعتين ركعتين) جمع تقديم بأذان واحد وإقامتين، ولا يُصلى بينهما ولا قبلهما شيء من السنن، للتفرغ التام للدعاء في هذا اليوم العظيم.",
+              img: 'https://palsawa.com/uploads/images/TKjkb.jpg', imgPos: 'side'
+            },
+            { 
+              time: 'حتى الغروب', title: 'الوقوف بعرفة (الركن)', isPrayer: false, color: '#e74c3c', 
+              desc: `
+                التفرغ التام للدعاء والذكر والابتهال رافعاً يديك ومستقبلاً القبلة حتى غروب الشمس.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 أدعية مأثورة وتوجيهات هامة:</strong><br>
+                • <strong>أفضل الدعاء:</strong> قال النبي ﷺ: "خير الدعاء دعاء يوم عرفة، وخير ما قلت أنا والنبيون من قبلي: لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير".<br>
+                • <strong>أدعية جوامع:</strong> "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار"، "اللهم إنك عفو تحب العفو فاعف عني". ألح في الدعاء لنفسك وأهلك واطلب المغفرة والعتق من النار.<br>
+                • <strong>جبل الرحمة:</strong> صعود "جبل الرحمة" ليس سنة بل يسبب زحاماً وخطراً. الوقوف في خيمتك أو أي مكان داخل حدود عرفة يجزئ تماماً.<br>
+                • <strong>شرط أساسي:</strong> يُمنع الانصراف قبل تأكد غروب الشمس. من غادر قبل الغروب ولم يرجع وجب عليه دم (فدية).
+                </div>
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTTKlmL3ygfi04pjpk9XIHcVK4LTLZ7H67w&s', imgPos: 'side'
+            },
+            { 
+              time: 'بعد الغروب', title: 'الإفاضة لمزدلفة', isPrayer: false, color: '', 
+              desc: "مغادرة عرفات والتوجه إلى مزدلفة بسكينة ووقار تلبيةً لقوله ﷺ: «أيها الناس، السكينة السكينة». لا تصلِ المغرب في عرفة، بل تؤخرها لتصليها فور وصولك إلى مزدلفة.",
+              img: 'https://i.postimg.cc/HnL1ccrj/mozdalifat01.png', imgPos: 'side'            },
+            { 
+              time: 'في مزدلفة', title: 'الصلاة وجمع الحصيات', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "فور الوصول لمزدلفة، تصلي المغرب (٣ ركعات) والعشاء (ركعتين) جمع تأخير وقصر بأذان وإقامتين. المبيت بمزدلفة (واجب). يُسن جمع ٧ حصيات فقط (بحجم حبة الحمص أو البندق) لرمي جمرة العقبة الكبرى صباح العيد، ويجوز جمعها من منى لاحقاً.",
+              img: 'https://img.youm7.com/ArticleImgs/2018/8/20/93124-000-3682623601534799387025.jpg', imgPos: 'side'            }
+          ]
+        },
+        {
+          num: '٣', name: 'يوم النحر (يوم العيد)', date: '١٠ ذي الحجة',
+          prayer: 'الفجر في مزدلفة قبل التوجه إلى منى.',
+          hours: [
+            { 
+              time: 'الصباح', title: 'رمي جمرة العقبة', isPrayer: false, color: '', 
+              desc: "رمي ٧ حصيات بجمرة العقبة الكبرى مع التكبير." 
+            },
+           { 
+  time: 'بعد الرمي', 
+  title: 'الهدي والتحلل الأصغر', 
+  isPrayer: false, 
+  color: '', 
+  desc: `
+    <strong>١. ذبح الهدي:</strong> واجب على المتمتع والقارن (شاة أو سبع بدنة/بقرة).<br>
+    • <strong>متى يذبح؟</strong> يبدأ من بعد صلاة العيد يوم ١٠ ذي الحجة وحتى غروب شمس آخر أيام التشريق (١٣ ذي الحجة).<br>
+    • <strong>أين يذبح؟</strong> في مكة أو منى (الحرم كله منحر).<br>
+    • <strong>لمن لم يجد الهدي:</strong> يجب عليه صيام ١٠ أيام (٣ في الحج و٧ إذا رجع لأهله) لقوله تعالى: <em>{فَمَن تَمَتَّعَ بِالْعُمْرَةِ إِلَى الْحَجِّ فَمَا اسْتَيْسَرَ مِنَ الْهَدْيِ فَمَن لَّمْ يَجِدْ فَصِيَامُ ثَلَاثَةِ أَيَّامٍ فِي الْحَجِّ وَسَبْعَةٍ إِذَا رَجَعْتُمْ}</em>.<br>
+    • <strong>التوكيل (الصكوك):</strong> يجوز شراء صكوك الهدي من الجهات المعتمدة (مثل الراجحي أو مشروع إفادة) في مكة أو المدينة أو حتى من بلدك أونلاين، وتعتبر وكيلاً عنك في الذبح والتوزيع.<br><br>
+    <strong>٢. الحلق أو التقصير:</strong> بعد الذبح (أو التأكد من الصك)، يحلق الرجل رأسه أو يقصر، وتقص المرأة قدر أنملة.<br>
+    <strong>النتيجة:</strong> التحلل الأول (الأصغر)؛ يحل لك كل شيء إلا النساء.
+  `
+},
+            { 
+              time: 'خلال اليوم', title: 'طواف الإفاضة', guideBtn: 'الطواف', isPrayer: false, color: '', 
+              desc: "طواف الإفاضة (ركن الحج). وإذا لم يكن قد سعى بعد طواف القدوم، يجب عليه السعي الآن. وبهذا يتم التحلل الأكبر." 
+            }
+          ]
+        },
+         {
+          num: '٤', name: 'أيام التشريق والوداع', date: '١١، ١٢، ١٣ ذي الحجة',
+          prayer: 'تُؤدى الصلوات الخمس قصراً (للرباعية) في أوقاتها بمنى دون جمع.',
+          hours: [
+            { 
+              time: 'المبيت', title: 'المبيت بمنى (أحكام وفتاوى هامة)', isPrayer: false, color: '', 
+              desc: `
+                <strong>الحكم الأساسي:</strong> المبيت بمنى ليالي التشريق "واجب" عند جمهور الفقهاء، ومن تركه لغير عذر لزمه دم.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 فتوى الخيام خارج منى (في مزدلفة أو العزيزية):</strong><br>
+                إذا ضاقت منى بالحجاج، وكانت مخيماتهم الرسمية (التي حددتها الحملة) تمتد خارج حدود منى، <strong>فينام الحاج في خيمته ولا حرج عليه، ولا إثم، ولا فدية (لا يلزمه دم)</strong>. لأن الواجب يسقط بالعجز للزحام، لقوله تعالى: <em>(فاتقوا الله ما استطعتم)</em>.<br>
+                📜 <strong>من أفتى بذلك؟</strong> هيئة كبار العلماء بالسعودية (وعلى رأسهم الإمام ابن باز وابن عثيمين رحمهما الله)، حيث أفتوا بالاتصال المكاني للخيام.<br><br>
+                <strong>💡 فتوى سقوط المبيت للمشقة:</strong><br>
+                أفتت <strong>دار الإفتاء المصرية</strong> وغيرها، بأنه يجوز ترك المبيت بمنى للمرضى والضعفاء، بل ولعموم الحجاج إذا كان هناك زحام شديد يهدد الأرواح، أخذًا برخصة النبي ﷺ للرعاة والسقاة، وتقليداً لمن قال بسنيته، رفعاً للحرج.
+                </div>
+              `,
+              img: 'https://www.al-qaradawi.net/sites/default/files/styles/detailed/public/field/image/342743481c291a4957926443fe59f62cb2ca4db36.jpg?itok=-EHKBdnS', imgPos: 'side'            },
+          { 
+              time: 'بعد الزوال', 
+              title: 'رمي الجمرات الثلاث (التفاصيل والأحكام)', 
+              isPrayer: false, 
+              color: '', 
+              desc: `
+                يبدأ الرمي في أيام التشريق <strong>بعد أذان الظهر</strong> (الزوال) ويمتد لليل تيسيراً وتخفيفاً للزحام.<br><br>
+                <strong>📌 إجمالي الحصيات للحج:</strong><br>
+                • <strong>للمتعجل:</strong> ٤٩ حصاة (٧ يوم العيد + ٢١ يوم ١١ + ٢١ يوم ١٢).<br>
+                • <strong>للمتأخر (غير المتعجل):</strong> ٧٠ حصاة (تزيد ٢١ حصاة يوم ١٣).<br><br>
+                <strong>📌 ترتيب وطريقة الرمي (بالتتابع):</strong><br>
+                ١. <strong>الجمرة الصغرى:</strong> (أقرب جمرة لمسجد الخيف). ترميها بـ ٧ حصيات متعاقبة (واحدة تلو الأخرى).<br>
+                ٢. <strong>الجمرة الوسطى:</strong> ترميها بـ ٧ حصيات بنفس الطريقة.<br>
+                ٣. <strong>جمرة العقبة الكبرى:</strong> (أقرب جمرة لمكة). ترميها بـ ٧ حصيات، وتنصرف فوراً.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 الأدعية المأثورة وسنة الدعاء:</strong><br>
+                • تقول مع كل حصاة: <strong>"الله أكبر"</strong>. ويُستحب أن تقول: <strong>"اللهم اجعله حجاً مبروراً، وذنباً مغفوراً"</strong>.<br>
+                • <strong>سنة الإطالة:</strong> بعد الانتهاء من رمي (الصغرى) تبتعد وتقف مستقبل القبلة وتدعو طويلاً بما شئت. وتفعل نفس الشيء بعد (الوسطى). أما الكبرى فلا تقف ولا تدعو بعدها.<br><br>
+                <strong>💡 ضوابط وفتاوى هامة:</strong><br>
+                • <strong>الهدف:</strong> يشترط وقوع الحصاة داخل "الحوض"، ولا يشترط ضرب العمود (الشاخص).<br>
+                • <strong>الحجم:</strong> كحبة الحمص، ولا يصح الرمي بحجارة كبيرة أو أحذية.<br>
+                • <strong>التوكيل:</strong> يجوز للمرضى وكبار السن والنساء توكيل غيرهم في الرمي وقت الزحام الشديد. الوكيل يرمي ٧ عن نفسه عند الصغرى، ثم ٧ عن موكله في نفس المكان، وهكذا في الباقي.
+                </div>
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROTSdqSpoqeB9ilghOe2i2t8_pzd_QkyOrOw&s',               imgPos: 'side'
+            },
+            { 
+              time: 'اليوم ١٢', title: 'التعجل (اختياري)', isPrayer: false, color: '', 
+              desc: "يجوز للمتعجل المغادرة والاكتفاء برمي ٤٩ حصاة، وبذلك يسقط عنه مبيت ورمي اليوم الـ ١٣. <strong>الشرط الأساسي:</strong> الخروج من حدود منى قبل غروب شمس يوم ١٢ ذي الحجة. فإن غربت الشمس وهو لا يزال داخل حدود منى، لزمه المبيت ليلة ١٣ والرمي في اليوم التالي ليكمل ٧٠ حصاة.",
+              img: 'https://via.placeholder.com/600x400/1a6b3c/ffffff?text=التعجل', imgPos: 'side'
+            },
+           { 
+              time: 'عند السفر', title: 'طواف الوداع (واجب)', isPrayer: false, color: 'var(--color-primary)', 
+              desc: `
+                طواف ٧ أشواط حول الكعبة بدون سعي، وهو آخر عهد الحاج بمكة المكرمة قبل سفره مباشرة إلى بلده.<br><br>
+                <strong>💡 أحكام ومستحبات خاصة بهذا الطواف:</strong><br>
+                • <strong>اللباس:</strong> يُؤدى بالملابس العادية (لأن الحاج قد تحلل تماماً من الإحرام).<br>
+                • <strong>لا رمل ولا اضطباع:</strong> طواف الوداع مفيش فيه "هرولة" (رمل) في أول ٣ أشواط، ولا فيه "اضطباع" (كشف الكتف الأيمن). بتمشي مشي عادي جداً في الـ ٧ أشواط، لأن السنن دي بتكون بس في الطواف اللي بعده سعي (زي طواف القدوم أو العمرة).<br>
+                • <strong>الطهارة:</strong> الوضوء وستر العورة شرط أساسي لصحته زي أي طواف.<br><br>
+                <strong>تنبيه هام:</strong> يسقط هذا الطواف الواجب عن الحائض والنفساء تخفيفاً من الشرع، وتسافر مباشرة دون وداع ولا فدية عليها.
+              `,
+              img: 'https://media.elbalad.news/2024/10/large/948/2/471.jpeg', imgPos: 'side'            }
+          ]
+        }
+      ]
+    },
+
+    ifrad: {
+      icon: '🌙', name: 'حج الإفراد',
+      desc: 'الإحرام بالحج وحده بلفظ (لبيك بحج)، ويبقى المحرم على صفة الإحرام ولا يتحلل حتى ينتهي من رمي جمرة العقبة الكبرى يوم العيد.',
+      features: [
+        'نية الحج فقط دون عمرة من الميقات.',
+        'الاستمرار في الإحرام وعدم التحلل عند الوصول لمكة المكرمة.',
+        'لا يجب عليه ذبح الهدي إطلاقاً (مُعفى من الدم تيسيراً عليه).'
+      ],
+      days: [
+        {
+          num: '🕋', name: 'الوصول لمكة', date: 'قبل يوم ٨ ذي الحجة',
+          prayer: 'تُصلى الصلوات الخمس بشكل طبيعي في المسجد الحرام دون قصر.',
+          hours: [
+            { 
+              time: 'الميقات', title: 'النية والإحرام للإفراد', isPrayer: false, color: '', 
+              desc: "الاغتسال والتطهر، ولبس ملابس الإحرام.<br><strong>حديث السروال والخفين:</strong> من لم يجد إزاراً لبس البنطلون، ومن لم يجد نعلاً لبس خفاً أسفل الكعبين.<br><strong>النية والاشتراط:</strong> عقد النية من الميقات بالقلب وقول: <em>'لبيك اللهم بحج'</em>. ويُسن أن يشترط: <em>'فإن حبسني حابس فمحلي حيث حبستني'</em>.<br>يبقى بهذا الإحرام ويُمنع من جميع المحظورات حتى صباح يوم النحر (يوم العيد)." 
+            },
+            { 
+              time: 'دخول الحرم', title: 'دعاء رؤية الكعبة وطواف القدوم (سنة)', guideBtn: 'الطواف', isPrayer: false, color: '', 
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiwU9AXcF2Y2le76dXybQE0GmP1cli9jS9rQ&s', imgPos: 'side',
+              desc: "<strong>دعاء رؤية الكعبة:</strong> يُسن أن يقول: <em>«اللهم زِدْ هذا البيت تشريفاً وتعظيماً...»</em>.<br><strong>التعريف:</strong> هو طواف تحية المسجد الحرام للقادم من خارج مكة (سنة وليس ركناً).<br><strong>الصفة:</strong> ٧ أشواط كاملة حول الكعبة. يُسن فيها 'الاضطباع' (كشف الكتف الأيمن) طوال الطواف، و 'الرمل' (الإسراع في المشي) للرجال في الأشواط الثلاثة الأولى فقط.<br>يصلي بعدها ركعتين خلف مقام إبراهيم ويشرب من زمزم ويتضلع." 
+            },
+            { 
+              time: 'بعد الطواف', title: 'سعي الحج (تقديم السعي اختياري)', guideBtn: 'السعي', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/BQ8PXXkD/hajj-Page-029-Image-0002.jpg', imgPos: 'side',
+              desc: "<strong>رخصة التقديم:</strong> يجوز للمفرد والقارن أن يُقدم سعي الحج فيسعاه بعد طواف القدوم مباشرة (للتخفيف من زحام يوم العيد).<br>يصعد الصفا ويقرأ: <em>«إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ»</em>، ويهرول الرجال بين العلمين الأخضرين.<br>إذا سعى الآن ٧ أشواط، فقد سقط عنه السعي يوم النحر، ويكتفي حينها بطواف الإفاضة فقط." 
+            },
+            { 
+              time: 'طوال الوقت', title: 'الاستمرار بالإحرام (مهم جداً)', isPrayer: false, color: '#c0392b', 
+              desc: "<strong>تنبيه هام جداً للمُفرد:</strong> إياك أن تحلق أو تقصِّر بعد طواف القدوم أو السعي! المفرِد لا يتحلل الآن، ولا يحل له شيء من المحظورات، بل يبقى بملابس الإحرام ويجتنب الطيب وقص الأظافر والجماع حتى يوم ١٠ ذي الحجة." 
+            }
+          ]
+        },
+       {
+          num: '١', name: 'يوم التروية', date: '٨ ذي الحجة',
+          prayer: 'تصلى الصلوات الخمس بمنى قصراً للرباعية بدون جمع.',
+          hours: [
+            { 
+              time: 'الضحى', title: 'البقاء على الإحرام وسبب التسمية', isPrayer: false, color: '', 
+              img: 'https://i.postimg.cc/hPHzxKRH/hajj-Page-014-Image-0001.jpg', imgPos: 'side',
+              desc: `
+                <strong>لماذا سُمي بيوم التروية؟</strong> لأن الحجاج قديماً كانوا يرتوون من الماء في مكة ويحملونه معهم إلى منى وعرفات لعدم وجود مصادر للماء هناك في ذلك الزمان.<br><br>
+                <strong>موقفك الآن (كمُفرد):</strong> أنت ما زلت على إحرامك الذي نويته من الميقات للحج فقط، ولم تتحلل منه. لذلك لا تحتاج إلى اغتسال أو لبس إحرام جديد أو تجديد للنية. ستتوجه إلى منى مباشرة بوضعك الحالي.
+              ` 
+            },
+            { 
+              time: 'الزوال', title: 'التوجه إلى منى (سنة)', isPrayer: false, color: '', 
+              desc: `
+                التوجه إلى مشعر منى قبل الزوال (الظهر) والمبيت بها استعداداً للوقوف بعرفة غداً.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 حكم الذهاب والمبيت بمنى (يوم التروية):</strong><br>
+                الذهاب إلى منى والمبيت بها ليلة التاسع <strong>سُنة مستحبة</strong> وليس ركناً ولا واجباً. فمن لم يذهب لمنى في هذا اليوم وتوجه إلى عرفة مباشرة لزحام أو تنظيم للحملة، فحجه صحيح تماماً، ولا إثم عليه، ولا تلزمه فدية.
+                </div>
+                تُكثر من التلبية (لبيك اللهم لبيك) جهاراً للرجال وسراً للنساء طوال الطريق.
+              `,
+              img: 'https://via.placeholder.com/600x400/1a6b3c/ffffff?text=التوجه+إلى+منى', imgPos: 'side'
+            },
+            { 
+              time: 'أوقات الصلاة', title: 'صلاة القصر بلا جمع', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "تصلي بمنى ٥ صلوات: الظهر، العصر، المغرب، العشاء، وفجر يوم عرفة (يوم ٩). تصلي الرباعية ركعتين (قصراً)، والمغرب ثلاث ركعات. <strong>القاعدة هنا:</strong> تصلي كل صلاة في وقتها المحدد (بدون جمع) تأسياً بفعل النبي ﷺ.",
+              img: 'https://modo3.com/thumbs/fit630x300/102462/1584438273/%D8%B4%D8%B1%D9%88%D8%B7_%D8%B5%D9%84%D8%A7%D8%A9_%D8%A7%D9%84%D9%82%D8%B5%D8%B1.jpg', imgPos: 'side'
+            }
+          ]
+        },
+        {
+          num: '٢', name: 'يوم عرفة - الركن الأعظم ⭐', date: '٩ ذي الحجة',
+          prayer: 'الظهر والعصر جمع تقديم وقصر في عرفة، والمغرب والعشاء جمع تأخير وقصر عند الوصول لمزدلفة.',
+          hours: [
+            { 
+              time: 'بعد الشروق', title: 'التوجه لعرفات', isPrayer: false, color: '', 
+              desc: "السير بهدوء وسكينة مع الاستمرار في التلبية وتكبيرات العيد للوصول إلى عرفات. تأكد من دخولك حدود عرفات (توجد لوحات إرشادية ضخمة تحدد البداية والنهاية)، لقوله ﷺ: «وقفت هاهنا وعرفة كلها موقف». الوقوف خارج الحدود يبطل الحج.",
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTTKlmL3ygfi04pjpk9XIHcVK4LTLZ7H67w&s', imgPos: 'side'
+            },
+            { 
+              time: 'وقت الزوال', title: 'خطبة عرفة والصلاة', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "الاستماع لخطبة عرفة. أداء صلاة الظهر والعصر (ركعتين ركعتين) جمع تقديم بأذان واحد وإقامتين، ولا يُصلى بينهما ولا قبلهما شيء من السنن، للتفرغ التام للدعاء في هذا اليوم العظيم.",
+              img: 'https://palsawa.com/uploads/images/TKjkb.jpg', imgPos: 'side'
+            },
+            { 
+              time: 'حتى الغروب', title: 'الوقوف بعرفة (الركن)', isPrayer: false, color: '#e74c3c', 
+              desc: `
+                التفرغ التام للدعاء والذكر والابتهال رافعاً يديك ومستقبلاً القبلة حتى غروب الشمس.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 أدعية مأثورة وتوجيهات هامة:</strong><br>
+                • <strong>أفضل الدعاء:</strong> قال النبي ﷺ: "خير الدعاء دعاء يوم عرفة، وخير ما قلت أنا والنبيون من قبلي: لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير".<br>
+                • <strong>أدعية جوامع:</strong> "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار"، "اللهم إنك عفو تحب العفو فاعف عني". ألح في الدعاء لنفسك وأهلك واطلب المغفرة والعتق من النار.<br>
+                • <strong>جبل الرحمة:</strong> صعود "جبل الرحمة" ليس سنة بل يسبب زحاماً وخطراً. الوقوف في خيمتك أو أي مكان داخل حدود عرفة يجزئ تماماً.<br>
+                • <strong>شرط أساسي:</strong> يُمنع الانصراف قبل تأكد غروب الشمس. من غادر قبل الغروب ولم يرجع وجب عليه دم (فدية).
+                </div>
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbTTKlmL3ygfi04pjpk9XIHcVK4LTLZ7H67w&s', imgPos: 'side'
+            },
+            { 
+              time: 'بعد الغروب', title: 'الإفاضة لمزدلفة', isPrayer: false, color: '', 
+              desc: "مغادرة عرفات والتوجه إلى مزدلفة بسكينة ووقار تلبيةً لقوله ﷺ: «أيها الناس، السكينة السكينة». لا تصلِ المغرب في عرفة، بل تؤخرها لتصليها فور وصولك إلى مزدلفة.",
+              img: 'https://i.postimg.cc/HnL1ccrj/mozdalifat01.png', imgPos: 'side'            },
+            { 
+              time: 'في مزدلفة', title: 'الصلاة وجمع الحصيات', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "فور الوصول لمزدلفة، تصلي المغرب (٣ ركعات) والعشاء (ركعتين) جمع تأخير وقصر بأذان وإقامتين. المبيت بمزدلفة (واجب). يُسن جمع ٧ حصيات فقط (بحجم حبة الحمص أو البندق) لرمي جمرة العقبة الكبرى صباح العيد، ويجوز جمعها من منى لاحقاً.",
+              img: 'https://img.youm7.com/ArticleImgs/2018/8/20/93124-000-3682623601534799387025.jpg', imgPos: 'side'            }
+          ]
+        },
+        {
+          num: '٣', name: 'يوم النحر (يوم العيد)', date: '١٠ ذي الحجة',
+          prayer: 'الفجر في مزدلفة، وباقي الصلوات في أوقاتها بمنى.',
+          hours: [
+            { 
+              time: 'الفجر', title: 'الدعاء بعد الفجر بمزدلفة', isPrayer: true, color: 'var(--color-gold)', 
+              desc: "يصلي الفجر في مزدلفة في أول وقته، ويقف عند المشعر الحرام يدعو ويكبر ويهلل حتى يسفر الصباح جداً (قبل الشروق)." 
+            },
+            { 
+              time: 'الصباح', title: 'رمي الجمرة والتحلل الأصغر', isPrayer: false, color: '', 
+              desc: "يتوجه لمنى لرمي جمرة العقبة الكبرى بـ ٧ حصيات، ويكبر مع كل حصاة، ويقطع التلبية.<br><strong>التحلل الأصغر:</strong> يحلق رأسه (وهو الأفضل) أو يقصره مباشرة بعد الرمي.<br><em>ميزة المُفرِد:</em> ليس عليه ذبح هدي إطلاقاً (معفى من الدم).<br>بهذا يحصل <strong>التحلل الأول</strong> ويحل له اللبس العادي والمخيط والطيب عدا النساء." 
+            },
+            { 
+              time: 'خلال اليوم', title: 'طواف الإفاضة والتحلل الأكبر', guideBtn: 'الطواف', isPrayer: false, color: '', 
+              desc: "النزول لمكة لأداء طواف الإفاضة (طواف الحج الركن) بملابسه العادية وبدون رمل أو اضطباع.<br><strong>سعي الحج:</strong> إن كان قد قدم السعي بعد طواف القدوم، فلا سعي عليه الآن ويكتفي بالطواف. وإن لم يكن قد سعى، وجب عليه السعي بعد الطواف.<br>بهذا يحصل <strong>التحلل الأكبر</strong> ويحل له إتيان أهله." 
+            }
+          ]
+        },
+         {
+          num: '٤', name: 'أيام التشريق والوداع', date: '١١، ١٢، ١٣ ذي الحجة',
+          prayer: 'تُؤدى الصلوات الخمس قصراً (للرباعية) في أوقاتها بمنى دون جمع.',
+          hours: [
+            { 
+              time: 'المبيت', title: 'المبيت بمنى (أحكام وفتاوى هامة)', isPrayer: false, color: '', 
+              desc: `
+                <strong>الحكم الأساسي:</strong> المبيت بمنى ليالي التشريق "واجب" عند جمهور الفقهاء، ومن تركه لغير عذر لزمه دم.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 فتوى الخيام خارج منى (في مزدلفة أو العزيزية):</strong><br>
+                إذا ضاقت منى بالحجاج، وكانت مخيماتهم الرسمية (التي حددتها الحملة) تمتد خارج حدود منى، <strong>فينام الحاج في خيمته ولا حرج عليه، ولا إثم، ولا فدية (لا يلزمه دم)</strong>. لأن الواجب يسقط بالعجز للزحام، لقوله تعالى: <em>(فاتقوا الله ما استطعتم)</em>.<br>
+                📜 <strong>من أفتى بذلك؟</strong> هيئة كبار العلماء بالسعودية (وعلى رأسهم الإمام ابن باز وابن عثيمين رحمهما الله)، حيث أفتوا بالاتصال المكاني للخيام.<br><br>
+                <strong>💡 فتوى سقوط المبيت للمشقة:</strong><br>
+                أفتت <strong>دار الإفتاء المصرية</strong> وغيرها، بأنه يجوز ترك المبيت بمنى للمرضى والضعفاء، بل ولعموم الحجاج إذا كان هناك زحام شديد يهدد الأرواح، أخذًا برخصة النبي ﷺ للرعاة والسقاة، وتقليداً لمن قال بسنيته، رفعاً للحرج.
+                </div>
+              `,
+              img: 'https://www.al-qaradawi.net/sites/default/files/styles/detailed/public/field/image/342743481c291a4957926443fe59f62cb2ca4db36.jpg?itok=-EHKBdnS', imgPos: 'side'            },
+          { 
+              time: 'بعد الزوال', 
+              title: 'رمي الجمرات الثلاث (التفاصيل والأحكام)', 
+              isPrayer: false, 
+              color: '', 
+              desc: `
+                يبدأ الرمي في أيام التشريق <strong>بعد أذان الظهر</strong> (الزوال) ويمتد لليل تيسيراً وتخفيفاً للزحام.<br><br>
+                <strong>📌 إجمالي الحصيات للحج:</strong><br>
+                • <strong>للمتعجل:</strong> ٤٩ حصاة (٧ يوم العيد + ٢١ يوم ١١ + ٢١ يوم ١٢).<br>
+                • <strong>للمتأخر (غير المتعجل):</strong> ٧٠ حصاة (تزيد ٢١ حصاة يوم ١٣).<br><br>
+                <strong>📌 ترتيب وطريقة الرمي (بالتتابع):</strong><br>
+                ١. <strong>الجمرة الصغرى:</strong> (أقرب جمرة لمسجد الخيف). ترميها بـ ٧ حصيات متعاقبة (واحدة تلو الأخرى).<br>
+                ٢. <strong>الجمرة الوسطى:</strong> ترميها بـ ٧ حصيات بنفس الطريقة.<br>
+                ٣. <strong>جمرة العقبة الكبرى:</strong> (أقرب جمرة لمكة). ترميها بـ ٧ حصيات، وتنصرف فوراً.<br><br>
+                <div style="background: var(--color-surface-offset); padding: 10px; border-right: 3px solid var(--color-primary); border-radius: var(--radius-md); margin-top: 8px;">
+                <strong>💡 الأدعية المأثورة وسنة الدعاء:</strong><br>
+                • تقول مع كل حصاة: <strong>"الله أكبر"</strong>. ويُستحب أن تقول: <strong>"اللهم اجعله حجاً مبروراً، وذنباً مغفوراً"</strong>.<br>
+                • <strong>سنة الإطالة:</strong> بعد الانتهاء من رمي (الصغرى) تبتعد وتقف مستقبل القبلة وتدعو طويلاً بما شئت. وتفعل نفس الشيء بعد (الوسطى). أما الكبرى فلا تقف ولا تدعو بعدها.<br><br>
+                <strong>💡 ضوابط وفتاوى هامة:</strong><br>
+                • <strong>الهدف:</strong> يشترط وقوع الحصاة داخل "الحوض"، ولا يشترط ضرب العمود (الشاخص).<br>
+                • <strong>الحجم:</strong> كحبة الحمص، ولا يصح الرمي بحجارة كبيرة أو أحذية.<br>
+                • <strong>التوكيل:</strong> يجوز للمرضى وكبار السن والنساء توكيل غيرهم في الرمي وقت الزحام الشديد. الوكيل يرمي ٧ عن نفسه عند الصغرى، ثم ٧ عن موكله في نفس المكان، وهكذا في الباقي.
+                </div>
+              `,
+              img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROTSdqSpoqeB9ilghOe2i2t8_pzd_QkyOrOw&s',               imgPos: 'side'
+            },
+            { 
+              time: 'اليوم ١٢', title: 'التعجل (اختياري)', isPrayer: false, color: '', 
+              desc: "يجوز للمتعجل المغادرة والاكتفاء برمي ٤٩ حصاة، وبذلك يسقط عنه مبيت ورمي اليوم الـ ١٣. <strong>الشرط الأساسي:</strong> الخروج من حدود منى قبل غروب شمس يوم ١٢ ذي الحجة. فإن غربت الشمس وهو لا يزال داخل حدود منى، لزمه المبيت ليلة ١٣ والرمي في اليوم التالي ليكمل ٧٠ حصاة.",
+              img: 'https://media.elbalad.news/2024/10/large/948/2/471.jpeg', imgPos: 'side'            },
+           { 
+              time: 'عند السفر', title: 'طواف الوداع (واجب)', isPrayer: false, color: 'var(--color-primary)', 
+              desc: `
+                طواف ٧ أشواط حول الكعبة بدون سعي، وهو آخر عهد الحاج بمكة المكرمة قبل سفره مباشرة إلى بلده.<br><br>
+                <strong>💡 أحكام ومستحبات خاصة بهذا الطواف:</strong><br>
+                • <strong>اللباس:</strong> يُؤدى بالملابس العادية (لأن الحاج قد تحلل تماماً من الإحرام).<br>
+                • <strong>لا رمل ولا اضطباع:</strong> طواف الوداع مفيش فيه "هرولة" (رمل) في أول ٣ أشواط، ولا فيه "اضطباع" (كشف الكتف الأيمن). بتمشي مشي عادي جداً في الـ ٧ أشواط، لأن السنن دي بتكون بس في الطواف اللي بعده سعي (زي طواف القدوم أو العمرة).<br>
+                • <strong>الطهارة:</strong> الوضوء وستر العورة شرط أساسي لصحته زي أي طواف.<br><br>
+                <strong>تنبيه هام:</strong> يسقط هذا الطواف الواجب عن الحائض والنفساء تخفيفاً من الشرع، وتسافر مباشرة دون وداع ولا فدية عليها.
+              `,
+              img: 'https://media.elbalad.news/2024/10/large/948/2/471.jpeg', imgPos: 'side'            }
+          ]
+        }
+      ]
+    
+  },
+      
+  },
+extraInfo: {
+women: {
+      title: "أحكام خاصة بالنساء (الحيض بجميع حالاته، اللباس، الرخص)",
+      items: [
+        "<strong style='color: var(--color-primary);'>لباس الإحرام:</strong> تحرم المرأة في ملابسها العادية الساترة (التي لا زينة فيها ولا تشبه ملابس الرجال). وليس هناك لون محدد للإحرام (كالأبيض أو الأخضر).",
+        
+        "<strong style='color: var(--color-primary);'>محظورات خاصة باللباس:</strong> يُحرم عليها لبس 'النقاب' و 'البرقع' و 'القفازين'. وتستر وجهها عن الرجال الأجانب بإسدال جزء من خمارها من أعلى رأسها على وجهها.",
+        
+        "<strong style='color: var(--color-primary);'>١. الحيض في الميقات (قبل الإحرام):</strong> إذا وصلت الميقات وهي حائض أو نفساء، تغتسل (بنية النظافة والسنة)، وتُحرم وتعقد النية وتلبي. الحيض لا يمنع من عقد نية الإحرام إطلاقاً.",
+        
+        "<strong style='color: var(--color-primary);'>٢. الحيض قبل طواف العمرة (للمتمتعة):</strong> إذا أحرمت بالعمرة ثم حاضت، ولم تطهر حتى جاء يوم التروية أو عرفة: <strong style='color: #dc2626;'>تُدخل نية الحج على العمرة وتصبح (قارنة)</strong>، وتذهب للوقوف بعرفة وتكمل الحج.",
+        
+        "<strong style='color: var(--color-primary);'>٣. الحيض بعد الطواف وقبل السعي:</strong> إذا طافت بالكعبة وهي طاهرة، ثم حاضت قبل السعي: <strong style='color: #dc2626;'>تسعى بين الصفا والمروة وحجها/عمرتها صحيحة</strong>؛ لأن الطهارة ليست شرطاً للسعي.",
+        
+        "<strong style='color: var(--color-primary);'>٤. الحيض أثناء مناسك الحج:</strong> الحائض تفعل كل أفعال الحج (تقف بعرفة، تبيت بمنى ومزدلفة، وترمي الجمرات) <strong>إلا الطواف بالكعبة</strong>، فتؤخره حتى تطهر.",
+        
+        "<strong style='color: var(--color-primary);'>٥. الحيض وطواف الإفاضة (في حال موعد السفر):</strong> الأصل أن تنتظر حتى تطهر لتطوف طواف الإفاضة (لأنه ركن). <strong style='color: #dc2626;'>ولكن للضرورة:</strong> إذا حان موعد سفرها لبلدها، ولا يمكنها التأجيل، ولا يوجد مَحْرَم يستطيع البقاء معها؛ يجوز لها أن تغتسل وتتحفظ جيداً (بفوطة تمنع نزول الدم وتلويث المسجد) وتطوف بالبيت للضرورة القصوى (وهي فتوى شيخ الإسلام ابن تيمية والمفتى به في دور الإفتاء رفعاً للحرج).",
+        
+        "<strong style='color: var(--color-primary);'>٦. الحيض وطواف الوداع:</strong> إذا حاضت المرأة بعد أداء طواف الإفاضة وقبل سفرها لبلدها، <strong>سقط عنها طواف الوداع تماماً</strong>، وتسافر مباشرة ولا فدية عليها ولا تأثم.",
+        
+        "<strong style='color: var(--color-primary);'>حبوب منع الحيض:</strong> يجوز طبياً وشرعياً استخدام العقاقير لتأجيل الحيض لتتمكن من أداء الطواف مع رفقة الحج، بشرط استشارة الطبيب وألا يضر ذلك بصحتها.",
+        
+        "<strong style='color: var(--color-primary);'>السفر بدون مَحْرَم:</strong> يجوز للمرأة السفر لأداء الحج والعمرة بدون مَحْرَم إذا توفرت 'الرفقة الآمنة' (مجموعة من النساء الثقات أو رحلة منظمة آمنة)، وهو المفتى به حالياً لتغير سبل السفر والأمن.",
+        
+        "<strong style='color: var(--color-primary);'>الرمل والاضطباع:</strong> لا يُشرع للمرأة الإسراع في الطواف (الرمل) ولا الهرولة بين العلمين الأخضرين في السعي، بل تمشي مشياً عادياً ساتراً.",
+        
+        "<strong style='color: var(--color-primary);'>التحلل (التقصير):</strong> لا تحلق المرأة شعرها إطلاقاً، بل تجمع أطراف شعرها (الضفيرة أو الذيل) وتأخذ منه وتقص قدر 'أنملة' (عقلة الإصبع) من طرفه فقط ليحصل التحلل."
+      ]
+    },
+men: {
+      title: "أحكام خاصة بالرجال (اللباس، الاحتلام، والسنن المخصوصة)",
+      items: [
+        "<strong style='color: var(--color-primary);'>١. لباس الإحرام (قاعدة المخيط):</strong> يجب أن يتجرد الرجل من كل ما 'فُصِّل' على قدر البدن أو أعضائه (كالقميص والبنطلون والسروال الداخلي)، ويلبس إزاراً ورداءً. <strong style='color: #dc2626;'>توضيح هام:</strong> المخيط ليس معناه وجود خيط في القماش، بل 'التفصيل'. لذا يجوز لبس الحزام، حقيبة المال، السوار الطبي، أو استخدام 'الكباسين' لتثبيت الإزار.",
+        
+        "<strong style='color: var(--color-primary);'>٢. تغطية الرأس:</strong> يُحرم على الرجل تغطية رأسه بملاصق (كالطاقية، العمامة، أو الكاب). <strong style='color: #dc2626;'>الرخص:</strong> يجوز له الاستظلال بمظلة (شمسية)، أو سقف خيمة وسيارة، أو حمل حقيبته على رأسه إذا لم يقصد التغطية.",
+        
+        "<strong style='color: var(--color-primary);'>٣. لباس القدم (الحذاء):</strong> الأصل لبس نعلين (شبشب/صندل) يظهر منهما الكعبان ومقدمة القدم. <strong style='color: #dc2626;'>رخصة للمضطر:</strong> من لم يجد نعلين يجوز له لبس حذاء مقطوع أسفل الكعبين (خف) ولا فدية عليه. (ويُمنع تماماً لبس الجوارب 'الشراب').",
+        
+        "<strong style='color: var(--color-primary);'>٤. الاحتلام للمُحرم:</strong> إذا نام المُحرم فاحتلم (خرج منه المني بغير إرادته أثناء النوم)، <strong style='color: #dc2626;'>فإحرامه صحيح وحجه/عمرته تامة</strong>، ولا إثم عليه ولا فدية. يجب عليه فقط الاغتسال (غسل الجنابة) وغسل ما أصاب إحرامه من نجاسة أو استبداله.",
+        
+        "<strong style='color: var(--color-primary);'>٥. سقوط الإزار وانكشاف العورة:</strong> إذا انحل إزار الحاج بغير قصد بسبب الزحام، أو نسي ووضع غطاءً على رأسه، يزيله ويربط إزاره فور تذكره <strong style='color: #dc2626;'>ولا فدية عليه ولا حرج</strong> لأنه غير متعمد.",
+        
+        "<strong style='color: var(--color-primary);'>٦. كشف الكتف (الاضطباع):</strong> يُسن للرجل كشف الكتف الأيمن <strong>في الطواف الذي يليه سعي فقط</strong> (كطواف العمرة وطواف القدوم). <strong style='color: #dc2626;'>خطأ شائع:</strong> البقاء مكشوف الكتف طوال فترة الإحرام أو أثناء الصلاة خطأ؛ يجب تغطية الكتفين فور الانتهاء من الشوط السابع وقبل صلاة الركعتين.",
+        
+        "<strong style='color: var(--color-primary);'>٧. الإسراع في المشي (الرَّمَل):</strong> يُسن للرجل الإسراع مع تقارب الخطى (هز الكتفين) في <strong>الأشواط الثلاثة الأولى فقط</strong> من طواف القدوم أو طواف العمرة. (وإذا كان الزحام شديداً يمنع ذلك، سقطت السنة ويمشي مشياً عادياً).",
+        
+        "<strong style='color: var(--color-primary);'>٨. الهرولة في السعي:</strong> يُسن للرجل الجري (الهرولة) <strong>بين العلمين الأخضرين فقط</strong> في مسعى الصفا والمروة، ثم يمشي مشياً عادياً في باقي المسار، ويفعل ذلك في الأشواط السبعة.",
+        
+        "<strong style='color: var(--color-primary);'>٩. الجهر بالتلبية:</strong> يُسن للرجال رفع الصوت جهاراً بالتلبية (لبيك اللهم لبيك) إظهاراً للشعيرة وتنشيطاً للقلب.",
+        
+        "<strong style='color: var(--color-primary);'>١٠. التحلل (الحلق والتقصير):</strong> الحلق بالموسى للرجل أفضل وأعظم أجراً من التقصير. <strong style='color: #dc2626;'>للمتمتع:</strong> يُستحب له التقصير بعد العمرة، ليترك الحلق بالموسى ليوم العيد (يوم الحج الأكبر). <strong style='color: #dc2626;'>حكم الأصلع:</strong> من لا شعر له يُمرر الموسى على رأسه (إمراراً فقط) من باب السنة ويتحلل."
+      ]
+    },
+ihram: {
+      title: "أحكام الإحرام العامة (مفاهيم وتصحيح أخطاء)",
+      items: [
+        "<strong style='color: var(--color-primary);'>١. سنن النظافة والفطرة:</strong> يُستحب تقليم الأظافر، حلق العانة، نتف الإبط، والاغتسال الكامل قبل عقد نية الإحرام (وهو سنة للرجال والنساء حتى الحائض والنفساء).",
+        
+        "<strong style='color: var(--color-primary);'>٢. حكم الطيب والعطور:</strong> يُسن وضع العطر على البدن واللحية <strong>قبل النية</strong>. <strong style='color: #dc2626;'>تنبيه خطير:</strong> يَحرم تماماً وضع أي طيب على ملابس الإحرام نفسها، ومن فعل ذلك وجب عليه غسلها أو تغييرها قبل الإحرام.",
+        
+        "<strong style='color: var(--color-primary);'>٣. حقيقة الإحرام:</strong> الإحرام ليس مجرد ارتداء الثياب البيضاء، بل هو <strong style='color: #dc2626;'>نية الدخول في النسك</strong> بالقلب. فمن لبس الثياب ولم ينوِ لم يُحرم، ومن نوى ولم يلبس (لعذر) فقد أحرم وتعلقت به الأحكام.",
+        
+        "<strong style='color: var(--color-primary);'>٤. الاغتسال والاستظلال:</strong> يجوز للمحرم الاغتسال للتبرد أو النظافة باستخدام الماء والصابون والشامبو <strong style='color: #dc2626;'>(الخالي من العطور)</strong>، ويجوز له الاستظلال بخيمة، أو شمسية، أو سقف حافلة.",
+        
+        "<strong style='color: var(--color-primary);'>٥. تغيير ملابس الإحرام:</strong> يجوز للمحرم خلع ملابس الإحرام لغسلها، أو استبدالها بملابس إحرام أخرى نظيفة متى شاء، <strong style='color: #dc2626;'>ولا يفسد ذلك إحرامه إطلاقاً</strong>.",
+        
+        "<strong style='color: var(--color-primary);'>٦. المباحات الشخصية:</strong> يجوز لبس الخاتم، ساعة اليد، النظارة، سماعة الأذن، والكمامة الطبية عند الحاجة. كما يجوز استخدام حزام البطن (الكمر) أو حقيبة الوسط لحفظ المال والأوراق.",
+        
+        "<strong style='color: var(--color-primary);'>٧. مفهوم المخيط الممنوع:</strong> المقصود بـ 'المخيط' للرجال هو ما <strong>فُصل وخيط على مقاس البدن أو العضو</strong> (كالقميص والبنطلون والجورب). <strong style='color: #dc2626;'>تصحيح لخطأ شائع:</strong> ليس المقصود وجود 'خيط' في القماش، فالحزام المخيط بخيط، والنعل المخيط، وحقيبة الخصر، كلها مباحة تماماً.",
+        
+        "<strong style='color: var(--color-primary);'>٨. سقوط الشعر بغير قصد:</strong> لا حرج في حك الرأس أو البدن برفق، وإذا سقطت شعرة من المحرم أثناء الوضوء أو الاغتسال أو بسبب الاحتكاك بغير قصد <strong style='color: #dc2626;'>فلا إثم عليه ولا فدية</strong>.",
+        
+        "<strong style='color: var(--color-primary);'>٩. رخصة لباس القدم:</strong> الأصل للرجل لبس نعلين (شبشب/صندل) يظهر منهما الكعبان. وإذا لم يجد نعلين، يجوز له لبس خف مقطوع أسفل الكعبين دون فدية.",
+        
+        "<strong style='color: var(--color-primary);'>١٠. لباس المرأة:</strong> تُحرم المرأة في أي ملابس شاءت وبأي لون تحبه (لا يشترط الأبيض أو الأخضر)، بشرط أن تكون ساترة وفضفاضة، ولا يكون فيها زينة لافتة ولا تشبه ملابس الرجال.",
+        
+        "<strong style='color: var(--color-primary);'>١١. إحرام الحائض والنفساء:</strong> المرأة الحائض أو النفساء تغتسل وتُحرم وتفعل كل مناسك الحج بالكامل (من وقوف بعرفة ومبيت ورمي وسعي)، <strong style='color: #dc2626;'>إلا الطواف بالكعبة</strong>، فتؤجله حتى تطهر."
+      ]
+    },
+    medina: {
+      title: "زيارة المدينة المنورة وأحكامها",
+      items: [
+        "زيارة المسجد النبوي سُنة عظيمة مستقلة، وليست ركناً أو شرطاً لصحة الحج والعمرة، فمن لم يزرها فحجه صحيح تماماً.",
+        "النية الصحيحة عند السفر هي (شد الرحال لزيارة المسجد النبوي) لقوله ﷺ: (لا تُشد الرحال إلا إلى ثلاثة مساجد)، وتتضمن الزيارة السلام على النبي ﷺ.",
+        "الصلاة في المسجد النبوي تُضاعف أجرها، فهي خير من ألف صلاة فيما سواه (إلا المسجد الحرام).",
+        "يُستحب الاغتسال، ولبس أحسن الثياب، والتطيب (للرجال) قبل التوجه للمسجد النبوي تأدباً في مدينة رسول الله.",
+        "عند الدخول، قَدّم رجلك اليمنى وقُل: (بسم الله، والصلاة والسلام على رسول الله، اللهم افتح لي أبواب رحمتك).",
+        "الصلاة في (الروضة الشريفة) لها فضل عظيم لقوله ﷺ: (ما بين بيتي ومنبري روضة من رياض الجنة)، ويتطلب الدخول حجز موعد مسبق عبر تطبيق (نسك).",
+        "عند السلام على النبي ﷺ، تقف بأدب وتخفض صوتك وتقول: (السلام عليك يا رسول الله)، ثم تتحرك يميناً وتسلم على أبي بكر، ثم يميناً وتسلم على عُمر رضي الله عنهما.",
+        "يُحرم شرعاً التمسح أو تقبيل الشباك النحاسي وجدران الحجرة النبوية لطلب البركة، فالدعاء يُطلب من الله وحده.",
+        "يُستحب بشدة زيارة (مسجد قباء)، فمن توضأ في فندقه ثم ذهب إليه فصلى فيه ركعتين، كُتب له أجر (عُمرة) كاملة.",
+        "تُستحب زيارة مقبرة (البقيع) للسلام على الصحابة وآل البيت، وزيارة (شهداء أُحد) والدعاء لهم بالمغفرة دون التمسح بتراب القبور.",
+        "ليس للمسجد النبوي (طواف وداع) أو (صلاة وداع) مخصوصة عند المغادرة، فيكفي أن تصلي فيه وتدعو بما شئت ثم تسافر لبلدك."
+      ]
+    },
+    fatwas: {
+      title: "فتاوى وأحكام مختارة (دار الإفتاء والمصادر المعتمدة)",
+      items: [
+        "يصح الحج عن ذوي الاحتياجات الخاصة، ولا تجب الفريضة على مريض ألزهايمر لسقوط شرط التكليف.",
+        "من أحدث (انتقض وضوؤه) في الطواف يقطعه ليتوضأ ويبني على ما طاف تيسيراً (وهو مذهب المالكية المفتى به للتيسير).",
+        "المصاب بالسلس (البول أو الريح) يتوضأ ويتحفظ ويطوف طوافاً صحيحاً ولا حرج عليه إذا خرج منه شيء أثناء الطواف.",
+        "طواف الإفاضة لا حد لآخره، وتأخيره عن أيام التشريق يجزئ ولا يلزم به دم، وإن كان الأفضل أداؤه في وقته.",
+        "يجوز الجمع بين طواف الإفاضة وطواف الوداع بنية واحدة تيسيراً وتخفيفاً على الحاج عند مغادرة مكة.",
+        "التوكيل في رمي الجمرات جائز للمرضى وكبار السن والنساء عند وجود الزحام الشديد الذي قد يسبب ضرراً.",
+        "يجوز للمرأة استخدام العقاقير الطبية لتأجيل الحيض لتمكينها من أداء ركن طواف الإفاضة مع رفقة الحج.",
+        "من ترك المبيت بمنى أو مزدلفة لعذر شرعي أو بسبب الزحام أو المرض فلا إثم عليه ولا يلزمه فدية عند بعض العلماء للتيسير.",
+        "يجوز رمي الجمرات قبل الزوال في أيام التشريق في حالات الزحام الشديد التي تهدد سلامة الحجيج (بناءً على فتاوى معاصرة).",
+        "التحلل الأصغر يحصل بفعل شيئين من ثلاثة (رمي جمرة العقبة، الحلق أو التقصير، طواف الإفاضة)، وبه يباح كل شيء إلا النساء.",
+        "يجوز الخروج من مكة إلى جدة أو الطائف بعد الإحرام وقبل الوقوف بعرفة ولا ينقطع الإحرام ولا يفسد الحج.",
+        "النية هي الركن الأساسي، فمن نوى الإحرام ولم يتلفظ بلسانه فإحرامه صحيح ومنعقد بمجرد النية القلبية.",
+        "يجوز للمرأة السفر لأداء الحج والعمرة بدون محرم متى توفرت الرفقة الآمنة، وهو ما تفتي به دار الإفتاء المصرية وتعمل به الجهات الرسمية حالياً.",
+        "الحائض والنفساء إذا حان موعد سفرها لبلدها ولم تطهر، ولا يمكنها البقاء في مكة، يجوز لها التحفظ جيداً (لبس ما يمنع نزول الدم) وأداء طواف الإفاضة للضرورة القصوى (اختيار شيخ الإسلام ابن تيمية ومفتى به للحاجة).",
+        "أداء الحج أو العمرة بالتقسيط أو بقرض حسن جائز شرعاً، بشرط أن يغلب على ظن الحاج قدرته على السداد دون الإضرار ببيته وأسرته.",
+        "من تجاوز الميقات في الطائرة ونسي الإحرام، يلزمه الرجوع للميقات إن أمكن، وإلا أحرم من مكانه وعليه فدية (ذبح شاة بمكة وتوزيعها على فقرائها).",
+        "يجوز للمحرم أن يقص شعر نفسه أو شعر زوجته ومحارمه بنية التحلل بعد الانتهاء من كامل مناسك العمرة، ولا محظور في ذلك.",
+        "الحج عن الغير (حج البدل) لا يصح إلا إذا كان النائب قد أدى فريضة الحج عن نفسه أولاً، ويجوز أداؤه عن الميت أو المريض العاجز عجزاً دائماً.",
+        "الشك في عدد أشواط الطواف أو السعي: يبني الحاج على اليقين وهو العدد الأقل، فإذا شك هل طاف ثلاثة أم أربعة، يجعلها ثلاثة ويكمل الباقي.",
+        "تقبيل الحجر الأسود سُنة، ومزاحمة الناس وإيذاؤهم للوصول إليه حَرام، ولا يجوز ارتكاب محرم لتحصيل سُنة، ويكفي الإشارة إليه من بعيد.",
+        "المرور بين يدي المصلي في المسجد الحرام والمسجد النبوي معفو عنه للحاجة والزحام الشديد، ولا يأثم المار ولا تبطل صلاة المصلي.",
+        "استخدام الكراسي المتحركة أو العربات الكهربائية في الطواف والسعي للعاجز أو المريض أو كبير السن جائز تماماً ولا ينقص من أجره شيئاً.",
+        "من نوى العمرة وهو داخل مكة (أهل مكة أو المقيم فيها)، يجب عليه الخروج إلى (أدنى الحل) مثل مسجد السيدة عائشة بالتنعيم ليحرم منه، ولا يحرم من فندقه.",
+        "استخدام الهاتف المحمول وتصوير المناسك لا يفسد الحج ولا العمرة، لكن يُنصح بتركه تجنباً للرياء وانشغال القلب عن الخشوع والدعاء."
+      ]
+    }
+  }
+    
+};
+
+// ── Render Functions ──
+function renderUmrah() {
+  const data = db.umrah;
+  let arkanHtml = data.arkan.map(item => `<li><strong>${item}</strong></li>`).join('');
+  let wajibatHtml = data.wajibat.map(item => `<li><strong>${item}</strong></li>`).join('');
+  let stepsHtml = data.steps.map(item => `<li><strong>${item.title}:</strong> ${item.desc}</li>`).join('');
+  let duasHtml = data.duas.map(item => `<li>${item}</li>`).join('');
+
+  let html = `
+    <div class="section-eyebrow">منسك مستقل</div>
+    <h2 class="section-title">${data.title}</h2>
+    <p class="section-desc">إذا كنت تريد أداء العمرة المفردة بعيداً عن مناسك الحج، فهذه أركانها وواجباتها وخطواتها بالترتيب.</p>
+    
+    <div class="umrah-box fade-in" style="margin-top: var(--space-6);">
+        <div class="umrah-grid">
+            <div class="umrah-section">
+                <h4>الأركان والواجبات</h4>
+                <ul class="umrah-list">
+                    <li style="color:var(--color-primary)"><strong>الأركان (لا تصح العمرة إلا بها):</strong></li>
+                    ${arkanHtml}
+                    <li style="margin-top: var(--space-4); color:var(--color-primary)"><strong>الواجبات (من تركها يلزمه دم):</strong></li>
+                    ${wajibatHtml}
+                </ul>
+            </div>
+            <div class="umrah-section">
+                <h4>خطوات العمل بالترتيب</h4>
+                <ul class="umrah-list">${stepsHtml}</ul>
+            </div>
+            <div class="umrah-section">
+                <h4>أدعية العمرة</h4>
+                <ul class="umrah-list">${duasHtml}</ul>
+            </div>
+        </div>
+    </div>
+  `;
+  document.getElementById('umrah-container').innerHTML = html;
+}
+
+function renderProhibitions() {
+  let html = db.prohibitions.map((item, index) => {
+    let actionId = `prohibition-${index}`;
+    return `
+      <div class="prohibition-slide">
+          <div class="slide-media">
+              <span id="placeholder-${actionId}">${item.mediaPlaceholder}</span>
+              <img id="img-${actionId}" src="" alt="${item.title}">
+          </div>
+          <div class="slide-content">
+              <span class="slide-target">يخص: ${item.target}</span>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <h3 class="slide-title">${item.title}</h3>
+                <button class="hour-link-add" onclick="openMediaModal('${actionId}')">إضافة وسائط</button>
+              </div>
+              <p class="slide-desc">${item.desc}</p>
+          </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('prohibitions-slider').innerHTML = html;
+}
+
+function renderNusk(typeId, btnEl) {
+  if(btnEl) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+
+  const data = db.hajjTypes[typeId];
+  let html = '';
+
+  let distHtml = data.features.map((feat, i) => `<li class="type-step"><span class="step-num">${i+1}</span>${feat}</li>`).join('');
+  html += `
+    <div class="type-content" id="scroll-target">
+      <div class="type-badge-big">
+        <span class="type-icon-big">${data.icon}</span>
+        <h3>${data.name}</h3>
+      </div>
+      <div class="type-desc">
+        <p>${data.desc}</p>
+        <h4 style="margin-bottom:8px; font-weight:bold; color:var(--color-primary)">أهم ما يميزه:</h4>
+        <ul class="type-steps">${distHtml}</ul>
+      </div>
+    </div>
+  `;
+
+  html += `<div class="timeline">`;
+  data.days.forEach((day, dayIndex) => {
+    let isOpen = dayIndex === 0 ? 'open' : ''; 
+    let hoursHtml = day.hours.map((hr, idx) => {
+      let isPrayerClass = hr.isPrayer ? 'is-prayer' : '';
+      let dotColor = hr.color ? `background:${hr.color}` : '';
+      
+      let hasImage = !!hr.img;
+      let hasLink = !!hr.link;
+      let imgPos = hr.imgPos || 'bottom'; 
+      
+      // 🛠️ التعديل هنا: تحديد الرابط بناءً على مسمى الزر
+      let guideUrl = 'https://umrasteps.vercel.app/'; // الافتراضي
+      if (hr.guideBtn === 'الطواف') {
+          guideUrl = 'https://tawafall.vercel.app/';
+      } else if (hr.guideBtn === 'السعي') {
+          guideUrl = 'https://sa3eall.vercel.app/';
+      }
+
+      let guideBtnHtml = hr.guideBtn ? `
+        <div style="margin-top: 12px; margin-bottom: 8px;">
+          <button onclick="openExternalGuide('${guideUrl}')" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 6px 16px; border-radius: 50px; background: var(--color-primary); color: #fff; border: none; box-shadow: 0 4px 10px rgba(26, 107, 60, 0.3);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> 
+            ابدأ ${hr.guideBtn} التفاعلي
+          </button>
+        </div>
+      ` : '';
+
+      let linkElement = hasLink ? `
+        <a class="action-link-btn" href="${hr.link}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; width: fit-content; margin-top:8px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:4px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> عرض التفاصيل
+        </a>` : '';
+
+      const zoomIconOverlay = `
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 20;">
+            <div class="zoom-icon-circle" style="background: rgba(0,0,0,0.5); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px); transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </div>
+        </div>
+      `;
+
+      const watermarkHtml = `
+        <img src="https://i.postimg.cc/yx17ZRtm/M-(512-x-512-px)-(7).png" 
+             style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                    width: 70px; height: auto; opacity: 0.2; pointer-events: none; z-index: 10;" 
+             alt="watermark">
+      `;
+
+      let bodyContent = '';
+
+      if (imgPos === 'side' && hasImage) {
+        let imgSide = `
+          <div style="position: relative; cursor: zoom-in; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border);" onclick="openImageModal('${hr.img}')">
+            <img src="${hr.img}" style="width: 100%; height: 120px; object-fit: cover; transition: transform 0.4s ease; display: block;" alt="صورة المنسك">
+            ${watermarkHtml}
+            ${zoomIconOverlay}
+          </div>
+        `;
+        bodyContent = `
+          <div style="display: flex; gap: 15px; align-items: flex-start; flex-wrap: wrap; margin-top: 8px;">
+            <div style="flex: 1 1 200px;">
+              <p class="hour-action-details" style="margin: 0;">${hr.desc}</p>
+              ${guideBtnHtml}
+              ${linkElement}
+            </div>
+            <div style="flex: 0 0 120px; max-width: 100%;">
+              ${imgSide}
+            </div>
+          </div>
+        `;
+      } else {
+        let imgBottom = hasImage ? `
+          <div style="position: relative; cursor: zoom-in; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border);" onclick="openImageModal('${hr.img}')">
+            <img src="${hr.img}" style="width: 100%; height: 180px; object-fit: cover; transition: transform 0.4s ease; display: block;" alt="صورة المنسك">
+            ${watermarkHtml}
+            ${zoomIconOverlay}
+          </div>
+        ` : '';
+        bodyContent = `
+          <p class="hour-action-details">${hr.desc}</p>
+          ${guideBtnHtml}
+          ${(hasImage || hasLink) ? `<div class="action-media-box" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">${imgBottom}${linkElement}</div>` : ''}
+        `;
+      }
+
+      return `
+        <div class="hour-item">
+          <div class="hour-time"><span class="hour-time-label">${hr.time}</span><div class="hour-dot" style="${dotColor}"></div></div>
+          <div class="hour-content">
+            <div class="hour-action ${isPrayerClass}">
+              <div class="hour-action-header" style="margin-bottom: 8px; justify-content: flex-start;">
+                <div class="hour-action-title">${hr.title}</div>
+              </div>
+              ${bodyContent}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    let prayerHtml = day.prayer ? `
+      <div class="prayer-box">
+        <svg class="prayer-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div>
+          <div class="prayer-title">🕌 ملاحظات الصلاة</div>
+          <p class="prayer-text">${day.prayer}</p>
+        </div>
+      </div>
+    ` : '';
+
+    html += `
+      <div class="day-card ${isOpen}">
+        <div class="day-header" onclick="toggleDay(this)">
+          <div class="day-num"><div class="day-num-text">${day.num}</div></div>
+          <div class="day-info">
+            <div class="day-name">${day.name}</div>
+            <div class="day-date">${day.date}</div>
+          </div>
+          <svg class="day-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+        </div>
+        <div class="day-body">
+          ${prayerHtml}
+          <div class="hours-timeline">${hoursHtml}</div>
+        </div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+
+  document.getElementById('nusk-container').innerHTML = html;
+  
+  if(btnEl) {
+    setTimeout(() => {
+        document.getElementById('scroll-target').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+function renderExtraInfo() {
+  let html = '';
+  const extras = db.extraInfo;
+  for (const key in extras) {
+    const section = extras[key];
+    let itemsHtml = section.items.map(item => `<li>${item}</li>`).join('');
+    html += `
+      <div class="extra-card">
+        <h3>${section.title}</h3>
+        <ul class="extra-list">${itemsHtml}</ul>
+      </div>
+    `;
+  }
+  document.getElementById('extra-container').innerHTML = html;
+}
+
+
+// Scroll nav highlight
+const sections = ['tips', 'umrah-section', 'types', 'extra-info'];
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.1 });
+sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+// 1. الداتا بالكامل بدون أي نقص
+function openExternalGuide(url) {
+    const container = document.getElementById('guideFrameContainer');
+    const iframe = document.getElementById('externalIframe');
+    const title = document.getElementById('frameTitle');
+    
+    // تحديد العنوان بناءً على الرابط
+    if (url.includes('umra')) title.innerText = '🕋 دليل خطوات العمرة';
+    else title.innerText = '🚶 دليل خطوات الحج';
+    
+    iframe.src = url;
+    container.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // منع التمرير في الصفحة الخلفية
+}
+
+function closeExternalGuide() {
+    const container = document.getElementById('guideFrameContainer');
+    const iframe = document.getElementById('externalIframe');
+    
+    container.style.display = 'none';
+    iframe.src = ''; // تفريغ الرابط لتوفير الموارد
+    document.body.style.overflow = ''; // إعادة التمرير
+}
+function openImageModal(imgSrc) {
+  const modal = document.getElementById('imageZoomModal');
+  const zoomedImg = document.getElementById('zoomedImage');
+  
+  zoomedImg.src = imgSrc;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden'; // منع التمرير في الخلفية عشان التركيز يكون على الصورة
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageZoomModal');
+  const zoomedImg = document.getElementById('zoomedImage');
+  
+  modal.classList.remove('open');
+  // بنأخر تفريغ الصورة جزء من الثانية عشان الأنيميشن بتاع القفل يظهر بشكل سلس
+  setTimeout(() => {
+    zoomedImg.src = ''; 
+  }, 200);
+  document.body.style.overflow = ''; // إعادة التمرير للصفحة الأصلية
+}
+function closeImageModal() {
+  const modal = document.getElementById('imageZoomModal');
+  const zoomedImg = document.getElementById('zoomedImage');
+  
+  modal.classList.remove('open');
+  // بنأخر تفريغ الصورة جزء من الثانية عشان الأنيميشن بتاع القفل يظهر بشكل سلس
+  setTimeout(() => {
+    zoomedImg.src = ''; 
+  }, 200);
+  document.body.style.overflow = ''; // إعادة التمرير للصفحة الأصلية
+}
+// متغيرات التحكم في الزوم والحركة للصورة
+let zoomScale = 1;
+let isPanning = false;
+let startPoint = { x: 0, y: 0 };
+let currentPan = { x: 0, y: 0 };
+let initialPinchDistance = 0;
+let initialZoomScale = 1;
+
+const imgToZoom = document.getElementById('zoomedImage');
+const zoomContainer = document.getElementById('imageZoomModal');
+
+// دالة تحديث مكان وحجم الصورة
+function updateImageTransform() {
+  imgToZoom.style.transform = 'translate(' + currentPan.x + 'px, ' + currentPan.y + 'px) scale(' + zoomScale + ')';
+}
+
+// التحكم بالماوس في اللاب توب
+zoomContainer.addEventListener('wheel', function(e) {
+  if (!zoomContainer.classList.contains('open')) return;
+  e.preventDefault();
+  
+  const zoomDirection = e.deltaY < 0 ? 1 : -1;
+  zoomScale += zoomDirection * 0.15;
+  
+  if (zoomScale < 1) zoomScale = 1;
+  if (zoomScale > 4) zoomScale = 4;
+  
+  if (zoomScale === 1) currentPan = { x: 0, y: 0 };
+  
+  imgToZoom.style.transition = 'transform 0.1s ease-out';
+  updateImageTransform();
+}, { passive: false });
+
+imgToZoom.addEventListener('mousedown', function(e) {
+  if (zoomScale > 1) {
+    e.preventDefault();
+    isPanning = true;
+    startPoint = { x: e.clientX - currentPan.x, y: e.clientY - currentPan.y };
+    imgToZoom.style.transition = 'none';
+    imgToZoom.style.cursor = 'grabbing';
+  }
+});
+
+window.addEventListener('mouseup', function() {
+  isPanning = false;
+  imgToZoom.style.cursor = zoomScale > 1 ? 'grab' : 'default';
+});
+
+window.addEventListener('mousemove', function(e) {
+  if (!isPanning) return;
+  currentPan.x = e.clientX - startPoint.x;
+  currentPan.y = e.clientY - startPoint.y;
+  updateImageTransform();
+});
+
+// التحكم بالتاتش في الموبايل
+zoomContainer.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    initialPinchDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    initialZoomScale = zoomScale;
+  } else if (e.touches.length === 1 && zoomScale > 1) {
+    isPanning = true;
+    startPoint = { x: e.touches[0].clientX - currentPan.x, y: e.touches[0].clientY - currentPan.y };
+    imgToZoom.style.transition = 'none';
+  }
+}, { passive: false });
+
+zoomContainer.addEventListener('touchmove', function(e) {
+  if (!zoomContainer.classList.contains('open')) return;
+  
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const currentPinchDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    zoomScale = initialZoomScale * (currentPinchDistance / initialPinchDistance);
+    
+    if (zoomScale < 1) zoomScale = 1;
+    if (zoomScale > 5) zoomScale = 5;
+    
+    if (zoomScale === 1) currentPan = { x: 0, y: 0 };
+    updateImageTransform();
+  } else if (e.touches.length === 1 && isPanning) {
+    e.preventDefault();
+    currentPan.x = e.touches[0].clientX - startPoint.x;
+    currentPan.y = e.touches[0].clientY - startPoint.y;
+    updateImageTransform();
+  }
+}, { passive: false });
+
+zoomContainer.addEventListener('touchend', function() {
+  isPanning = false;
+});
+
+// تصفير الزوم لما تقفل الشاشة السودا
+const originalCloseImageModal = window.closeImageModal;
+window.closeImageModal = function() {
+  if (originalCloseImageModal) originalCloseImageModal();
+  setTimeout(() => {
+    zoomScale = 1;
+    currentPan = { x: 0, y: 0 };
+    imgToZoom.style.transition = 'transform 0.3s ease';
+    updateImageTransform();
+  }, 300);
+};
+// وظيفة لإضافة العدادات للعناوين الثابتة في الصفحة
+function autoUpdateCounters() {
+    const grids = document.querySelectorAll('.hajj-grid');
+    
+    grids.forEach(grid => {
+        const items = grid.querySelectorAll('.interactive-card');
+        const count = items.length;
+        if (count <= 0) return;
+
+        // تحديد العنوان المرتبط (بيدور على أقرب h2 أو h3)
+        const sectionHeader = grid.closest('.container-wide')?.querySelector('.section-title') 
+                             || grid.parentElement.parentElement.querySelector('h3');
+        
+        if (sectionHeader && !sectionHeader.querySelector('.section-counter')) {
+            const counter = document.createElement('span');
+            counter.className = 'section-counter';
+            counter.textContent = count;
+
+            // 🎨 مصفوفة الألوان من الثيم بتاعك
+            const colors = ['#1a6b3c', '#c9930a', '#3da068', '#e0a820', '#145530'];
+            let gradientParts = [];
+            let percentPerItem = 100 / count;
+
+            for (let i = 0; i < count; i++) {
+                let color = colors[i % colors.length];
+                gradientParts.push(`${color} ${i * percentPerItem}% ${(i + 1) * percentPerItem}%`);
+            }
+
+            // 🛠️ إضافة الـ CSS مباشرة داخل الـ JavaScript
+            Object.assign(counter.style, {
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                marginRight: '12px',
+                verticalAlign: 'middle',
+                fontWeight: '800',
+                fontSize: '0.85rem',
+                position: 'relative',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                color: 'var(--color-text)',
+                // رسم الدايرة الملونة وتفريغ المنتصف (Donut)
+                background: `
+                    radial-gradient(circle, var(--color-surface-2) 60%, transparent 64%),
+                    conic-gradient(${gradientParts.join(', ')})
+                `
+            });
+
+            // تعديل بسيط عشان الـ Dark Mode يظبط خلفية النص
+            if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                counter.style.background = `
+                    radial-gradient(circle, var(--color-surface) 60%, transparent 64%),
+                    conic-gradient(${gradientParts.join(', ')})
+                `;
+            }
+            
+            sectionHeader.appendChild(counter);
+        }
+    });
+}
+
+// تشغيل الدالة بعد وقت كافي من رندر الكروت
+setTimeout(autoUpdateCounters, 400);
+// شغلها بعد ما الـ Render يخلص
+setTimeout(autoUpdateCounters, 100);
+</script>
 </body>
 </html>
