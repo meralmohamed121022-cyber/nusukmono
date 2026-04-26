@@ -1263,14 +1263,13 @@ function renderHajjMaster() {
         `;
     };
 
-    // ✨ تحسين السهم ليكون "نبّاض" واحترافي في نص الكارت على الشمال
     const createScrollArrow = (id) => `
         <div class="scroll-indicator" id="arrow-${id}" style="
             position: absolute; 
             left: 15px; 
             top: 50%; 
             transform: translateY(-50%); 
-            z-index: 50; 
+            z-index: 100; 
             background: var(--color-primary); 
             width: 38px; 
             height: 38px; 
@@ -1294,48 +1293,44 @@ function renderHajjMaster() {
         const navHtml = generateQuickNav(cat.items);
         const arrowHtml = createScrollArrow(cat.id);
 
-        if (cat.id === 'ihram_prohibitions') {
-            if(prohibitionsSlider) {
-                // وضع السهم داخل حاوية الـ Slider لضمان التمركز
-                prohibitionsSlider.parentElement.style.position = 'relative';
-                prohibitionsSlider.insertAdjacentHTML('beforebegin', navHtml);
-                prohibitionsSlider.insertAdjacentHTML('afterbegin', arrowHtml); // السهم هنا
-                cat.items.forEach(item => {
-                    prohibitionsSlider.insertAdjacentHTML('beforeend', createHajjCard(item));
-                });
-                attachScrollListener(prohibitionsSlider, `arrow-${cat.id}`);
-            }
+        let catHtml = `
+            <div class="category-group fade-in" style="margin-bottom: 40px; position: relative;">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+                    <div style="width:5px; height:25px; background:var(--color-primary); border-radius:10px;"></div>
+                    <h3 style="color:var(--color-text); font-family:var(--font-display); font-size:1.4rem;">${cat.name}</h3>
+                </div>
+                
+                <div style="position: relative;">
+                    ${arrowHtml}
+                    ${navHtml} <div class="hajj-grid" id="grid-${cat.id}" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory;">
+                        ${cat.items.map(item => createHajjCard(item)).join('')}
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        ${navHtml} </div>
+                </div>
+            </div>
+        `;
+
+        // إضافة المحتوى للحاوية المناسبة
+        if (cat.id === 'ihram_prohibitions' && prohibitionsSlider) {
+            prohibitionsSlider.parentElement.style.position = 'relative';
+            prohibitionsSlider.innerHTML = cat.items.map(item => createHajjCard(item)).join('');
+            prohibitionsSlider.insertAdjacentHTML('beforebegin', navHtml);
+            prohibitionsSlider.insertAdjacentHTML('afterbegin', arrowHtml);
+            prohibitionsSlider.insertAdjacentHTML('afterend', `<div style="margin-top:10px;">${navHtml}</div>`);
+            attachScrollListener(prohibitionsSlider, `arrow-${cat.id}`);
         } 
-        else if (cat.id === 'ihram_permitted') {
-            if(permittedSlider) {
-                permittedSlider.parentElement.style.position = 'relative';
-                permittedSlider.insertAdjacentHTML('beforebegin', navHtml);
-                permittedSlider.insertAdjacentHTML('afterbegin', arrowHtml); // السهم هنا
-                cat.items.forEach(item => {
-                    permittedSlider.insertAdjacentHTML('beforeend', createHajjCard(item));
-                });
-                attachScrollListener(permittedSlider, `arrow-${cat.id}`);
-            }
+        else if (cat.id === 'ihram_permitted' && permittedSlider) {
+            permittedSlider.parentElement.style.position = 'relative';
+            permittedSlider.innerHTML = cat.items.map(item => createHajjCard(item)).join('');
+            permittedSlider.insertAdjacentHTML('beforebegin', navHtml);
+            permittedSlider.insertAdjacentHTML('afterbegin', arrowHtml);
+            permittedSlider.insertAdjacentHTML('afterend', `<div style="margin-top:10px;">${navHtml}</div>`);
+            attachScrollListener(permittedSlider, `arrow-${cat.id}`);
         } 
         else {
-            let catHtml = `
-                <div class="category-group fade-in" style="margin-bottom: 40px; position: relative;">
-                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-                        <div style="width:5px; height:25px; background:var(--color-primary); border-radius:10px;"></div>
-                        <h3 style="color:var(--color-text); font-family:var(--font-display); font-size:1.4rem;">${cat.name}</h3>
-                    </div>
-                    
-                    <div style="position: relative;">
-                        ${arrowHtml}
-                        ${navHtml} 
-                        <div class="hajj-grid" id="grid-${cat.id}" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory;">
-                            ${cat.items.map(item => createHajjCard(item)).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
             if(mainContainer) mainContainer.insertAdjacentHTML('beforeend', catHtml);
-            
             setTimeout(() => {
                 const grid = document.getElementById(`grid-${cat.id}`);
                 attachScrollListener(grid, `arrow-${cat.id}`);
@@ -1349,8 +1344,14 @@ function renderHajjMaster() {
             const arrow = document.getElementById(arrowId);
             if (!arrow) return;
             
-            // في وضع RTL، السكرول بيبدأ من 0 وبيروح للسالب مع التحرك لليسار
-            if (element.scrollLeft < -60) { 
+            // حساب المسافة المتبقية للسكرول (RTL)
+            const scrollWidth = element.scrollWidth;
+            const clientWidth = element.clientWidth;
+            const scrollLeft = Math.abs(element.scrollLeft); 
+            const remainingScroll = scrollWidth - clientWidth - scrollLeft;
+
+            // السهم يختفي فقط لما نقرب جداً من نهاية السكرول (أخر كارت)
+            if (remainingScroll < 50) { 
                 arrow.style.opacity = '0';
                 arrow.style.visibility = 'hidden';
             } else {
