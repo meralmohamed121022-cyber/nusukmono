@@ -583,16 +583,18 @@ button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
     </div>
     <h1>الدليل التفاعلي الشامل<br>لمناسك الحج والعمرة</h1>
     <p>خريطة زمنية تفصيلية، إرشادات العمرة، محظورات الإحرام، وفتاوى شرعية</p>
-  <div class="hero-ctas">
+<div class="hero-ctas">
   <a href="#types" class="btn btn-primary">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="5,12 19,12"/><polyline points="12,5 19,12 12,19"/></svg>
     ابدأ خريطة الحج
   </a>
   <button onclick="openExternalGuide('https://umrasteps.vercel.app/')" class="btn btn-ghost">🕋 دليل العمرة</button>
-  <button onclick="openExternalGuide('https://hajjsteps.vercel.app/')" class="btn btn-ghost">🚶 دليل الحج</button>
   <button onclick="openExternalGuide('https://tawafall.vercel.app/')" class="btn btn-ghost">🔄 دليل الطواف</button>
   <button onclick="openExternalGuide('https://sa3eall.vercel.app/')" class="btn btn-ghost">🚶‍♂️ دليل السعي</button>
-  <button onclick="openExternalGuide('https://hajjtypes.vercel.app/')" class="btn btn-ghost">📑 أنواع الحج تفاعلي</button>
+  
+  <button onclick="openImageInFrame('https://i.postimg.cc/QMNFvyRH/Gemini-Generated-Image-xgbnffxgbnffxgbn.png', 'مستلزمات الرجال')" class="btn btn-ghost">👔 مستلزمات الرجال</button>
+  <button onclick="openImageInFrame('https://i.postimg.cc/6Q68FmDT/513163c3-2112-4240-9f49-1421bf9eb128.jpg', '👗 مستلزمات النساء')" class="btn btn-ghost">👗 مستلزمات النساء</button>
+  <button onclick="openImageInFrame('https://github.com/meralmohamed121022-cyber/photos/blob/main/Gemini_Generated_Image_nzlgu3nzlgu3nzlg.png?raw=true', '🗺️ خريطة أنواع الحج Roadmap')" class="btn btn-ghost">🗺️ أنواع الحج Roadmap</button>
 </div>
   
 </section>
@@ -2620,8 +2622,9 @@ function closeExternalGuide() {
     const iframe = document.getElementById('externalIframe');
     
     container.style.display = 'none';
-    iframe.src = ''; // تفريغ الرابط لتوفير الموارد
-    document.body.style.overflow = ''; // إعادة التمرير
+    iframe.src = ''; 
+    iframe.srcdoc = ''; // تنظيف محتوى الصورة
+    document.body.style.overflow = ''; 
 }
 function openImageModal(imgSrc) {
   const modal = document.getElementById('imageZoomModal');
@@ -2825,6 +2828,27 @@ function autoUpdateCounters() {
 setTimeout(autoUpdateCounters, 400);
 // شغلها بعد ما الـ Render يخلص
 setTimeout(autoUpdateCounters, 100);
+function openImageInFrame(imgUrl, titleText) {
+    const container = document.getElementById('guideFrameContainer');
+    const iframe = document.getElementById('externalIframe');
+    const title = document.getElementById('frameTitle');
+    
+    title.innerText = titleText;
+    
+    // هنا بننشئ صفحة HTML مؤقتة جوه الـ iframe تعرض الصورة بشكل احترافي
+    const htmlContent = `
+        <html>
+        <body style="margin:0; background:#000; display:flex; align-items:center; justify-content:center; height:100vh;">
+            <img src="${imgUrl}" style="max-width:100%; max-height:100%; object-fit:contain; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+        </body>
+        </html>
+    `;
+    
+    container.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    iframe.srcdoc = htmlContent; // استخدام srcdoc لعرض محتوى HTML مخصص
+}
 </script>
 </body>
 </html>
