@@ -625,6 +625,14 @@ button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
 .scroll-indicator.hidden {
     opacity: 0;
 }
+/* اللون اللي هيظهر لما تضغط على البوكس */
+.quick-nav-wrapper a.active-nav {
+    background: var(--color-primary) !important;
+    color: #fff !important;
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 2px 8px rgba(26, 107, 60, 0.3);
+    transform: scale(1.05); /* تكبير بسيط عشان يبان إنه مختار */
+}
 </style>
 
 </head>
@@ -1296,6 +1304,17 @@ const hajjMasterData = {
     }
   ]
 };
+function highlightNav(element) {
+    // 1. نجيب كل اللينكات اللي في نفس الحاوية (عشان ميسرِّحش على الأقسام التانية)
+    const wrapper = element.parentElement;
+    const allLinks = wrapper.querySelectorAll('a');
+
+    // 2. نشيل اللون من الكل
+    allLinks.forEach(link => link.classList.remove('active-nav'));
+
+    // 3. نحط اللون على اللي اضغط عليه بس
+    element.classList.add('active-nav');
+}
 // 2. دالة الريندر الذكية (سلايدر أفقي لكل قسم)
 function renderHajjMaster() {
     const mainContainer = document.getElementById('umrah-container');
@@ -1306,18 +1325,19 @@ function renderHajjMaster() {
     if (prohibitionsSlider) prohibitionsSlider.innerHTML = '';
     if (permittedSlider) permittedSlider.innerHTML = '';
 
-    const generateQuickNav = (items) => {
-        return `
-            <div class="quick-nav-wrapper" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none;">
-                ${items.map(item => `
-                    <a href="#${item.title.replace(/\s+/g, '-')}" style="white-space: nowrap; background: var(--color-surface-offset); border: 1px solid var(--color-border); padding: 5px 12px; border-radius: var(--radius-md); font-size: 11px; color: var(--color-primary); text-decoration: none; font-weight: 600; transition: 0.3s;">
-                        ${item.title}
-                    </a>
-                `).join('')}
-            </div>
-        `;
-    };
-
+const generateQuickNav = (items) => {
+    return `
+        <div class="quick-nav-wrapper" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none;">
+            ${items.map(item => `
+                <a href="#${item.title.replace(/\s+/g, '-')}" 
+                   onclick="highlightNav(this)" 
+                   style="white-space: nowrap; background: var(--color-surface-offset); border: 1px solid var(--color-border); padding: 5px 12px; border-radius: var(--radius-md); font-size: 11px; color: var(--color-primary); text-decoration: none; font-weight: 600; transition: 0.3s;">
+                    ${item.title}
+                </a>
+            `).join('')}
+        </div>
+    `;
+};
     const createScrollArrow = (id) => `
         <div class="scroll-indicator" id="arrow-${id}" style="
             position: absolute; 
