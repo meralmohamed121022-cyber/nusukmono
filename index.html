@@ -1349,19 +1349,20 @@ function renderHajjMaster() {
     if (prohibitionsSlider) prohibitionsSlider.innerHTML = '';
     if (permittedSlider) permittedSlider.innerHTML = '';
 
-const generateQuickNav = (items) => {
-    return `
-        <div class="quick-nav-wrapper" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none;">
-            ${items.map(item => `
-                <a href="#${item.title.replace(/\s+/g, '-')}" 
-                   onclick="highlightNav(this)" 
-                   style="white-space: nowrap; background: var(--color-surface-offset); border: 1px solid var(--color-border); padding: 5px 12px; border-radius: var(--radius-md); font-size: 11px; color: var(--color-primary); text-decoration: none; font-weight: 600; transition: 0.3s;">
-                    ${item.title}
-                </a>
-            `).join('')}
-        </div>
-    `;
-};
+    const generateQuickNav = (items) => {
+        return `
+            <div class="quick-nav-wrapper" style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none;">
+                ${items.map(item => `
+                    <a href="#${item.title.replace(/\s+/g, '-')}" 
+                       onclick="highlightNav(this)" 
+                       style="white-space: nowrap; background: var(--color-surface-offset); border: 1px solid var(--color-border); padding: 5px 12px; border-radius: var(--radius-md); font-size: 11px; color: var(--color-primary); text-decoration: none; font-weight: 600; transition: 0.3s;">
+                        ${item.title}
+                    </a>
+                `).join('')}
+            </div>
+        `;
+    };
+
     const createScrollArrow = (id) => `
         <div class="scroll-indicator" id="arrow-${id}" style="
             position: absolute; 
@@ -1398,20 +1399,19 @@ const generateQuickNav = (items) => {
                     <div style="width:5px; height:25px; background:var(--color-primary); border-radius:10px;"></div>
                     <h3 style="color:var(--color-text); font-family:var(--font-display); font-size:1.4rem;">${cat.name}</h3>
                 </div>
-                
                 <div style="position: relative;">
                     ${arrowHtml}
-                    ${navHtml} <div class="hajj-grid" id="grid-${cat.id}" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory;">
+                    ${navHtml} 
+                    <div class="hajj-grid" id="grid-${cat.id}" style="display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory;">
                         ${cat.items.map(item => createHajjCard(item)).join('')}
                     </div>
-
                     <div style="margin-top: 10px;">
-                        ${navHtml} </div>
+                        ${navHtml} 
+                    </div>
                 </div>
             </div>
         `;
 
-        // إضافة المحتوى للحاوية المناسبة
         if (cat.id === 'ihram_prohibitions' && prohibitionsSlider) {
             prohibitionsSlider.parentElement.style.position = 'relative';
             prohibitionsSlider.innerHTML = cat.items.map(item => createHajjCard(item)).join('');
@@ -1437,19 +1437,22 @@ const generateQuickNav = (items) => {
         }
     });
 
+    // 🚀 التعديل الجوهري: تشغيل العداد فوراً بعد انتهاء الـ Loop
+    if (typeof autoUpdateCounters === "function") {
+        setTimeout(autoUpdateCounters, 200); 
+    }
+
     function attachScrollListener(element, arrowId) {
         if (!element) return;
         element.addEventListener('scroll', () => {
             const arrow = document.getElementById(arrowId);
             if (!arrow) return;
             
-            // حساب المسافة المتبقية للسكرول (RTL)
             const scrollWidth = element.scrollWidth;
             const clientWidth = element.clientWidth;
             const scrollLeft = Math.abs(element.scrollLeft); 
             const remainingScroll = scrollWidth - clientWidth - scrollLeft;
 
-            // السهم يختفي فقط لما نقرب جداً من نهاية السكرول (أخر كارت)
             if (remainingScroll < 50) { 
                 arrow.style.opacity = '0';
                 arrow.style.visibility = 'hidden';
@@ -1460,7 +1463,6 @@ const generateQuickNav = (items) => {
         }, { passive: true });
     }
 }
-
 
 function createHajjCard(item) {
     const images = item.images && item.images.length > 0 ? item.images : [item.image_url || 'https://via.placeholder.com/400x200?text=Depanto'];
