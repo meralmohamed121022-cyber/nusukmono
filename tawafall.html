@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>الدليل الشامل لأنواع الطواف | التفاعلي</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      height: 100dvh; width: 100vw;
+      overflow: hidden;
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #visual-container {
+      flex: 0 0 45%;
+      width: 100%;
+      position: relative;
+      background: radial-gradient(circle at center, #1e293b, #020617);
+      border-bottom: 4px solid #fbbf24;
+      overflow: hidden;
+    }
+
+    #content-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 15px;
+      background: #0f172a;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+
+    @media (min-width: 992px) {
+      body { flex-direction: row; }
+      #visual-container { flex: 0 0 50%; height: 100%; border-bottom: none; border-left: 4px solid #fbbf24; }
+      #content-container { flex: 1; height: 100%; padding: 40px; }
+    }
+
+    .type-selector-container {
+      background: rgb(30, 41, 59);
+      border: 1px solid #475569;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 10;
+    }
+    .type-btn {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .type-btn.active {
+      background: #fbbf24;
+      color: #0f172a;
+      border-color: #f59e0b;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+      transform: translateY(-2px);
+    }
+    .type-btn.inactive {
+      background: #334155;
+      color: #cbd5e1;
+      border-color: #475569;
+    }
+
+    .step-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25vh; /* يبعد الكروت عن بعض عشان التركيز يكون على كارت واحد */
+      opacity: 0.3;
+      transition: opacity 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      user-select: none;
+    }
+    .step-card.active-step {
+      opacity: 1;
+      transform: scale(1.02);
+      border-color: #fbbf24;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.12);
+    }
+
+    h2 {
+      color: #fbbf24;
+      font-weight: 800;
+      font-size: 1.4rem;
+      border-bottom: 1px solid #475569;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .quran {
+      font-family: 'Amiri', serif;
+      color: #fcd34d;
+      background: rgba(251, 191, 36, 0.05);
+      border-right: 3px solid #fcd34d;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 1.15rem;
+      line-height: 2.2;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .alert-red {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid #dc2626;
+      color: #fca5a5;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .alert-green {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #059669;
+      color: #6ee7b7;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: #334155;
+      color: #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      margin-bottom: 8px;
+    }
+
+    .step-nav {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 10px;
+      z-index: 9999;
+    }
+    .step-nav button {
+      background: #fbbf24;
+      color: #0f172a;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .step-nav button:active { transform: scale(0.98); }
+    .step-nav button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .lap-inline {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(251, 191, 36, 0.55);
+      background: rgba(251, 191, 36, 0.06);
+    }
+    .lap-inline .lap-start {
+      font-weight: 900;
+      color: #e2e8f0;
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+    .lap-inline .lap-num {
+      min-width: 56px;
+      text-align: center;
+      font-weight: 900;
+      color: #fbbf24;
+      font-size: 1.4rem;
+      line-height: 1;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      background: rgba(2, 6, 23, 0.35);
+      cursor: pointer;
+      user-select: none;
+    }
+    .lap-inline .lap-btn {
+      background: #fbbf24;
+      color: #0f172a;
+      border: 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .lap-inline .lap-btn:active { transform: scale(0.98); }
+
+    #mini-toast {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 10000;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(2,6,23,0.78);
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    #mini-toast.show { opacity: 1; transform: translateY(0); }
+
+    .lap-inline.completed{ border-color: rgba(16, 185, 129, 0.95); background: rgba(16, 185, 129, 0.16); }
+    .lap-inline.completed .lap-num{ color: #052e16; background: rgba(16, 185, 129, 0.95); border-color: rgba(16, 185, 129, 0.95); }
+    .lap-inline.completed .lap-start{ color: #a7f3d0; }
+    .lap-inline.completed .lap-btn{ background: rgba(16, 185, 129, 0.95); color: #052e16; }
+    .lap-action.is-done{ pointer-events: none; opacity: 0.95; cursor: default; }
+  </style>
+</head>
+
+<body>
+  <div id="visual-container"></div>
+
+  <div id="content-container">
+
+    <div class="type-selector-container">
+      <h3 class="text-white text-center text-sm font-bold mb-3">حدد نوع الطواف حسب نيتك ومرحلتك:</h3>
+      <div class="flex gap-2 justify-center flex-wrap">
+        <div class="type-btn active" data-type="qudum">طواف القدوم/العمرة</div>
+        <div class="type-btn inactive" data-type="ifadah">طواف الإفاضة</div>
+        <div class="type-btn inactive" data-type="wadaa">طواف الوداع</div>
+      </div>
+    </div>
+
+    <div class="step-card active-step" id="step-tawaf-entry">
+      <span class="phase-badge" id="dynamic-badge">طواف القدوم / العمرة</span>
+      <h2 id="dynamic-title">1. الدخول للطواف وأحكام الدمج</h2>
+      <div class="alert-green" id="dynamic-intro"></div>
+    </div>
+<div class="step-card" id="tawaf-lap-1" data-flow="tawaf" data-lap="1">
+      <span class="phase-badge">الطواف</span>
+      <h2>2. الشوط 1</h2>
+      
+      <div class="alert-green mb-3">
+        <strong>بداية الشوط الأول (الحجر الأسود):</strong> قف بحيث يكون الحجر الأسود أمامك والكعبة على يسارك. أشر بيدك اليمنى للحجر وقل:<br>
+        <em class="text-white font-bold text-lg mt-2 block">"بِسْمِ اللَّهِ، وَاللَّهُ أَكْبَرُ"</em>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">يُسن لك في الطواف أن تدعو بما شئت أو تقرأ القرآن. قل: "سُبْحَانَ اللهِ، وَالْحَمْدُ للهِ، وَلا إِلَهَ إِلَّا اللهُ، وَاللهُ أَكْبَرُ، وَلا حَوْلَ وَلا قُوَّةَ إِلَّا بِاللهِ". اللَّهُمَّ اغْفِرْ لِي ذَنْبِي كُلَّهُ، دِقَّهُ وَجِلَّهُ، وَأَوَّلَهُ وَآخِرَهُ، وَعَلَانِيَتَهُ وَسِرَّهُ.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود (سنة ثابتة في كل شوط):</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-1" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="tawaf-lap-2" data-say="بسم الله والله أكبر" data-finish="">7</div>
+        <button class="lap-btn lap-action" data-next="tawaf-lap-2" data-say="بسم الله والله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="tawaf-lap-2" data-flow="tawaf" data-lap="2">
+      <span class="phase-badge">الطواف</span>
+      <h2>3. الشوط 2</h2>
+      
+      <div class="alert-green mb-3">أشر للحجر الأسود وكبر: <em>"اللَّهُ أَكْبَرُ"</em>.</div>
+      
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي ظُلْمًا كَثِيرًا، وَلَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ، فَاغْفِرْ لِي مَغْفِرَةً مِنْ عِنْدِكَ، وَارْحَمْنِي، إِنَّكَ أَنْتَ الْغَفُورُ الرَّحِيمُ. اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود:</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-2" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="tawaf-lap-3" data-say="بسم الله والله أكبر" data-finish="">6</div>
+        <button class="lap-btn lap-action" data-next="tawaf-lap-3" data-say="بسم الله والله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="tawaf-lap-3" data-flow="tawaf" data-lap="3">
+      <span class="phase-badge">الطواف</span>
+      <h2>4. الشوط 3</h2>
+      
+      <div class="alert-green mb-3">أشر للحجر الأسود وكبر: <em>"اللَّهُ أَكْبَرُ"</em>.</div>
+      
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ أَصْلِحْ لِي دِينِي الَّذِي هُوَ عِصْمَةُ أَمْرِي، وَأَصْلِحْ لِي دُنْيَايَ الَّتِي فِيهَا مَعَاشِي، وَأَصْلِحْ لِي آخِرَتِي الَّتِي فِيهَا مَعَادِي، وَاجْعَلِ الْحَيَاةَ زِيَادَةً لِي فِي كُلِّ خَيْرٍ، وَاجْعَلِ الْمَوْتَ رَاحَةً لِي مِنْ كُلِّ شَرٍّ.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود:</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-3" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="tawaf-lap-4" data-say="بسم الله والله أكبر" data-finish="">5</div>
+        <button class="lap-btn lap-action" data-next="tawaf-lap-4" data-say="بسم الله والله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="tawaf-lap-4" data-flow="tawaf" data-lap="4">
+      <span class="phase-badge">الطواف</span>
+      <h2>5. الشوط 4</h2>
+      
+      <div class="alert-green mb-3">أشر للحجر الأسود وكبر: <em>"اللَّهُ أَكْبَرُ"</em>.</div>
+      
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ. اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود:</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-4" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="tawaf-lap-5" data-say="بسم الله والله أكبر" data-finish="">4</div>
+        <button class="lap-btn lap-action" data-next="tawaf-lap-5" data-say="بسم الله والله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="tawaf-lap-5" data-flow="tawaf" data-lap="5">
+      <span class="phase-badge">الطواف</span>
+      <h2>6. الشوط 5</h2>
+      
+      <div class="alert-green mb-3">أشر للحجر الأسود وكبر: <em>"اللَّهُ أَكْبَرُ"</em>.</div>
+      
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">﴿رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا﴾. اللَّهُمَّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا، وَاغْفِرْ لِلْمُسْلِمِينَ وَالْمُسْلِمَاتِ وَالْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ الْأَحْيَاءِ مِنْهُمْ وَالْأَمْوَاتِ.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود:</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-5" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="tawaf-lap-6" data-say="بسم الله والله أكبر" data-finish="">3</div>
+        <button class="lap-btn lap-action" data-next="tawaf-lap-6" data-say="بسم الله والله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="tawaf-lap-6" data-flow="tawaf" data-lap="6">
+      <span class="phase-badge">الطواف</span>
+      <h2>7. الشوط 6</h2>
+      
+      <div class="alert-green mb-3">أشر للحجر الأسود وكبر: <em>"اللَّهُ أَكْبَرُ"</em>.</div>
+      
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ إِنِّي أَسْأَلُكَ رِضَاكَ وَالْجَنَّةَ، وَأَعُوذُ بِكَ مِنْ سَخَطِكَ وَالنَّارِ. اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي. اللَّهُمَّ ارْزُقْنِي حُسْنَ الْخَاتِمَةِ، وَتَوَفَّنِي وَأَنْتَ رَاضٍ عَنِّي غَيْرَ غَضْبَان.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود:</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-6" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="tawaf-lap-7" data-say="بسم الله والله أكبر" data-finish="">2</div>
+        <button class="lap-btn lap-action" data-next="tawaf-lap-7" data-say="بسم الله والله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="tawaf-lap-7" data-flow="tawaf" data-lap="7">
+      <span class="phase-badge">الطواف</span>
+      <h2>8. الشوط 7 (الختام)</h2>
+      
+      <div class="alert-green mb-3">أشر للحجر الأسود وكبر: <em>"اللَّهُ أَكْبَرُ"</em>.</div>
+      
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء الطواف):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ تَقَبَّلْ مِنِّي طَوَافِي وَصَالِحَ عَمَلِي. ﴿رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ * وَتُبْ عَلَيْنَا ۖ إِنَّكَ أَنتَ التَّوَّابُ الرَّحِيمُ﴾. اللَّهُمَّ لَا تَجْعَلْهُ آخِرَ الْعَهْدِ بِبَيْتِكَ الْحَرَامِ، وَيَسِّرْ لِي الْعَوْدَةَ إِلَيْهِ سَالِمًا غَانِمًا.</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 border-r-4 border-green-500 bg-green-900/20 pl-2">
+        <strong>بين الركن اليماني والحجر الأسود:</strong><br>
+        <em class="text-green-400 font-bold block mt-1">﴿رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ﴾</em>
+      </div>
+
+      <div class="alert-slate text-sm mt-3">
+        <span class="text-red-400 font-bold block bg-red-900/30 p-2 rounded border border-red-500/50">تنبيه: بعد انتهاء الشوط السابع عند الحجر الأسود، لا تشر إليه مرة أخرى. اتجه فوراً لصلاة ركعتين خلف مقام إبراهيم.</span>
+      </div>
+
+      <div class="alert-slate mt-2 text-sm" id="lap-desc-7" style="display:none;"></div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="step-tawaf-end" data-say="الحمد لله" data-finish="تم الطواف">1</div>
+        <button class="lap-btn lap-action" data-next="step-tawaf-end" data-say="الحمد لله" data-finish="تم الطواف">تم الشوط</button>
+      </div>
+    </div>
+    <div class="step-card" id="step-tawaf-end">
+      <span class="phase-badge" id="end-badge">الختام</span>
+      <h2>9. ركعتي الطواف وماء زمزم</h2>
+
+      <div class="alert-green border-2 border-emerald-500 bg-emerald-900/40" id="idtiba-end-alert">
+        </div>
+
+      <div class="mt-3 bg-slate-800 p-4 rounded shadow-lg" id="maqam-prayer-box">
+        <strong>توجه خلف مقام إبراهيم (أو في أي مكان بالمسجد) واقرأ:</strong>
+        <p class="text-amber-400 text-lg mt-2 text-center font-bold font-serif">﴿وَاتَّخِذُوا مِن مَّقَامِ إِبْرَاهِيمَ مُصَلًّى﴾</p>
+        
+        <div class="mt-4 pt-4 border-t border-slate-600">
+          <strong class="text-lg text-emerald-300">صلِّ ركعتي الطواف:</strong><br><br>
+          <span class="text-white font-bold">في الركعة الأولى بعد الفاتحة تقرأ سورة الكافرون:</span>
+          <p class="quran mt-2">﴿قُلْ يَا أَيُّهَا الْكَافِرُونَ (1) لَا أَعْبُدُ مَا تَعْبُدُونَ (2) وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ (3) وَلَا أَنَا عَابِدٌ مَّا عَبَدتُّمْ (4) وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ (5) لَكُمْ دِينُكُمْ وَلِيَ دِينِ (6)﴾</p>
+          
+          <span class="text-white font-bold block mt-4">في الركعة الثانية بعد الفاتحة تقرأ سورة الإخلاص:</span>
+          <p class="quran mt-2">﴿قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ (4)﴾</p>
+        </div>
+      </div>
+
+      <div class="alert-slate mt-4 bg-slate-800 p-4 rounded shadow-lg border border-blue-500/30" id="zamzam-box">
+        <strong class="text-blue-300 text-lg">الشرب من ماء زمزم والتضلع:</strong><br>
+        اذهب واشرب حتى ترتوي (التضلع)، واستقبل القبلة، وادعُ بهذا الدعاء المشهور عن ابن عباس رضي الله عنهما:<br>
+        <em class="text-white text-lg block mt-2 font-bold">"اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا وَاسِعًا، وَشِفَاءً مِنْ كُلِّ دَاءٍ"</em>.
+      </div>
+
+      <div id="dynamic-next-alert" class="alert-red mt-4 text-sm border-2 border-red-500 bg-red-900/40 text-white">
+        </div>
+    </div>
+
+    <div class="h-20"></div>
+  </div>
+
+  <div id="mini-toast"></div>
+
+  <div class="step-nav">
+    <button id="btn-prev" type="button">السابق</button>
+    <button id="btn-next" type="button">التالي</button>
+  </div>
+
+  <script>
+    let currentTawafType = 'qudum';
+    let isRamlActive = true;
+
+    function updateContent(type) {
+      currentTawafType = type;
+      const title = document.getElementById('dynamic-title');
+      const badge = document.getElementById('dynamic-badge');
+      const intro = document.getElementById('dynamic-intro');
+      const nextAlert = document.getElementById('dynamic-next-alert');
+      const idtibaEnd = document.getElementById('idtiba-end-alert');
+
+      if (type === 'qudum') {
+        badge.innerText = 'طواف القدوم أو العمرة';
+        title.innerText = '1. الدخول للطواف وأحكام الدمج';
+        intro.innerHTML = `
+          <strong style="color: var(--color-primary); font-size: 1.1em;">🛑 للمعتمر والمتمتع (طواف عُمرة - ركن):</strong><br>
+          هذا الطواف ركن لإتمام عمرتك، <strong style="color: #dc2626;">ولا يجوز تأخيره أو دمجه</strong> مع طواف الإفاضة بأي حال. (وإن أخرته متعمداً ليوم عرفة يتحول حجك إجبارياً إلى قِران).<br><br>
+          
+          <strong style="color: var(--color-primary); font-size: 1.1em;">🛑 للمفرد والقارن (طواف قُدوم - سنة):</strong><br>
+          هذا الطواف مجرد تحية للمسجد الحرام عند القدوم لمكة. <strong style="color: #10b981;">✅ يجوز للمفرد والقارن تركه تماماً:</strong> وتأجيل الطواف ليوم العيد (فتطوف طوافاً واحداً بنية الإفاضة ويُجزئ عنهما).<br><br>
+          
+          <strong style="color: var(--color-primary); font-size: 1.1em;">⏰ توقيت السعي (للمفرد والقارن):</strong> يجوز لك تقديم سعي الحج (للتخفيف عن نفسك يوم العيد) فتسعاه بعد هذا الطواف مباشرة.<br><br>
+          
+          <hr style="border-color: #059669; margin: 10px 0; opacity: 0.3;">
+          <strong>✅ اللباس:</strong> أنت الآن مُحرم (ملابس الإحرام).<br>
+          <strong>✅ للرجال فقط:</strong> يُسن لك <strong>(الاضطباع)</strong> بكشف الكتف الأيمن طوال ٧ أشواط، و<strong>(الرَمَل)</strong> بالإسراع في أول ٣ أشواط فقط.
+        `;
+        
+        for(let i=1; i<=7; i++) {
+          let desc = document.getElementById(`lap-desc-${i}`);
+          if(i <= 3) {
+            desc.innerHTML = `<strong>للرجال:</strong> أسرع المشي (رَمَل) في هذا الشوط مع بقاء الاضطباع.<br>ادعُ بما يفتح الله به عليك من خير الدنيا والآخرة.<br><strong>وعندما تصل بين الركن اليماني والحجر الأسود قل دائمًا:</strong> <em class="text-green-400 block mt-1">"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"</em>`;
+          } else {
+            desc.innerHTML = `<strong>للجميع:</strong> امشِ مشياً عادياً بخشوع. الاضطباع مستمر للرجال.<br>ادعُ الله بما شئت.<br><strong>وبين الركن اليماني والحجر الأسود قل دائمًا:</strong> <em class="text-green-400 block mt-1">"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"</em>`;
+          }
+        }
+        
+        idtibaEnd.innerHTML = `<strong>✅ أول خطوة للرجال:</strong> قُم بتغطية كتفك الأيمن الآن (إزالة الاضطباع) فوراً قبل التوجه للصلاة.`;
+        idtibaEnd.style.display = 'block';
+
+        nextAlert.innerHTML = `<strong>🛑 ماذا بعد هذا الطواف؟</strong><br><br>
+        - <strong>للمعتمر والمتمتع:</strong> تتوجه الآن فوراً لأداء <strong>(سعي العمرة)</strong> لتتحلل من إحرامك كاملاً بالحلق أو التقصير.<br><br>
+        - <strong>للمفرد والقارن:</strong> لك الخيار في تقديم <strong>(سعي الحج)</strong> الآن لتخفيف الزحام يوم العيد، أو تأخيره ليوم العيد. <br><strong style="color:#ffbaba; font-size:1.1em;">واحذر: لا تحلق ولا تقصر ولا تتحلل من إحرامك أبداً حتى يوم النحر.</strong>`;
+        isRamlActive = true;
+        updateAvatars('ihram');
+
+      } else if (type === 'ifadah') {
+        badge.innerText = 'طواف الإفاضة (الحج)';
+        title.innerText = '1. طواف الإفاضة (ركن الحج الأعظم)';
+        intro.innerHTML = `
+          <strong>🛑 هام:</strong> هذا ركن الحج الأعظم، يُؤدى يوم العيد بعد نزولك من مزدلفة ورمي جمرة العقبة والتحلل.<br><br>
+          <strong>✅ توقيت طواف الإفاضة:</strong> يبدأ من بعد منتصف ليلة النحر (للضعفاء) أو من ضحى يوم العيد، ويمتد طوال أيام التشريق، ولا حد لآخره.<br><br>
+          <strong>✅ أحكام دمج النوايا:</strong> يجوز لمن تأخر ولم يطف الإفاضة، أن ينويه مع (طواف الوداع) بطواف واحد عند السفر، ويسقط عنه طواف الوداع وتُجزئه نية الإفاضة (فتوى معتمدة للتيسير).<br><br>
+          <hr style="border-color: #059669; margin: 10px 0; opacity: 0.3;">
+          <strong>✅ اللباس:</strong> أنت الآن بملابسك العادية (لأنك تحللت التحلل الأصغر).<br>
+          لذلك: <strong>لا يوجد اضطباع (كشف كتف)</strong> ولا <strong>رَمَل (إسراع)</strong> في هذا الطواف للجميع. تمشي مشياً عادياً طوال ٧ أشواط.
+        `;
+
+        for(let i=1; i<=7; i++) {
+          document.getElementById(`lap-desc-${i}`).innerHTML = `امشِ مشياً عادياً بخشوع، وادعُ الله بما شئت.<br><strong>وبين الركن اليماني والحجر الأسود قل دائمًا:</strong> <em class="text-green-400 block mt-1">"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"</em>`;
+        }
+
+        idtibaEnd.style.display = 'none';
+
+        nextAlert.innerHTML = `<strong>🛑 ماذا بعد طواف الإفاضة؟</strong><br><br>
+        - <strong>للمتمتع:</strong> يجب عليك التوجه لأداء <strong>(سعي الحج)</strong> الآن.<br><br>
+        - <strong>للمفرد والقارن:</strong> إذا لم تكن قد سعيت قديماً بعد طواف القدوم، يجب عليك السعي الآن. وإذا كنت قد سعيت قديماً فقد كفاك، وتم تحللك الأكبر.`;
+        isRamlActive = false;
+        updateAvatars('normal');
+
+      } else if (type === 'wadaa') {
+        badge.innerText = 'طواف الوداع';
+        title.innerText = '1. طواف الوداع وأحكامه المخصوصة';
+        intro.innerHTML = `
+          <strong>🛑 هام (طواف واجب):</strong> هو آخر عهدك بالبيت الحرام قبل العودة لبلدك. ويجب أن تخرج من مكة بعده مباشرة.<br><br>
+          <strong>✅ رخصة النساء:</strong> يسقط طواف الوداع تماماً عن المرأة الحائض والنفساء، وتسافر مباشرة بلا طواف ولا فدية عليها تخفيفاً من الشرع.<br><br>
+          <strong>✅ أحكام دمج النوايا:</strong> يجوز دمج طواف الإفاضة مع الوداع للمتأخر بنية واحدة (شرط أن تكون النية لطواف الإفاضة الركن).<br><br>
+          <hr style="border-color: #059669; margin: 10px 0; opacity: 0.3;">
+          <strong>✅ اللباس:</strong> بملابسك العادية. <strong>لا يوجد اضطباع</strong> ولا <strong>رَمَل</strong>.
+        `;
+
+        for(let i=1; i<=7; i++) {
+          document.getElementById(`lap-desc-${i}`).innerHTML = `امشِ مشياً عادياً، وادعُ بما تشاء، واشكر الله على إتمام النسك.<br><strong>وبين الركن اليماني والحجر الأسود قل دائمًا:</strong> <em class="text-green-400 block mt-1">"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ"</em>`;
+        }
+
+        idtibaEnd.style.display = 'none';
+
+        nextAlert.innerHTML = `<strong>🛑 ماذا بعد طواف الوداع؟</strong><br>تُصلي ركعتي الطواف، ثم تُغادر مكة المكرمة مباشرة متوجهاً إلى بلدك بسلامة الله. لا تمكث في مكة إلا لحاجة السفر (كشراء زاد للطريق أو انتظار الحافلة).<br><strong style="color:#ffbaba; font-size:1.1em;">ليس في طواف الوداع سعي نهائياً.</strong>`;
+        isRamlActive = false;
+        updateAvatars('normal');
+      }
+
+      setStep('step-tawaf-entry');
+    }
+
+    document.querySelectorAll('.type-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.type-btn').forEach(b => {
+          b.classList.remove('active'); b.classList.add('inactive');
+        });
+        e.target.classList.add('active');
+        e.target.classList.remove('inactive');
+        updateContent(e.target.dataset.type);
+      });
+    });
+
+    // =========================================================
+    // Voice & Toast
+    // =========================================================
+    const toastEl = document.getElementById('mini-toast');
+    let toastTimer = null;
+    function showToast(msg) {
+      toastEl.textContent = msg; toastEl.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1400);
+    }
+    function speakArabic(text) {
+      try {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ar-SA'; window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    // =========================================================
+    // THREE.JS Engine
+    // =========================================================
+    const container = document.getElementById("visual-container");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const dirLight = new THREE.DirectionalLight(0xffd700, 1.15);
+    dirLight.position.set(5, 10, 5); scene.add(dirLight);
+
+    function updateCamera() {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      if (camera.aspect < 1) camera.position.set(0, 9.5, 18);
+      else camera.position.set(0, 6, 12);
+      camera.lookAt(0, 1.2, 0); camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", updateCamera); updateCamera();
+
+    const kaabaGroup = new THREE.Group(); scene.add(kaabaGroup);
+    const kaabaMesh = new THREE.Mesh(new THREE.BoxGeometry(4, 5, 4), new THREE.MeshStandardMaterial({ color: 0x050505 }));
+    kaabaMesh.position.y = 2.5; kaabaGroup.add(kaabaMesh);
+    const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(4.05, 0.5, 4.05), new THREE.MeshStandardMaterial({ color: 0xffcc00 }));
+    goldStrip.position.y = 4; kaabaGroup.add(goldStrip);
+    const tawafOrbitGroup = new THREE.Group(); kaabaGroup.add(tawafOrbitGroup);
+
+    const maqamGroup = new THREE.Group(); kaabaGroup.add(maqamGroup); maqamGroup.visible = false;
+    const maqamBody = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 1.35, 32), new THREE.MeshStandardMaterial({ color: 0xffcc00 }));
+    maqamBody.position.set(4.6, 0.95, -1.8); maqamGroup.add(maqamBody);
+
+    // Vector Definitions
+    const MALE_IHRAM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e5e7eb"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg)"/><g filter="url(#shadow)"><circle cx="450" cy="240" r="72" fill="#d4a373"/><rect x="415" y="298" width="70" height="40" rx="18" fill="#c98f5a"/><path d="M330 360 c40-35 85-55 120-55 c45 0 90 20 120 55 c40 45 42 100 20 140 c-22 40-66 55-100 55 H390 c-34 0-78-15-100-55 c-22-40-20-95 40-140z" fill="url(#cloth)"/><path d="M560 350 c25 15 38 40 35 70 c-3 35-30 60-62 60 c-18 0-35-6-48-18 c25-40 38-78 75-112z" fill="#d4a373" opacity="0.85"/><path d="M310 520 c40-35 95-55 140-55 c45 0 100 20 140 55 c25 22 40 55 40 92 v170 c0 28-18 52-45 60 c-90 25-180 25-270 0 c-27-8-45-32-45-60 V612 c0-37 15-70 40-92z" fill="url(#cloth)"/></g><rect x="40" y="40" width="820" height="820" rx="40" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.25"/></svg>`;
+    const FEMALE_IHRAM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="abaya" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#111827"/><stop offset="1" stop-color="#0b1020"/></linearGradient><filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg2)"/><g filter="url(#shadow2)"><path d="M450 190 c-55 0-100 40-110 90 c-10 55 10 85 25 100 c-55 50-100 140-110 250 c-10 105 15 180 45 215 c25 30 60 45 95 50 c85 12 170 12 255 0 c35-5 70-20 95-50 c30-35 55-110 45-215 c-10-110-55-200-110-250 c15-15 35-45 25-100 c-10-50-55-90-110-90z" fill="url(#abaya)"/><ellipse cx="450" cy="265" rx="92" ry="110" fill="#0b1020" opacity="0.8"/><ellipse cx="450" cy="270" rx="62" ry="78" fill="#d4a373"/></g><rect x="40" y="40" width="820" height="820" rx="40" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.25"/></svg>`;
+    const MALE_NORMAL_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg)"/><g filter="url(#shadow)"><circle cx="450" cy="240" r="72" fill="#d4a373"/><path d="M330 360 c40-35 85-55 120-55 c45 0 90 20 120 55 c40 45 42 100 20 140 c-22 40-66 55-100 55 H390 c-34 0-78-15-100-55 c-22-40-20-95 40-140z" fill="url(#cloth)"/><path d="M310 520 c40-35 95-55 140-55 c45 0 100 20 140 55 c25 22 40 55 40 92 v170 c0 28-18 52-45 60 c-90 25-180 25-270 0 c-27-8-45-32-45-60 V612 c0-37 15-70 40-92z" fill="url(#cloth)"/></g><rect x="40" y="40" width="820" height="820" rx="40" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.25"/></svg>`;
+
+    let vIhramM, vIhramF, vNormalM, vNormalF;
+    let tMale, tFemale, pMale;
+
+    async function loadTextures() {
+      const texM_ihram = await createVectorBillboard(MALE_IHRAM_SVG);
+      const texF_ihram = await createVectorBillboard(FEMALE_IHRAM_SVG);
+      const texM_normal = await createVectorBillboard(MALE_NORMAL_SVG);
+      
+      vIhramM = texM_ihram; vIhramF = texF_ihram; vNormalM = texM_normal; vNormalF = texF_ihram; 
+
+      tMale = new THREE.Group(); tFemale = new THREE.Group(); pMale = new THREE.Group();
+      
+      tMale.add(vIhramM.clone()); tFemale.add(vIhramF.clone());
+      tMale.scale.set(0.55, 0.55, 0.55); tFemale.scale.set(0.55, 0.55, 0.55);
+      tMale.position.set(6.2, 0, 0); tFemale.position.set(-6.2, 0, 0);
+      tawafOrbitGroup.add(tMale, tFemale);
+
+      const pm = vIhramM.clone(); pm.scale.set(0.45,0.45,0.45); pm.position.set(3.5,0,-1.55); pm.rotation.y = Math.PI;
+      pMale.add(pm); maqamGroup.add(pMale);
+    }
+    
+    function svgToCanvasTexture(svgString) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas"); canvas.width=900; canvas.height=900;
+          const ctx = canvas.getContext("2d"); ctx.drawImage(img, 0, 0, 900, 900);
+          resolve(new THREE.CanvasTexture(canvas));
+        };
+        img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgString);
+      });
+    }
+    async function createVectorBillboard(svgStr) {
+      const tex = await svgToCanvasTexture(svgStr);
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 3.2), new THREE.MeshBasicMaterial({ map: tex, transparent: true }));
+      m.position.y = 1.45; m.userData.billboard = true; return m;
+    }
+
+    loadTextures();
+
+    function updateAvatars(type) {
+      if(!tMale) return;
+      tMale.clear(); tFemale.clear(); pMale.clear();
+      if(type === 'ihram') {
+        tMale.add(vIhramM.clone()); tFemale.add(vIhramF.clone());
+        const pm = vIhramM.clone(); pm.scale.set(0.45,0.45,0.45); pm.position.set(3.5,0,-1.55); pm.rotation.y = Math.PI; pMale.add(pm);
+      } else {
+        tMale.add(vNormalM.clone()); tFemale.add(vNormalF.clone());
+        const pm = vNormalM.clone(); pm.scale.set(0.45,0.45,0.45); pm.position.set(3.5,0,-1.55); pm.rotation.y = Math.PI; pMale.add(pm);
+      }
+    }
+
+    let tawafTween = null;
+    function startTawaf(sec) {
+      gsap.killTweensOf(tawafOrbitGroup.rotation);
+      tawafOrbitGroup.rotation.y = 0;
+      tawafTween = gsap.to(tawafOrbitGroup.rotation, { y: -Math.PI * 2, duration: sec, repeat: -1, ease: "none" });
+    }
+
+    // =========================================================
+    // Nav Logic with ScrollTrigger auto-activation
+    // =========================================================
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    const stepIds = ["step-tawaf-entry", "tawaf-lap-1", "tawaf-lap-2", "tawaf-lap-3", "tawaf-lap-4", "tawaf-lap-5", "tawaf-lap-6", "tawaf-lap-7", "step-tawaf-end"];
+    let currentIndex = 0; let isAutoScrolling = false;
+
+    function setStep(id) {
+      currentIndex = stepIds.indexOf(id);
+      document.querySelectorAll('.step-card').forEach(e => { e.classList.remove('active-step'); e.style.opacity='0.3'; });
+      const active = document.getElementById(id);
+      if(active) { active.classList.add('active-step'); active.style.opacity='1'; }
+      
+      document.getElementById('btn-prev').disabled = (currentIndex <= 0);
+      document.getElementById('btn-next').disabled = (currentIndex >= stepIds.length - 1);
+
+      maqamGroup.visible = (id === "step-tawaf-end");
+
+      if (id.startsWith('tawaf-lap-')) {
+        const lap = parseInt(id.split('-')[2]);
+        if (lap <= 3 && isRamlActive) startTawaf(3.8); else startTawaf(8.5);
+      } else {
+        gsap.killTweensOf(tawafOrbitGroup.rotation); tawafOrbitGroup.rotation.y = 0;
+      }
+    }
+
+    function scrollTarget(id) {
+      isAutoScrolling = true;
+      gsap.to(document.getElementById('content-container'), { duration: 0.5, scrollTo: { y: `#${id}`, offsetY: 20 }, onComplete: () => { setStep(id); isAutoScrolling=false; } });
+    }
+
+    document.querySelectorAll('.step-card').forEach(c => c.addEventListener('click', () => { if(!isAutoScrolling) scrollTarget(c.id); }));
+    document.getElementById('btn-prev').addEventListener('click', () => scrollTarget(stepIds[Math.max(0, currentIndex-1)]));
+    document.getElementById('btn-next').addEventListener('click', () => scrollTarget(stepIds[Math.min(stepIds.length-1, currentIndex+1)]));
+
+    stepIds.forEach(stepId => {
+      const el = document.getElementById(stepId);
+      if (!el) return;
+      ScrollTrigger.create({
+        trigger: el,
+        scroller: document.getElementById('content-container'),
+        start: "top 75%", 
+        end: "bottom 25%",
+        onEnter: () => { if (!isAutoScrolling) setStep(stepId); },
+        onEnterBack: () => { if (!isAutoScrolling) setStep(stepId); }
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest(".lap-action");
+      if (!t) return;
+      e.stopPropagation();
+      const box = t.closest(".lap-inline");
+      if(box.classList.contains("completed")) return;
+      
+      const say = t.dataset.say; if(say) speakArabic(say);
+      box.classList.add("completed");
+      box.querySelectorAll(".lap-action").forEach(el => el.classList.add("is-done"));
+      box.querySelector("button.lap-btn").textContent = "تم";
+
+      if (t.dataset.finish) { showToast(t.dataset.finish); speakArabic(t.dataset.finish); }
+    }, true);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if(tMale && tMale.children[0]) tMale.children[0].lookAt(camera.position);
+      if(tFemale && tFemale.children[0]) tFemale.children[0].lookAt(camera.position);
+      if(pMale && pMale.children[0]) pMale.children[0].lookAt(camera.position);
+      renderer.render(scene, camera);
+    }
+    
+    updateContent('qudum'); // Init
+    animate();
+    
+  </script>
+</body>
+</html>

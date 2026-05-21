@@ -1,0 +1,1324 @@
+<style>* { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      height: 100dvh; width: 100vw;
+      overflow: hidden;
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #visual-container {
+      flex: 0 0 45%;
+      width: 100%;
+      position: relative;
+      background: radial-gradient(circle at center, #1e293b, #020617);
+      border-bottom: 4px solid #fbbf24;
+      overflow: hidden;
+    }
+
+    #content-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 15px;
+      background: #0f172a;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: auto;
+    }
+
+    @media (min-width: 992px) {
+      body { flex-direction: row; }
+      #visual-container { flex: 0 0 50%; height: 100%; border-bottom: none; border-left: 4px solid #fbbf24; }
+      #content-container { flex: 1; height: 100%; padding: 40px; }
+    }
+
+    .step-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 40px;
+      opacity: 0.3;
+      transition: opacity 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      user-select: none;
+    }
+    .step-card.active-step {
+      opacity: 1;
+      transform: scale(1.02);
+      border-color: #fbbf24;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.12);
+    }
+
+    h2 {
+      color: #fbbf24;
+      font-weight: 800;
+      font-size: 1.4rem;
+      border-bottom: 1px solid #475569;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .quran {
+      font-family: 'Amiri', serif;
+      color: #fcd34d;
+      background: rgba(251, 191, 36, 0.05);
+      border-right: 3px solid #fcd34d;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1.08rem;
+      line-height: 1.9;
+      white-space: pre-wrap;
+    }
+
+    .alert-red {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid #dc2626;
+      color: #fca5a5;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+
+    .alert-green {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #059669;
+      color: #6ee7b7;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: #334155;
+      color: #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      margin-bottom: 8px;
+    }
+
+    .step-nav {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 10px;
+      z-index: 9999;
+    }
+    .step-nav button {
+      background: #fbbf24;
+      color: #0f172a;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .step-nav button:active { transform: scale(0.98); }
+    .step-nav button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Duas */
+    .dua-item {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    .dua-title {
+      color: #e2e8f0;
+      font-weight: 800;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .dua-text {
+      color: #cbd5e1;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      font-size: 0.98rem;
+    }
+    .tiny-note {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+
+    /* Inline countdown per lap */
+    .lap-inline {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(251, 191, 36, 0.55);
+      background: rgba(251, 191, 36, 0.06);
+    }
+    .lap-inline .lap-start {
+      font-weight: 900;
+      color: #e2e8f0;
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+    .lap-inline .lap-num {
+      min-width: 56px;
+      text-align: center;
+      font-weight: 900;
+      color: #fbbf24;
+      font-size: 1.4rem;
+      line-height: 1;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      background: rgba(2, 6, 23, 0.35);
+      cursor: pointer;
+      user-select: none;
+    }
+    .lap-inline .lap-btn {
+      background: #fbbf24;
+      color: #0f172a;
+      border: 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .lap-inline .lap-btn:active { transform: scale(0.98); }
+
+    /* Mini toast */
+    #mini-toast {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 10000;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(2,6,23,0.78);
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      max-width: min(92vw, 420px);
+    }
+    #mini-toast.show { opacity: 1; transform: translateY(0); }
+
+    /* DONE state */
+    .lap-inline.completed{ border-color: rgba(16, 185, 129, 0.95); background: rgba(16, 185, 129, 0.16); }
+    .lap-inline.completed .lap-num{ color: #052e16; background: rgba(16, 185, 129, 0.95); border-color: rgba(16, 185, 129, 0.95); }
+    .lap-inline.completed .lap-start{ color: #a7f3d0; }
+    .lap-inline.completed .lap-btn{ background: rgba(16, 185, 129, 0.95); color: #052e16; }
+    .lap-action.is-done{ pointer-events: none; opacity: 0.95; cursor: default; }</style>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>الدليل الشامل للسعي | التفاعلي</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      height: 100dvh; width: 100vw;
+      overflow: hidden;
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #visual-container {
+      flex: 0 0 45%;
+      width: 100%;
+      position: relative;
+      background: radial-gradient(circle at center, #1e293b, #020617);
+      border-bottom: 4px solid #10b981; /* لون أخضر للسعي */
+      overflow: hidden;
+    }
+
+    #content-container {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 15px;
+      background: #0f172a;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+
+    @media (min-width: 992px) {
+      body { flex-direction: row; }
+      #visual-container { flex: 0 0 50%; height: 100%; border-bottom: none; border-left: 4px solid #10b981; }
+      #content-container { flex: 1; height: 100%; padding: 40px; }
+    }
+
+    /* Type Selector Styles - STICKY TO STAY ON TOP */
+.type-selector-container {
+      background: rgb(30, 41, 59);
+      border: 1px solid #475569;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 10;
+    }
+    .type-btn {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .type-btn.active {
+      background: #10b981;
+      color: #0f172a;
+      border-color: #059669;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+    .type-btn.inactive {
+      background: #334155;
+      color: #cbd5e1;
+      border-color: #475569;
+    }
+
+    .step-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25vh; /* يبعد الكروت عن بعض عشان التركيز */
+      opacity: 0.3;
+      transition: opacity 0.25s, transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      user-select: none;
+    }
+    .step-card.active-step {
+      opacity: 1;
+      transform: scale(1.02);
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.12);
+    }
+
+    h2 {
+      color: #10b981;
+      font-weight: 800;
+      font-size: 1.4rem;
+      border-bottom: 1px solid #475569;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .quran {
+      font-family: 'Amiri', serif;
+      color: #fcd34d;
+      background: rgba(251, 191, 36, 0.05);
+      border-right: 3px solid #fcd34d;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 1.15rem;
+      line-height: 2.2;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .alert-red {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid #dc2626;
+      color: #fca5a5;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .alert-green {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #059669;
+      color: #6ee7b7;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: #334155;
+      color: #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      margin-bottom: 8px;
+    }
+
+    .step-nav {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 10px;
+      z-index: 9999;
+    }
+    .step-nav button {
+      background: #10b981;
+      color: #0f172a;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .step-nav button:active { transform: scale(0.98); }
+    .step-nav button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .lap-inline {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(16, 185, 129, 0.55);
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .lap-inline .lap-start {
+      font-weight: 900;
+      color: #e2e8f0;
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+    .lap-inline .lap-num {
+      min-width: 56px;
+      text-align: center;
+      font-weight: 900;
+      color: #10b981;
+      font-size: 1.4rem;
+      line-height: 1;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      background: rgba(2, 6, 23, 0.35);
+      cursor: pointer;
+      user-select: none;
+    }
+    .lap-inline .lap-btn {
+      background: #10b981;
+      color: #0f172a;
+      border: 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .lap-inline .lap-btn:active { transform: scale(0.98); }
+
+    #mini-toast {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 10000;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.35);
+      background: rgba(2,6,23,0.78);
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: 0.95rem;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    #mini-toast.show { opacity: 1; transform: translateY(0); }
+
+    .lap-inline.completed{ border-color: rgba(59, 130, 246, 0.95); background: rgba(59, 130, 246, 0.16); }
+    .lap-inline.completed .lap-num{ color: #eff6ff; background: rgba(59, 130, 246, 0.95); border-color: rgba(59, 130, 246, 0.95); }
+    .lap-inline.completed .lap-start{ color: #93c5fd; }
+    .lap-inline.completed .lap-btn{ background: rgba(59, 130, 246, 0.95); color: #eff6ff; }
+    .lap-action.is-done{ pointer-events: none; opacity: 0.95; cursor: default; }
+
+    /* Duas */
+    .dua-item {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    .dua-title {
+      color: #10b981;
+      font-weight: 800;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .dua-text {
+      color: #cbd5e1;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      font-size: 0.98rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="visual-container"></div>
+
+  <div id="content-container">
+
+    <div class="type-selector-container">
+      <h3 class="text-white text-center text-sm font-bold mb-3">حدد نوع السعي حسب نيتك ومرحلتك:</h3>
+      <div class="flex gap-2 justify-center flex-wrap">
+        <div class="type-btn active" data-type="umrah">سعي العمرة</div>
+        <div class="type-btn inactive" data-type="tamattu">سعي حج المتمتع</div>
+        <div class="type-btn inactive" data-type="ifrad_qiran">سعي المفرد والقارن</div>
+      </div>
+    </div>
+
+    <div class="step-card active-step" id="step-sai-entry">
+      <span class="phase-badge" id="dynamic-badge">سعي العمرة (ركن)</span>
+      <h2 id="dynamic-title">1. الدخول للسعي والتوقيت</h2>
+      <div class="alert-green" id="dynamic-intro"></div>
+    </div>
+<div class="step-card" id="sai-lap-1" data-flow="sai" data-lap="1">
+      <span class="phase-badge">السعي</span>
+      <h2>2. الشوط 1 (من الصفا إلى المروة)</h2>
+      
+      <div class="alert-green mb-3 border-dashed">
+        <strong>عند الاقتراب من جبل الصفا (لأول مرة فقط)، تقرأ:</strong><br>
+        <p class="quran text-sm">﴿إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ ۖ فَمَنْ حَجَّ الْبَيْتَ أَوِ اعْتَمَرَ فَلَا جُنَاحَ عَلَيْهِ أَن يَطَّوَّفَ بِهِمَا ۚ وَمَن تَطَوَّعَ خَيْرًا فَإِنَّ اللَّهَ شَاكِرٌ عَلِيمٌ﴾</p>
+        <em class="text-white font-bold text-lg mt-2 block text-center">"أَبْدَأُ بِمَا بَدَأَ اللَّهُ بِهِ"</em>
+      </div>
+
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>قف على الصفا، استقبل الكعبة، ارفع يديك للدعاء وقل:</strong><br>
+        <em class="text-green-400 block mt-2 text-base leading-loose">"اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ. لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، يُحْيِي وَيُمِيتُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ، أَنْجَزَ وَعْدَهُ، وَنَصَرَ عَبْدَهُ، وَهَزَمَ الْأَحْزَابَ وَحْدَهُ"</em>
+        <span class="text-slate-300 block mt-2">(تُكرر هذا الذكر ٣ مرات، وتدعو بينها بما شئت من الدعاء المطلق).</span>
+      </div>
+
+      <div class="alert-slate text-sm mb-3">
+        <strong>وللرجال فقط (بين العلمين الأخضرين):</strong> يُسن الجري السريع (الهرولة) وقول:<br>
+        <em class="text-amber-400 font-bold block mt-1">"رَبِّ اغْفِرْ وَارْحَمْ، وَتَجَاوَزْ عَمَّا تَعْلَمْ، إِنَّكَ أَنْتَ الْأَعَزُّ الْأَكْرَمُ"</em>. استمر حتى تصل المروة.
+      </div>
+
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنَ الْخَيْرِ كُلِّهِ عَاجِلِهِ وَآجِلِهِ، مَا عَلِمْتُ مِنْهُ وَمَا لَمْ أَعْلَمْ، وَأَعُوذُ بِكَ مِنَ الشَّرِّ كُلِّهِ عَاجِلِهِ وَآجِلِهِ، مَا عَلِمْتُ مِنْهُ وَمَا لَمْ أَعْلَمْ. اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ خَيْرِ مَا سَأَلَكَ عَبْدُكَ وَنَبِيُّكَ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا عَاذَ بِهِ عَبْدُكَ وَنَبِيُّكَ.</span>
+      </div>
+
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="sai-lap-2" data-say="الله أكبر" data-finish="">7</div>
+        <button class="lap-btn lap-action" data-next="sai-lap-2" data-say="الله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sai-lap-2" data-flow="sai" data-lap="2">
+      <span class="phase-badge">السعي</span>
+      <h2>3. الشوط 2 (من المروة إلى الصفا)</h2>
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>قف على المروة، استقبل الكعبة، ارفع يديك وقل نفس الذكر:</strong><br>
+        <em class="text-green-400 block mt-1">"الله أكبر (٣ مرات).. لا إله إلا الله وحده لا شريك له..."</em> (٣ مرات مع الدعاء بينها).
+      </div>
+      <div class="alert-slate text-sm mb-3">
+        امشِ باتجاه الصفا، والرجال يهرولون بين العلمين الأخضرين بالدعاء.
+      </div>
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ اغْفِرْ لَنَا وَلِإِخْوَانِنَا الَّذِينَ سَبَقُونَا بِالْإِيمَانِ، وَلَا تَجْعَلْ فِي قُلُوبِنَا غِلًّا لِّلَّذِينَ آمَنُوا رَبَّنَا إِنَّكَ رَءُوفٌ رَّحِيمٌ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ، وَغَلَبَةِ الرِّجَالِ.</span>
+      </div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="sai-lap-3" data-say="الله أكبر" data-finish="">6</div>
+        <button class="lap-btn lap-action" data-next="sai-lap-3" data-say="الله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sai-lap-3" data-flow="sai" data-lap="3">
+      <span class="phase-badge">السعي</span>
+      <h2>4. الشوط 3 (من الصفا إلى المروة)</h2>
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>على الصفا:</strong> استقبل الكعبة، كبر ٣ مرات، وقل الذكر ٣ مرات وادعُ.
+      </div>
+      <div class="alert-slate text-sm mb-3">
+        امشِ للمروة، والرجال يهرولون بين العلمين بالدعاء المأثور.
+      </div>
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ، وَأَعُوذُ بِكَ مِنَ النَّارِ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ، وَأَسْأَلُكَ أَنْ تَجْعَلَ كُلَّ قَضَاءٍ قَضَيْتَهُ لِي خَيْرًا. اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى.</span>
+      </div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="sai-lap-4" data-say="الله أكبر" data-finish="">5</div>
+        <button class="lap-btn lap-action" data-next="sai-lap-4" data-say="الله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sai-lap-4" data-flow="sai" data-lap="4">
+      <span class="phase-badge">السعي</span>
+      <h2>5. الشوط 4 (من المروة إلى الصفا)</h2>
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>على المروة:</strong> استقبل الكعبة، كبر ٣ مرات، وقل الذكر ٣ مرات وادعُ.
+      </div>
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ، وَيَا مُصَرِّفَ الْقُلُوبِ صَرِّفْ قُلُوبَنَا عَلَى طَاعَتِكَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ زَوَالِ نِعْمَتِكَ، وَتَحَوُّلِ عَافِيَتِكَ، وَفُجَاءَةِ نِقْمَتِكَ، وَجَمِيعِ سَخَطِكَ.</span>
+      </div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="sai-lap-5" data-say="الله أكبر" data-finish="">4</div>
+        <button class="lap-btn lap-action" data-next="sai-lap-5" data-say="الله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sai-lap-5" data-flow="sai" data-lap="5">
+      <span class="phase-badge">السعي</span>
+      <h2>6. الشوط 5 (من الصفا إلى المروة)</h2>
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>على الصفا:</strong> استقبل الكعبة، كبر ٣ مرات، وقل الذكر ٣ مرات وادعُ.
+      </div>
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ بَارِكْ لِي فِي أَهْلِي وَمَالِي وَوَلَدِي. اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ. اللَّهُمَّ إِنِّي أَعُوذُ بِرِضَاكَ مِنْ سَخَطِكَ، وَبِمُعَافَاتِكَ مِنْ عُقُوبَتِكَ، وَأَعُوذُ بِكَ مِنْكَ لَا أُحْصِي ثَنَاءً عَلَيْكَ أَنْتَ كَمَا أَثْنَيْتَ عَلَى نَفْسِكَ.</span>
+      </div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="sai-lap-6" data-say="الله أكبر" data-finish="">3</div>
+        <button class="lap-btn lap-action" data-next="sai-lap-6" data-say="الله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sai-lap-6" data-flow="sai" data-lap="6">
+      <span class="phase-badge">السعي</span>
+      <h2>7. الشوط 6 (من المروة إلى الصفا)</h2>
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>على المروة:</strong> استقبل الكعبة، كبر ٣ مرات، وقل الذكر ٣ مرات وادعُ.
+      </div>
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ إِنِّي عَبْدُكَ، ابْنُ عَبْدِكَ، ابْنُ أَمَتِكَ، نَاصِيَتِي بِيَدِكَ، مَاضٍ فِيَّ حُكْمُكَ، عَدْلٌ فِيَّ قَضَاؤُكَ، أَسْأَلُكَ بِكُلِّ اسْمٍ هُوَ لَكَ، سَمَّيْتَ بِهِ نَفْسَكَ، أَوْ أَنْزَلْتَهُ فِي كِتَابِكَ، أَوْ عَلَّمْتَهُ أَحَدًا مِنْ خَلْقِكَ، أَوِ اسْتَأْثَرْتَ بِهِ فِي عِلْمِ الْغَيْبِ عِنْدَكَ، أَنْ تَجْعَلَ الْقُرْآنَ رَبِيعَ قَلْبِي، وَنُورَ صَدْرِي، وَجَلَاءَ حُزْنِي، وَذَهَابَ هَمِّي.</span>
+      </div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="sai-lap-7" data-say="الله أكبر" data-finish="">2</div>
+        <button class="lap-btn lap-action" data-next="sai-lap-7" data-say="الله أكبر" data-finish="">تم الشوط</button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sai-lap-7" data-flow="sai" data-lap="7">
+      <span class="phase-badge">السعي</span>
+      <h2>8. الشوط 7 (الختام من الصفا للمروة)</h2>
+      <div class="alert-slate text-sm mb-3 bg-slate-800 p-3 rounded">
+        <strong>على الصفا:</strong> استقبل الكعبة، كبر ٣ مرات، وقل الذكر ٣ مرات وادعُ.
+      </div>
+      <div class="alert-slate text-sm mb-3 leading-loose text-justify border-r-4 border-amber-500 pl-2">
+        <strong>دعاء مقترح (أثناء المشي):</strong><br>
+        <span class="text-slate-200">اللَّهُمَّ تَقَبَّلْ مِنَّا سَعْيَنَا، وَاغْفِرْ ذَنْبَنَا، وَاسْتُرْ عَيْبَنَا. اللَّهُمَّ اخْتِمْ بِالْبَاقِيَاتِ الصَّالِحَاتِ أَعْمَالَنَا. رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ، وَتُبْ عَلَيْنَا إِنَّكَ أَنْتَ التَّوَّابُ الرَّحِيمُ. وَصَلَّى اللَّهُ وَسَلَّمَ عَلَى نَبِيِّنَا مُحَمَّدٍ وَعَلَى آلِهِ وَصَحْبِهِ أَجْمَعِينَ.</span>
+      </div>
+      <div class="alert-slate text-sm">
+        امشِ باتجاه المروة، والرجال يهرولون بين العلمين.<br>
+        <span class="text-red-400 font-bold mt-2 block bg-red-900/30 p-2 rounded border border-red-500/50">توقف عند وصولك للمروة. لقد انتهى السعي! (لا يوجد دعاء أو وقوف بعد الشوط السابع).</span>
+      </div>
+      <div class="lap-inline mt-3">
+        <div class="lap-start">ابدأ</div>
+        <div class="lap-num lap-action" data-next="step-sai-end" data-say="الحمد لله" data-finish="تم السعي">1</div>
+        <button class="lap-btn lap-action" data-next="step-sai-end" data-say="الحمد لله" data-finish="تم السعي">تم الشوط</button>
+      </div>
+    </div>
+    <div class="step-card" id="step-sai-end">
+      <span class="phase-badge" id="end-badge">النهاية</span>
+      <h2 id="end-title">9. ماذا بعد السعي؟</h2>
+
+      <div id="dynamic-next-alert" class="alert-green mt-3 text-sm border-2">
+        </div>
+      
+      <div class="mt-4 bg-slate-800 p-3 rounded text-sm text-slate-300">
+        <strong>تنبيه فقهي:</strong> ليس بعد السعي ركعتان للصلاة كما في الطواف. السعي ينتهي بمجرد وصولك للمروة في الشوط السابع.
+      </div>
+    </div>
+
+    <div class="step-card" id="step-duas">
+      <span class="phase-badge">جوامع الدعاء</span>
+      <h2>10. أدعية عامة للسعي</h2>
+      <div class="alert-red text-sm">
+        لا يوجد دعاء مخصص لكل شوط، ادعُ بما في قلبك من خيري الدنيا والآخرة، واقرأ القرآن، وصَلِّ على النبي ﷺ.
+      </div>
+      <div id="dua-list" class="mt-3"></div>
+    </div>
+
+    <div class="h-20"></div>
+  </div>
+
+  <div id="mini-toast"></div>
+
+  <div class="step-nav">
+    <button id="btn-prev" type="button">السابق</button>
+    <button id="btn-next" type="button">التالي</button>
+  </div>
+
+  <script>
+    const DUAS_FULL = [
+      { title: "لطلب الهداية والتقوى", text: "اللهم آت نفسي تقواها وزكها أنت خير من زكاها، أنت وليها ومولاها.\nاللهم اهدني لأحسن الأعمال والأخلاق لا يهدي لأحسنها إلا أنت." },
+      { title: "لصلاح الدين والدنيا", text: "اللهم أصلح لي ديني الذي هو عصمة أمري، وأصلح لي دنياي التي فيها معاشي، وأصلح لي آخرتي التي فيها معادي، واجعل الحياة زيادة لي في كل خير، والموت راحة لي من كل شر." },
+      { title: "للنجاة من الفتن", text: "اللهم إني أعوذ بك من جهد البلاء، ودرك الشقاء، وسوء القضاء، وشماتة الأعداء.\nاللهم يا مقلب القلوب ثبت قلبي على دينك." }
+    ];
+
+    function renderDuas() {
+      const host = document.getElementById("dua-list");
+      host.innerHTML = "";
+      DUAS_FULL.forEach(d => {
+        const box = document.createElement("div");
+        box.className = "dua-item";
+        box.innerHTML = `<div class="dua-title">${d.title}</div><div class="dua-text">${d.text}</div>`;
+        host.appendChild(box);
+      });
+    }
+    renderDuas();
+
+    // =========================================================
+    // DYNAMIC SAI TYPE LOGIC
+    // =========================================================
+    function updateContent(type) {
+      const title = document.getElementById('dynamic-title');
+      const badge = document.getElementById('dynamic-badge');
+      const intro = document.getElementById('dynamic-intro');
+      const nextAlert = document.getElementById('dynamic-next-alert');
+      const endTitle = document.getElementById('end-title');
+
+      if (type === 'umrah') {
+        badge.innerText = 'سعي العمرة (ركن)';
+        title.innerText = '1. الدخول للسعي (بعد طواف العمرة)';
+        intro.innerHTML = `
+          <strong style="color: var(--color-primary); font-size: 1.1em;">🛑 توقيت السعي:</strong> يُؤدى فور الانتهاء من طواف العمرة وصلاة الركعتين خلف المقام.<br>
+          <strong style="color: var(--color-primary); font-size: 1.1em;">✅ الطهارة:</strong> الوضوء <strong>مستحب وليس شرطاً</strong> لصحة السعي (فلو انتقض وضوؤك أثناء السعي، فلا حرج وتكمل سعيك).<br>
+          <strong style="color: var(--color-primary); font-size: 1.1em;">✅ اللباس:</strong> أنت الآن مُحرم بملابس الإحرام.
+        `;
+        
+        endTitle.innerText = "9. التحلل (نهاية العمرة)";
+        nextAlert.className = "alert-green mt-3 text-sm border-2 border-emerald-500 bg-emerald-900/40 text-white";
+        nextAlert.innerHTML = `
+          <strong>🎉 ماذا تفعل الآن؟ (التحلل من الإحرام):</strong><br><br>
+          - <strong>الرجال:</strong> يجب عليك <strong>الحلق (بالموسى)</strong> وهو الأفضل، أو <strong>التقصير</strong> من جميع أنحاء الرأس.<br>
+          - <strong>النساء:</strong> يجب عليكِ <strong>التقصير فقط</strong>، بتجميع أطراف شعرك وقص قدر "أنملة" (عُقلة إصبع).<br><br>
+          <strong style="color:#6ee7b7; font-size:1.1em;">بذلك تمت عُمرتك! وحلَّ لك كل شيء حَرُمَ عليك بالإحرام. البس ملابسك العادية وتعطر.</strong>
+        `;
+        updateAvatars('ihram');
+
+      } else if (type === 'tamattu') {
+        badge.innerText = 'سعي الحج (ركن للمتمتع)';
+        title.innerText = '1. الدخول للسعي (يوم العيد)';
+        intro.innerHTML = `
+          <strong style="color: var(--color-primary); font-size: 1.1em;">🛑 توقيت السعي:</strong> يُؤدى بعد (طواف الإفاضة) يوم النحر أو خلال أيام التشريق.<br>
+          <strong style="color: #dc2626; font-size: 1.1em;">⚠️ تنبيه هام للمتمتع:</strong> سعي العمرة الأول لا يُجزئ عن الحج. <strong>يجب عليك سعي جديد للحج</strong>.<br>
+          <strong style="color: var(--color-primary); font-size: 1.1em;">✅ اللباس:</strong> أنت الآن بملابسك العادية (لأنك تحللت التحلل الأصغر بعد رمي جمرة العقبة).
+        `;
+
+        endTitle.innerText = "9. التحلل الأكبر (نهاية الحج)";
+        nextAlert.className = "alert-green mt-3 text-sm border-2 border-emerald-500 bg-emerald-900/40 text-white";
+        nextAlert.innerHTML = `
+          <strong>🎉 ماذا تفعل الآن؟ (التحلل الأكبر):</strong><br><br>
+          بانتهاء هذا السعي (وأنت قد رميت الجمرة الكبرى، وذبحت، وحلقت، وطُفت للإفاضة)، <strong>يتم التحلل الأكبر</strong>.<br>
+          <strong style="color:#6ee7b7; font-size:1.1em;">لقد حَلَّ لك كل شيء تماماً (بما في ذلك إتيان النساء). تقبل الله حجكم.</strong>
+        `;
+        updateAvatars('normal');
+
+      } else if (type === 'ifrad_qiran') {
+        badge.innerText = 'سعي الحج (للمفرد والقارن)';
+        title.innerText = '1. الدخول للسعي والتوقيت المزدوج';
+        intro.innerHTML = `
+          <strong style="color: var(--color-primary); font-size: 1.1em;">🛑 توقيت السعي (لك الخيار):</strong><br>
+          <strong>الخيار الأول (تقديم السعي):</strong> يمكنك أداء هذا السعي <strong>الآن بعد طواف القدوم</strong> مباشرة لتخفيف الزحام يوم العيد.<br>
+          <strong>الخيار الثاني (تأخير السعي):</strong> تؤجله وتؤديه يوم العيد <strong>بعد طواف الإفاضة</strong>.<br>
+          <strong style="color: #dc2626; font-size: 1.1em;">⚠️ تنبيه للقارن:</strong> سعي واحد يكفيك للحج والعمرة معاً.<br>
+          <strong style="color: var(--color-primary); font-size: 1.1em;">✅ اللباس:</strong> إذا قدمته بعد طواف القدوم (أنت مُحرم). إذا أخرته بعد الإفاضة (أنت بملابس عادية).
+        `;
+
+        endTitle.innerText = "9. ماذا بعد السعي؟ (حسب توقيتك)";
+        nextAlert.className = "alert-red mt-3 text-sm border-2 border-red-500 bg-red-900/40 text-white";
+        nextAlert.innerHTML = `
+          <strong>🛑 ركز جيداً في خطوتك القادمة:</strong><br><br>
+          - <strong>إذا قدمت السعي الآن (بعد طواف القدوم):</strong> إياك أن تحلق أو تقصر! <strong>يجب أن تبقى بملابس الإحرام</strong> ولا تتحلل أبداً حتى يوم العيد.<br>
+          - <strong>إذا أخرت السعي (بعد طواف الإفاضة يوم العيد):</strong> بمجرد انتهائك الآن، يتم <strong>التحلل الأكبر</strong> ويحل لك كل شيء تماماً.
+        `;
+        // Defaulting to Ihram since advancing is the common confusing part
+        updateAvatars('ihram');
+      }
+
+      setStep('step-sai-entry');
+    }
+
+    document.querySelectorAll('.type-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.type-btn').forEach(b => {
+          b.classList.remove('active'); b.classList.add('inactive');
+        });
+        e.target.classList.add('active');
+        e.target.classList.remove('inactive');
+        updateContent(e.target.dataset.type);
+      });
+    });
+
+    // =========================================================
+    // Voice & Toast
+    // =========================================================
+    const toastEl = document.getElementById('mini-toast');
+    let toastTimer = null;
+    function showToast(msg) {
+      toastEl.textContent = msg; toastEl.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1400);
+    }
+    function speakArabic(text) {
+      try {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ar-SA'; window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    // =========================================================
+    // THREE.JS Engine (Safa & Marwa)
+    // =========================================================
+    const container = document.getElementById("visual-container");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const dirLight = new THREE.DirectionalLight(0x10b981, 1.15); // Greenish light for Sai
+    dirLight.position.set(5, 10, 5); scene.add(dirLight);
+
+    function updateCamera() {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      if (camera.aspect < 1) camera.position.set(0, 9.5, 18);
+      else camera.position.set(0, 6, 12);
+      camera.lookAt(0, 1.2, 0); camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", updateCamera); updateCamera();
+
+    const saiGroup = new THREE.Group(); scene.add(saiGroup);
+
+    // Hills
+    const hillMat = new THREE.MeshStandardMaterial({ color: 0x334155 });
+    const safaHill = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.6, 0.8, 24), hillMat);
+    const marwaHill = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.6, 0.8, 24), hillMat);
+    safaHill.position.set(-4, 0.4, 0);
+    marwaHill.position.set( 4, 0.4, 0);
+
+    // Track
+    const track = new THREE.Mesh(
+      new THREE.BoxGeometry(8, 0.12, 1.6),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.12 })
+    );
+    track.position.set(0, 0.12, 0);
+
+    // Green Markers
+    const greenMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x16a34a, emissiveIntensity: 0.8 });
+    const markerGeo = new THREE.BoxGeometry(0.12, 1.0, 1.8);
+    const markerLeft = new THREE.Mesh(markerGeo, greenMat);
+    const markerRight = new THREE.Mesh(markerGeo, greenMat);
+    markerLeft.position.set(-1, 0.55, 0);
+    markerRight.position.set( 1, 0.55, 0);
+
+    saiGroup.add(safaHill, marwaHill, track, markerLeft, markerRight);
+
+    // Vectors
+    const MALE_IHRAM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e5e7eb"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg)"/><g filter="url(#shadow)"><circle cx="450" cy="240" r="72" fill="#d4a373"/><rect x="415" y="298" width="70" height="40" rx="18" fill="#c98f5a"/><path d="M330 360 c40-35 85-55 120-55 c45 0 90 20 120 55 c40 45 42 100 20 140 c-22 40-66 55-100 55 H390 c-34 0-78-15-100-55 c-22-40-20-95 40-140z" fill="url(#cloth)"/><path d="M560 350 c25 15 38 40 35 70 c-3 35-30 60-62 60 c-18 0-35-6-48-18 c25-40 38-78 75-112z" fill="#d4a373" opacity="0.85"/><path d="M310 520 c40-35 95-55 140-55 c45 0 100 20 140 55 c25 22 40 55 40 92 v170 c0 28-18 52-45 60 c-90 25-180 25-270 0 c-27-8-45-32-45-60 V612 c0-37 15-70 40-92z" fill="url(#cloth)"/></g></svg>`;
+    const FEMALE_IHRAM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="abaya" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#111827"/><stop offset="1" stop-color="#0b1020"/></linearGradient><filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg2)"/><g filter="url(#shadow2)"><path d="M450 190 c-55 0-100 40-110 90 c-10 55 10 85 25 100 c-55 50-100 140-110 250 c-10 105 15 180 45 215 c25 30 60 45 95 50 c85 12 170 12 255 0 c35-5 70-20 95-50 c30-35 55-110 45-215 c-10-110-55-200-110-250 c15-15 35-45 25-100 c-10-50-55-90-110-90z" fill="url(#abaya)"/><ellipse cx="450" cy="265" rx="92" ry="110" fill="#0b1020" opacity="0.8"/><ellipse cx="450" cy="270" rx="62" ry="78" fill="#d4a373"/></g></svg>`;
+    const MALE_NORMAL_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#cbd5e1"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg)"/><g filter="url(#shadow)"><circle cx="450" cy="240" r="72" fill="#d4a373"/><path d="M330 360 c40-35 85-55 120-55 c45 0 90 20 120 55 c40 45 42 100 20 140 c-22 40-66 55-100 55 H390 c-34 0-78-15-100-55 c-22-40-20-95 40-140z" fill="url(#cloth)"/><path d="M310 520 c40-35 95-55 140-55 c45 0 100 20 140 55 c25 22 40 55 40 92 v170 c0 28-18 52-45 60 c-90 25-180 25-270 0 c-27-8-45-32-45-60 V612 c0-37 15-70 40-92z" fill="url(#cloth)"/></g></svg>`;
+
+    let vIhramM, vIhramF, vNormalM, vNormalF;
+    let sMale, sFemale;
+    let saiMaleTl = null, saiFemaleTl = null;
+
+    function svgToCanvasTexture(svgString) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas"); canvas.width=900; canvas.height=900;
+          const ctx = canvas.getContext("2d"); ctx.drawImage(img, 0, 0, 900, 900);
+          resolve(new THREE.CanvasTexture(canvas));
+        };
+        img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgString);
+      });
+    }
+    async function createVectorBillboard(svgStr) {
+      const tex = await svgToCanvasTexture(svgStr);
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 3.2), new THREE.MeshBasicMaterial({ map: tex, transparent: true }));
+      m.position.y = 1.45; m.userData.billboard = true; return m;
+    }
+
+    async function loadTextures() {
+      vIhramM = await createVectorBillboard(MALE_IHRAM_SVG);
+      vIhramF = await createVectorBillboard(FEMALE_IHRAM_SVG);
+      vNormalM = await createVectorBillboard(MALE_NORMAL_SVG);
+      vNormalF = await createVectorBillboard(FEMALE_IHRAM_SVG); // Females mostly same
+
+      sMale = new THREE.Group(); sFemale = new THREE.Group();
+      
+      sMale.add(vIhramM.clone()); sFemale.add(vIhramF.clone());
+      sMale.scale.set(0.42, 0.42, 0.42); sFemale.scale.set(0.42, 0.42, 0.42);
+      sMale.position.set(-4, 0, 0.25); sFemale.position.set(-4, 0, -0.25);
+      
+      saiGroup.add(sMale, sFemale);
+    }
+
+    function updateAvatars(type) {
+      if(!sMale) return;
+      sMale.clear(); sFemale.clear();
+      if(type === 'ihram') {
+        sMale.add(vIhramM.clone()); sFemale.add(vIhramF.clone());
+      } else {
+        sMale.add(vNormalM.clone()); sFemale.add(vNormalF.clone());
+      }
+    }
+
+    function startSai() {
+      if (!sMale || !sFemale) return;
+      if (saiMaleTl) saiMaleTl.kill();
+      sMale.position.x = -4;
+      saiMaleTl = gsap.timeline({ repeat: -1, yoyo: true });
+      saiMaleTl
+        .to(sMale.position, { x: -1, duration: 1.2, ease: "none" })
+        .to(sMale.position, { x:  1, duration: 0.55, ease: "none" }) // Running zone (fast)
+        .to(sMale.position, { x:  4, duration: 1.2, ease: "none" });
+
+      if (saiFemaleTl) saiFemaleTl.kill();
+      sFemale.position.x = -4;
+      saiFemaleTl = gsap.timeline({ repeat: -1, yoyo: true });
+      saiFemaleTl.to(sFemale.position, { x: 4, duration: 3.2, ease: "none" }); // Normal walk
+    }
+
+    loadTextures().then(() => { startSai(); });
+
+    // =========================================================
+    // Nav Logic with ScrollTrigger auto-activation
+    // =========================================================
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    const stepIds = ["step-sai-entry", "sai-lap-1", "sai-lap-2", "sai-lap-3", "sai-lap-4", "sai-lap-5", "sai-lap-6", "sai-lap-7", "step-sai-end", "step-duas"];
+    let currentIndex = 0; let isAutoScrolling = false;
+
+    function setStep(id) {
+      currentIndex = stepIds.indexOf(id);
+      document.querySelectorAll('.step-card').forEach(e => { e.classList.remove('active-step'); e.style.opacity='0.3'; });
+      const active = document.getElementById(id);
+      if(active) { active.classList.add('active-step'); active.style.opacity='1'; }
+      
+      document.getElementById('btn-prev').disabled = (currentIndex <= 0);
+      document.getElementById('btn-next').disabled = (currentIndex >= stepIds.length - 1);
+    }
+
+    function scrollTarget(id) {
+      isAutoScrolling = true;
+      gsap.to(document.getElementById('content-container'), { duration: 0.5, scrollTo: { y: `#${id}`, offsetY: 100 }, onComplete: () => { setStep(id); isAutoScrolling=false; } });
+    }
+
+    document.querySelectorAll('.step-card').forEach(c => c.addEventListener('click', () => { if(!isAutoScrolling) scrollTarget(c.id); }));
+    document.getElementById('btn-prev').addEventListener('click', () => scrollTarget(stepIds[Math.max(0, currentIndex-1)]));
+    document.getElementById('btn-next').addEventListener('click', () => scrollTarget(stepIds[Math.min(stepIds.length-1, currentIndex+1)]));
+
+    stepIds.forEach(stepId => {
+      const el = document.getElementById(stepId);
+      if (!el) return;
+      ScrollTrigger.create({
+        trigger: el,
+        scroller: document.getElementById('content-container'),
+        start: "top 75%", 
+        end: "bottom 25%",
+        onEnter: () => { if (!isAutoScrolling) setStep(stepId); },
+        onEnterBack: () => { if (!isAutoScrolling) setStep(stepId); }
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest(".lap-action");
+      if (!t) return;
+      e.stopPropagation();
+      const box = t.closest(".lap-inline");
+      if(box.classList.contains("completed")) return;
+      
+      const say = t.dataset.say; if(say) speakArabic(say);
+      box.classList.add("completed");
+      box.querySelectorAll(".lap-action").forEach(el => el.classList.add("is-done"));
+      box.querySelector("button.lap-btn").textContent = "تم";
+
+      if (t.dataset.finish) { showToast(t.dataset.finish); speakArabic(t.dataset.finish); }
+    }, true);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if(sMale && sMale.children[0]) sMale.children[0].lookAt(camera.position);
+      if(sFemale && sFemale.children[0]) sFemale.children[0].lookAt(camera.position);
+      renderer.render(scene, camera);
+    }
+    
+    updateContent('umrah'); // Init
+    animate();
+    
+  </script>
+</body>
+</html>
+<script>// =========================================================
+    // Mini toast
+    // =========================================================
+    const toastEl = document.getElementById('mini-toast');
+    let toastTimer = null;
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1400);
+    }
+
+    // =========================================================
+    // Voice
+    // =========================================================
+    function speakArabic(text) {
+      try {
+        if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ar-SA';
+        u.rate = 0.95;
+        u.pitch = 1.0;
+        u.volume = 1.0;
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    // =========================================================
+    // THREE.JS (Sai Only)
+    // =========================================================
+    const container = document.getElementById("visual-container");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    const ambLight = new THREE.AmbientLight(0xffffff, 0.55);
+    scene.add(ambLight);
+    const dirLight = new THREE.DirectionalLight(0xffd700, 1.15);
+    dirLight.position.set(5, 10, 5);
+    scene.add(dirLight);
+
+    function updateCamera() {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      const aspect = w / h;
+      renderer.setSize(w, h);
+      camera.aspect = aspect;
+      if (aspect < 1) camera.position.set(0, 9.5, 18);
+      else camera.position.set(0, 6, 12);
+      camera.lookAt(0, 1.2, 0);
+      camera.updateProjectionMatrix();
+    }
+    updateCamera();
+    window.addEventListener("resize", updateCamera);
+
+    function svgToCanvasTexture(svgString, size = 900) {
+      return new Promise((resolve, reject) => {
+        const svgDataUri = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgString);
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, size, size);
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          ctx.drawImage(img, 0, 0, size, size);
+          const texture = new THREE.CanvasTexture(canvas);
+          texture.needsUpdate = true;
+          texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8);
+          resolve(texture);
+        };
+        img.onerror = reject;
+        img.src = svgDataUri;
+      });
+    }
+
+    async function createVectorBillboard(svgString, scaleX = 2.6, scaleY = 3.2) {
+      const tex = await svgToCanvasTexture(svgString, 900);
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true });
+      const geo = new THREE.PlaneGeometry(scaleX, scaleY);
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.y = 1.45;
+      mesh.userData.billboard = true;
+      return mesh;
+    }
+
+    const MALE_IHRAM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="cloth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e5e7eb"/></linearGradient><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg)"/><g filter="url(#shadow)"><circle cx="450" cy="240" r="72" fill="#d4a373"/><rect x="415" y="298" width="70" height="40" rx="18" fill="#c98f5a"/><path d="M330 360 c40-35 85-55 120-55 c45 0 90 20 120 55 c40 45 42 100 20 140 c-22 40-66 55-100 55 H390 c-34 0-78-15-100-55 c-22-40-20-95 40-140z" fill="url(#cloth)"/><path d="M560 350 c25 15 38 40 35 70 c-3 35-30 60-62 60 c-18 0-35-6-48-18 c25-40 38-78 75-112z" fill="#d4a373" opacity="0.85"/><path d="M310 520 c40-35 95-55 140-55 c45 0 100 20 140 55 c25 22 40 55 40 92 v170 c0 28-18 52-45 60 c-90 25-180 25-270 0 c-27-8-45-32-45-60 V612 c0-37 15-70 40-92z" fill="url(#cloth)"/></g><rect x="40" y="40" width="820" height="820" rx="40" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.25"/></svg>`;
+    const FEMALE_IHRAM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900"><defs><linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#0f172a"/></linearGradient><linearGradient id="abaya" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#111827"/><stop offset="1" stop-color="#0b1020"/></linearGradient><filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/></filter></defs><rect width="900" height="900" fill="url(#bg2)"/><g filter="url(#shadow2)"><path d="M450 190 c-55 0-100 40-110 90 c-10 55 10 85 25 100 c-55 50-100 140-110 250 c-10 105 15 180 45 215 c25 30 60 45 95 50 c85 12 170 12 255 0 c35-5 70-20 95-50 c30-35 55-110 45-215 c-10-110-55-200-110-250 c15-15 35-45 25-100 c-10-50-55-90-110-90z" fill="url(#abaya)"/><ellipse cx="450" cy="265" rx="92" ry="110" fill="#0b1020" opacity="0.8"/><ellipse cx="450" cy="270" rx="62" ry="78" fill="#d4a373"/></g><rect x="40" y="40" width="820" height="820" rx="40" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.25"/></svg>`;
+
+    const saiGroup = new THREE.Group();
+    scene.add(saiGroup);
+
+    const hillMat = new THREE.MeshStandardMaterial({ color: 0x334155 });
+    const safaHill = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.6, 0.8, 24), hillMat);
+    const marwaHill = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.6, 0.8, 24), hillMat);
+    safaHill.position.set(-4, 0.4, 0);
+    marwaHill.position.set( 4, 0.4, 0);
+
+    const track = new THREE.Mesh(
+      new THREE.BoxGeometry(8, 0.12, 1.6),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.12 })
+    );
+    track.position.set(0, 0.12, 0);
+
+    const greenMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x16a34a, emissiveIntensity: 0.8 });
+    const markerGeo = new THREE.BoxGeometry(0.12, 1.0, 1.8);
+    const markerLeft = new THREE.Mesh(markerGeo, greenMat);
+    const markerRight = new THREE.Mesh(markerGeo, greenMat);
+    markerLeft.position.set(-1, 0.55, 0);
+    markerRight.position.set( 1, 0.55, 0);
+
+    saiGroup.add(safaHill, marwaHill, track, markerLeft, markerRight);
+
+    let saiMale = null, saiFemale = null;
+    let saiMaleTl = null, saiFemaleTl = null;
+
+    function faceCameraIfBillboard(obj) {
+      if (obj && obj.userData && obj.userData.billboard) obj.lookAt(camera.position);
+    }
+
+    async function initVectorPilgrims() {
+      try {
+        const vMale = await createVectorBillboard(MALE_IHRAM_SVG, 2.6, 3.2);
+        const vFem = await createVectorBillboard(FEMALE_IHRAM_SVG, 2.6, 3.2);
+
+        saiMale = vMale.clone();
+        saiFemale = vFem.clone();
+        saiMale.scale.set(0.42, 0.42, 0.42);
+        saiFemale.scale.set(0.42, 0.42, 0.42);
+        saiMale.position.set(-4, 0,  0.25);
+        saiFemale.position.set(-4, 0, -0.25);
+        saiGroup.add(saiMale, saiFemale);
+
+      } catch (e) { console.warn("Vector pilgrims failed:", e); }
+    }
+    initVectorPilgrims();
+
+    function startSai() {
+      if (!saiMale || !saiFemale) return;
+      if (saiMaleTl) saiMaleTl.kill();
+      saiMale.position.x = -4;
+      saiMaleTl = gsap.timeline({ repeat: -1, yoyo: true });
+      saiMaleTl
+        .to(saiMale.position, { x: -1, duration: 1.2, ease: "none" })
+        .to(saiMale.position, { x:  1, duration: 0.55, ease: "none" }) // Running zone
+        .to(saiMale.position, { x:  4, duration: 1.2, ease: "none" });
+
+      if (saiFemaleTl) saiFemaleTl.kill();
+      saiFemale.position.x = -4;
+      saiFemaleTl = gsap.timeline({ repeat: -1, yoyo: true });
+      saiFemaleTl.to(saiFemale.position, { x: 4, duration: 3.2, ease: "none" });
+    }
+
+    // =========================================================
+    // DUAS
+    // =========================================================
+    const DUAS_FULL = [
+      { title: "الثناء", text: "\"اللهم لك الحمد حمداً كثيراً طيباً مباركاً فيه...\"، \"اللهم لك الحمد أنت نور السماوات والأرض...\"" },
+      { title: "الاستسلام", text: "\"اللهم لك أسلمت وبك آمنت وعليك توكلت...\"" },
+      { title: "التوحيد", text: "\"لا إله إلا أنت سبحانك إني كنت من الظالمين\"" },
+      { title: "طلب الهداية والتقوى", text: "\"اللهم آت نفسي تقواها وزكها أنت خير من زكاها...\"، \"اللهم اهدني لأحسن الأعمال والأخلاق...\"" },
+      { title: "الاستعاذة", text: "من علم لا ينفع وقلب لا يخشع.\nمن زوال النعمة وتحول العافية.\nمن شر ما عملت ومن شر ما لم أعمل.\nمن الهم والحزن والعجز والكسل والبخل والجبن.\nمن جهد البلاء ودرك الشقاء.\nمن فتنة المحيا والممات وعذاب القبر وفتنة المسيح الدجال." },
+      { title: "طلب المغفرة", text: "سيد الاستغفار: \"اللهم أنت ربي لا إله إلا أنت خلقتني وأنا عبدك...\"\n\"ربنا ظلمنا أنفسنا وإن لم تغفر لنا وترحمنا لنكونن من الخاسرين\"\n\"اللهم اغفر لي ذنبي كله دقه وجله...\"\n\"اللهم إنك عفو تحب العفو فاعف عني\"" },
+      { title: "صلاح الدين والدنيا", text: "\"اللهم أصلح لي ديني الذي هو عصمة أمري، وأصلح لي دنياي التي فيها معاشي...\"" },
+      { title: "أدعية شاملة", text: "\"اللهم إني أسألك من الخير كله عاجله وآجله...\"\n\"ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار\"\n\"اللهم إني أسألك الهدى والتقى والعفاف والغنى\"\n\"اللهم إني أسألك فواتح الخير وخواتمه...\"" },
+      { title: "أدعية للقلب", text: "\"يا مقلب القلوب ثبت قلبي على دينك\"، \"اللهم مصرف القلوب صرف قلوبنا على طاعتك\"" }
+    ];
+
+    function renderDuas() {
+      const host = document.getElementById("dua-list");
+      host.innerHTML = "";
+      DUAS_FULL.forEach(d => {
+        const box = document.createElement("div");
+        box.className = "dua-item";
+        box.innerHTML = `
+          <div class="dua-title">${d.title}</div>
+          <div class="dua-text">${(d.text || "").trim()}</div>
+        `;
+        host.appendChild(box);
+      });
+    }
+    renderDuas();
+
+    // =========================================================
+    // GSAP Scroll + Click Nav
+    // =========================================================
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    const scroller = document.getElementById("content-container");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
+
+    const stepIds = [
+      "sai-lap-1",
+      "sai-lap-2",
+      "sai-lap-3",
+      "sai-lap-4",
+      "sai-lap-5",
+      "sai-lap-6",
+      "sai-lap-7",
+      "step-final",
+      "step-duas"
+    ];
+
+    let currentIndex = 0;
+    let isAutoScrolling = false;
+    let scrollTween = null;
+
+    function activateStep(id) {
+      document.querySelectorAll(".step-card").forEach(el => {
+        el.classList.remove("active-step");
+        el.style.opacity = "0.3";
+      });
+      const active = document.getElementById(id);
+      if (active) {
+        active.classList.add("active-step");
+        active.style.opacity = "1";
+      }
+    }
+
+    function updateNavButtons() {
+      btnPrev.disabled = (currentIndex <= 0);
+      btnNext.disabled = (currentIndex >= stepIds.length - 1);
+    }
+
+    function setStep(id) {
+      const idx = stepIds.indexOf(id);
+      if (idx !== -1) currentIndex = idx;
+
+      activateStep(id);
+      updateNavButtons();
+      startSai(); // Keep the Sai animation running for the entire page
+    }
+
+    function scrollToStep(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (scrollTween) { scrollTween.kill(); scrollTween = null; }
+      gsap.killTweensOf(scroller);
+
+      isAutoScrolling = true;
+      scrollTween = gsap.to(scroller, {
+        duration: 0.65,
+        ease: "power2.out",
+        scrollTo: { y: el, offsetY: 16, autoKill: false },
+        onStart: () => setStep(id),
+        onComplete: () => { isAutoScrolling = false; scrollTween = null; },
+        onInterrupt: () => { isAutoScrolling = false; scrollTween = null; }
+      });
+    }
+
+    function goToIndex(idx) {
+      const clamped = Math.max(0, Math.min(stepIds.length - 1, idx));
+      scrollToStep(stepIds[clamped]);
+    }
+
+    document.querySelectorAll(".step-card").forEach(card => {
+      card.addEventListener("click", () => {
+        if (isAutoScrolling) return;
+        if (stepIds.includes(card.id)) scrollToStep(card.id);
+      }, { passive: true });
+    });
+
+    btnPrev.addEventListener("click", () => goToIndex(currentIndex - 1));
+    btnNext.addEventListener("click", () => goToIndex(currentIndex + 1));
+
+    stepIds.forEach(stepId => {
+      const el = document.getElementById(stepId);
+      if (!el) return;
+      ScrollTrigger.create({
+        trigger: el,
+        scroller: scroller,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => { if (!isAutoScrolling) setStep(stepId); },
+        onEnterBack: () => { if (!isAutoScrolling) setStep(stepId); }
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest(".lap-action");
+      if (!t) return;
+      const lapCard = t.closest(".step-card[data-flow][data-lap]");
+      if (!lapCard) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      const lapBox = lapCard.querySelector(".lap-inline");
+      if (!lapBox || lapBox.classList.contains("completed")) return;
+
+      const say = t.getAttribute("data-say");
+      if (say) speakArabic(say);
+
+      lapBox.classList.add("completed");
+      lapBox.querySelectorAll(".lap-action").forEach(el => el.classList.add("is-done"));
+      const btn = lapBox.querySelector("button.lap-btn");
+      if (btn) btn.textContent = "تم";
+
+      const lap = parseInt(lapCard.getAttribute("data-lap"), 10);
+      if (lap === 7) {
+        showToast("تم السعي");
+        speakArabic("تم السعي");
+      }
+    }, true);
+
+    setStep(stepIds[0]);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      faceCameraIfBillboard(saiMale);
+      faceCameraIfBillboard(saiFemale);
+      renderer.render(scene, camera);
+    }
+    animate();</script>
